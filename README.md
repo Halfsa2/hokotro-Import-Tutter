@@ -1,7 +1,7 @@
 # Hokotro-Import-Tutter
 Projlab feladat, HoeKotró
 
-##Feladatleírás
+## Feladatleírás
 
 Zúzmaraváros lakosságát váratlanul érte a havazás, ami még most is folyamatosan tart és fokozatosan lepi be az utakat.  A város a következőképpen épül fel. A város utakból  és kereszteződésekből áll.  Az utakon magyar közlekedési szabály érvényes, a jobbra tartás kötelező. Minden út 4 sávból áll: a két jobb és a két bal szélső sáv közlekedési iránya ellentétes, de a szélsőkön belül egyezik. Egy sávon egyszerre csak egy jármű haladhat és szükség esetén a járművek átválthatnak a szomszédos azonos irányú sávba. A kereszteződésekben akár 5 út is találkozhat, hidak és alagutak miatt több szinten.
 
