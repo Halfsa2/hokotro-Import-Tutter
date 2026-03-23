@@ -2,13 +2,14 @@ package halozat;
 import jarmu.Jarmu;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
- * A hálózat speciális, végpontként szolgáló csomópontja[cite: 504].
+ * A hálózat speciális, végpontként szolgáló csomópontja.
  */
 public class Checkpoint extends Csomopont {
 
-    private Csomopont kimenet; // Csak egyetlen irányba lehet továbbhaladni [cite: 830-831]
-    private List<Jarmu> varakozoJarmuvek; // A még forgalomba nem állt járművek [cite: 821]
+    private Csomopont kimenet; 
+    private List<Jarmu> varakozoJarmuvek; 
 
     public Checkpoint() {
         this.varakozoJarmuvek = new ArrayList<>();
@@ -18,36 +19,53 @@ public class Checkpoint extends Csomopont {
         this.kimenet = kimenet;
     }
 
+    // JAVÍTVA: void helyett boolean visszatérés
     @Override
-    public void befogad(Jarmu jarmu) {
-        this.varakozoJarmuvek.add(jarmu); // Adminisztrálja a megérkezést [cite: 833]
+    public boolean befogad(Jarmu jarmu) {
+        System.out.println("> checkpoint:Checkpoint.befogad(jarmu)");
+        
+        this.varakozoJarmuvek.add(jarmu); 
+        
+        System.out.println("<- true");
+        return true;
     }
 
     @Override
     public void elenged(Jarmu jarmu) {
-        this.varakozoJarmuvek.remove(jarmu); // Regisztrálja a távozást [cite: 834]
+        this.varakozoJarmuvek.remove(jarmu); 
     }
 
     @Override
     public void frissit() {
-        // Checkpoint állapotának aktualizálása [cite: 835]
+        // Checkpoint állapotának aktualizálása
     }
 
     @Override
     public List<Csomopont> getNext() {
-        List<Csomopont> lista = new ArrayList<>();
+        List<Csomopont> kimenetek = new ArrayList<>();
         if (kimenet != null) {
-            lista.add(kimenet);
+            kimenetek.add(kimenet);
         }
-        return lista;
+        return kimenetek;
     }
 
     @Override
-    public void balesetEseten() { }
+    public void balesetEseten() {
+        // Baleset esetén a Checkpointon
+    }
 
     @Override
     public boolean foglalt() {
-        // Logikai értékkel tér vissza (igaz, ha tartózkodik rajta jármű) [cite: 836-837]
-        return !this.varakozoJarmuvek.isEmpty();
+        // A te logikád alapján a Checkpoint valószínűleg sosem "foglalt" olyan értelemben, 
+        // hogy ne tudna több járművet fogadni (mivel listája van), de itt ezt implementálhatod.
+        return false;
+    }
+
+    // JAVÍTVA: Hiányzó hoesesEseten() metódus pótlása
+    @Override
+    public void hoesesEseten() {
+        System.out.println("> checkpoint:Checkpoint.hoesesEseten()");
+        // A checkpointra sem hat a hó a jelenlegi modell alapján
+        System.out.println("<- void");
     }
 }

@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Olyan csomópont, ahol több útvonal találkozik, és elosztja a forgalmat [cite: 1022-1024].
+ * Olyan csomópont, ahol több útvonal találkozik, és elosztja a forgalmat.
  */
 public class Keresztezodes extends Csomopont {
 
-    // Tárolja, hogy a kereszteződésből mely további csomópontok felé lehet továbbhaladni [cite: 1028-1029].
     private List<Csomopont> kimenetek;
     private List<Jarmu> bentLevoJarmuvek;
 
@@ -21,34 +20,50 @@ public class Keresztezodes extends Csomopont {
         this.kimenetek.add(csp);
     }
 
+    // JAVÍTVA: void helyett boolean visszatérés
     @Override
-    public void befogad(Jarmu jarmu) {
-        this.bentLevoJarmuvek.add(jarmu); // Regisztrálja a jelenlétét [cite: 1031]
+    public boolean befogad(Jarmu jarmu) {
+        System.out.println("> keresztezodes:Keresztezodes.befogad(jarmu)");
+        
+        // Ha nem akarjuk, hogy végtelen sok jármű legyen benne, itt lehetne ellenőrizni a foglaltságot.
+        // Mivel a kereszteződés a korábbi kódod alapján listát használt, egyelőre mindig beengedjük:
+        this.bentLevoJarmuvek.add(jarmu); 
+        
+        System.out.println("<- true");
+        return true; 
     }
 
     @Override
     public void elenged(Jarmu jarmu) {
-        this.bentLevoJarmuvek.remove(jarmu); // Felszabadítja a helyet [cite: 1032-1033]
+        this.bentLevoJarmuvek.remove(jarmu); 
     }
 
     @Override
     public void frissit() {
-        // A szimulációs idő múlására reagáló metódus [cite: 1036-1037]
+        // A szimulációs idő múlására reagáló kód
     }
 
     @Override
     public List<Csomopont> getNext() {
-        return this.kimenetek; // Visszaadja a választható irányokat [cite: 1041-1042]
+        return this.kimenetek;
     }
 
     @Override
     public void balesetEseten() {
-        // Kereszteződés specifikus balesetkezelés
+        // Kereszteződésbeli baleset logikája
     }
 
     @Override
     public boolean foglalt() {
-        // Logika a foglaltság eldöntésére (pl. van-e benne olyan jármű, ami blokkolja)
+        // Visszaadja, hogy van-e benne jármű
         return !this.bentLevoJarmuvek.isEmpty();
+    }
+
+    // JAVÍTVA: Hiányzó hoesesEseten() metódus pótlása
+    @Override
+    public void hoesesEseten() {
+        System.out.println("> keresztezodes:Keresztezodes.hoesesEseten()");
+        // A dokumentáció alapján a kereszteződésre nem hat a havazás, így üresen hagyjuk
+        System.out.println("<- void");
     }
 }

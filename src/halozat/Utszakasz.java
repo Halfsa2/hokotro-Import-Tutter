@@ -1,30 +1,28 @@
 package halozat;
+
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A szimulációs hálózatban a kereszteződéseket összekötő éleket reprezentálja.
- */
 public class Utszakasz {
     
-    // Egy útszakasz fizikailag sávokból épül fel (kompozíció).
-    protected List<Sav> savok; 
+    protected List<Sav> savok = new ArrayList<>();
 
-    public Utszakasz() {
-        this.savok = new ArrayList<>();
+    public void addSav(Sav s) {
+        savok.add(s);
+        s.setUtszakasz(this); // Beállítjuk a sávnál a szülő útszakaszt a Double Dispatch-hez
     }
 
-    public void addSav(Sav sav) {
-        this.savok.add(sav);
+    public List<Sav> getSavok() {
+        return savok;
     }
 
-    /**
-     * A havazás eseményének lekezelése az egész útszakaszon.
-     * Végigiterál a hozzá tartozó sávokon, és mindegyiknek továbbítja az eseményt.
-     */
-    public void hoesesEseten() {
-        for (Sav s : savok) {
-            s.hoesesEseten();
+    // DOUBLE DISPATCH LOGIKA
+    public void havazikRa(Sav s) {
+        System.out.println("> utszakasz:Utszakasz.havazikRa(s1)");
+        // Ha nem alagútban vagyunk, a sáv állapota megkapja a havat
+        if (s.getAllapot() != null) {
+            s.getAllapot().hoesesEseten(s);
         }
+        System.out.println("<- void");
     }
 }

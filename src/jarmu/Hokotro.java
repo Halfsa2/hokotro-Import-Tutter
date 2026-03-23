@@ -1,80 +1,78 @@
 package jarmu;
-import java.util.ArrayList;
-import java.util.List;
+
 import felszereles.Kotrofej;
-import halozat.Sav;
 import gazdasag.Takarito;
 import halozat.Csomopont;
-
+import halozat.Sav;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * A Takarító által vezérelt munkagép, amely a sávok tisztításáért felel [cite: 879-880].
+ * A Takarító által vezérelt munkagép, amely a sávok tisztításáért felel.
  */
 public class Hokotro extends IranyitottJarmu {
     
-    private Takarito tulajdonos; // Melyik játékoshoz tartozik a hókotró [cite: 890]
-    private Kotrofej aktiv; // Az aktuálisan felszerelt, munkát végző eszköz [cite: 888]
-    private List<Kotrofej> birtokolja; // A megvásárolt vagy alapfelszereltségként kapott fejek [cite: 887]
+    private Takarito tulajdonos; 
+    private Kotrofej aktiv; 
+    private List<Kotrofej> birtokolja; 
 
     public Hokotro(Takarito tulajdonos) {
         this.tulajdonos = tulajdonos;
         this.birtokolja = new ArrayList<>();
-        // Alapesetben kapnia kell Söprő és Jégtörő fejet (ezt a inicializáláskor kell hozzáadni)
     }
 
-    /**
-     * Lecseréli a hókotróra jelenleg felszerelt kotrófejet[cite: 892].
-     */
     public void cserelFej(Kotrofej ujFej) {
+        System.out.println("> hokotro:Hokotro.cserelFej(ujFej)");
         if (this.birtokolja.contains(ujFej)) {
             this.aktiv = ujFej;
         }
+        System.out.println("<- void");
     }
 
-    /**
-     * Az elérhető kotrófejek listáját bővíti[cite: 899].
-     */
     public void addFej(Kotrofej ujFej) {
-        this.birtokolja.add(ujFej); // [cite: 900]
+        this.birtokolja.add(ujFej); 
     }
 
-    /**
-     * Elvégzi az adott sáv megtisztítását a felszerelt aktív kotrófejjel[cite: 893].
-     */
     public boolean takarit(Sav s) {
+        System.out.println("> hokotro:Hokotro.takarit(s)");
         if (this.aktiv != null) {
-            return this.aktiv.takarit(s); //
+            boolean siker = this.aktiv.takarit(s);
+            System.out.println("<- " + siker);
+            return siker;
         }
+        System.out.println("<- false");
         return false;
     }
 
-    /**
-     * Biztosítja a jármű sérthetetlenségét az ütközések esetén[cite: 894].
-     * Szándékosan üresen van implementálva (nem csinál semmit)[cite: 894].
-     */
     @Override
     public void balesetetSzenved() {
-        // A Hókotró "elpusztíthatatlan", nem áll meg baleset esetén [cite: 883-884]
+        System.out.println("> hokotro:Hokotro.balesetetSzenved()");
+        // A Hókotró "elpusztíthatatlan", nem áll meg baleset esetén 
+        System.out.println("<- void");
     }
 
-    /**
-     * A jármű mozgatása, és a lépés után fellépő speciális mellékhatások (takarítás) végrehajtása [cite: 901-902].
-     */
     @Override
     public boolean lep(Csomopont celCsomopont) {
-        if (!celCsomopont.foglalt()) {
+        System.out.println("> hokotro:Hokotro.lep(celCsomopont)");
+        
+        // --- "TELL, DON'T ASK" LOGIKA ---
+        if (celCsomopont.befogad(this)) {
+            
             if (this.aktualisCsomopont != null) {
                 this.aktualisCsomopont.elenged(this);
             }
-            celCsomopont.befogad(this);
             this.aktualisCsomopont = celCsomopont;
             
-            // Lépés után automatikusan megpróbál takarítani, ha sávon van
+            // Ha a hókotró sávra lép, automatikusan megpróbálja letakarítani azt
             if (celCsomopont instanceof Sav) {
                 this.takarit((Sav) celCsomopont);
             }
+            
+            System.out.println("<- true (sikeres lepes)");
             return true;
         }
+
+        System.out.println("<- false (sikertelen lepes)");
         return false;
     }
 }

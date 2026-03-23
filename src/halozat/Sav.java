@@ -1,93 +1,145 @@
 package halozat;
+
 import allapot.Savallapot;
-import allapot.Tiszta;
-import jarmu.Jarmu;
+import allapot.Tiszta; // <-- JAVÍTVA a helyes csomagra!
+import jarmu.Jarmu;     // <-- JAVÍTVA: beimportáljuk a Tiszta állapotot is!
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
-/**
- * A közlekedési hálózat egy irányított alapegysége.
- */
 public class Sav extends Csomopont {
     
-    private Savallapot allapot; // Az aktuális állapot (State minta) [cite: 1123]
-    protected int sozott; // A sáv aktuális sózottsági szintjét tárolja [cite: 1125]
-    private Jarmu rajtaAlloJarmu; // A sávon tartózkodó jármű [cite: 1127]
-    private List<Csomopont> kovetkezoCsomopontok; // Navigálható irányok [cite: 1120]
+    private Utszakasz utszakasz;
+    private Savallapot allapot;
+    private Jarmu jarmu;
+    private List<Csomopont> szomszedok = new ArrayList<>();
+    protected int sozott = 0;
 
+    // JAVÍTVA: Konstruktor, ami beállítja az alapértelmezett állapotot
     public Sav() {
-        this.allapot = new Tiszta(); // Alapértelmezetten tiszta
-        this.sozott = 0;
-        this.kovetkezoCsomopontok = new ArrayList<>();
+        this.allapot = new Tiszta();
+        this.szomszedok = new ArrayList<>();
     }
 
-    public void setAllapot(Savallapot s) {
-        this.allapot = s; // [cite: 1143]
+    public void setUtszakasz(Utszakasz utszakasz) {
+        this.utszakasz = utszakasz;
     }
 
-    // --- Csomopont absztrakt metódusainak megvalósítása ---
-
-    @Override
-    public void befogad(Jarmu jarmu) {
-        this.rajtaAlloJarmu = jarmu;
-        this.allapot.befogad(this, jarmu); // Delegálás az állapotnak [cite: 1137]
+    public void setAllapot(Savallapot allapot) {
+        System.out.println("> sav:Sav.setAllapot(allapot)");
+        this.allapot = allapot;
+        System.out.println("<- void");
     }
 
-    @Override
-    public void elenged(Jarmu jarmu) {
-        this.rajtaAlloJarmu = null;
-        this.allapot.elenged(this, jarmu); // Delegálás az állapotnak [cite: 1138]
+    public Savallapot getAllapot() {
+        return this.allapot;
     }
 
     @Override
     public void frissit() {
+        System.out.println("> sav:Sav.frissit()");
         if (this.sozott > 0) {
-            this.sozott--; // Sózottság csökkenhet az idő múlásával [cite: 1131]
+            this.sozott--; // Sózottság csökkenhet az idő múlásával
         }
-        this.allapot.frissit(this);
+        if (allapot != null) {
+            allapot.frissit(this);
+        }
+        System.out.println("<- void");
+    }
+
+    // TELL, DON'T ASK LOGIKA
+    @Override
+    public boolean befogad(Jarmu jarmu) {
+        System.out.println("> sav:Sav.befogad(jarmu)");
+        if (this.foglalt()) {
+            System.out.println("<- false");
+            return false; // Foglalt, elutasítjuk a lépést
+        }
+        this.jarmu = jarmu;
+        System.out.println("<- true");
+        return true; // Sikeres rálépés
+    }
+
+    @Override
+    public void elenged(Jarmu jarmu) {
+        System.out.println("> sav:Sav.elenged(jarmu)");
+        if (this.jarmu == jarmu) {
+            this.jarmu = null;
+        }
+        System.out.println("<- void");
     }
 
     @Override
     public List<Csomopont> getNext() {
-        return this.kovetkezoCsomopontok; // [cite: 1139]
+        return szomszedok;
     }
 
-    @Override
-    public boolean foglalt() {
-        return this.rajtaAlloJarmu != null; // [cite: 1127]
+    public boolean lepesTeszt(Jarmu jarmu) {
+        System.out.println("> sav:Sav.lepesTeszt(jarmu)");
+        boolean teszt = false;
+        if (allapot != null) {
+            teszt = allapot.lepesTeszt(jarmu);
+        }
+        System.out.println("<- " + teszt);
+        return teszt;
     }
 
     @Override
     public void balesetEseten() {
-        // Baleset logikája (pl. sáv lezárása 3 körre) [cite: 1142]
-        if (this.rajtaAlloJarmu != null) {
-            this.rajtaAlloJarmu.balesetetSzenved();
+        System.out.println("> sav:Sav.balesetEseten()");
+        // Baleset logikája
+        if (this.jarmu != null) {
+            // this.jarmu.balesetetSzenved(); // Ha van ilyen metódus a Jarmu-ben
         }
+        System.out.println("<- void");
     }
 
-    // --- Sáv specifikus metódusok ---
-
-    public boolean lepesTeszt(Jarmu jarmu) {
-        return this.allapot.lepesTeszt(jarmu); // [cite: 1140]
+    @Override
+    public boolean foglalt() {
+        System.out.println("> sav:Sav.foglalt()");
+        boolean isFoglalt = (this.jarmu != null);
+        System.out.println("<- " + isFoglalt);
+        return isFoglalt;
     }
 
+    // DOUBLE DISPATCH INDÍTÁSA
+    @Override
     public void hoesesEseten() {
-        // Ha sózott, nem esik le a hó, egyébként delegáljuk az állapotnak
-        if (this.sozott == 0) {
-            this.allapot.hoesesEseten(this); // [cite: 1141]
+        System.out.println("> sav:Sav.hoesesEseten()");
+        
+        // Szkeletonos teszteléshez megkérdezzük a felhasználót
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("[?] Sózott a sáv? (I/N): ");
+        String valasz = scanner.nextLine();
+        
+        if (valasz.equalsIgnoreCase("N")) {
+            if (this.utszakasz != null) {
+                // Szólunk az útszakasznak, hogy esik a hó
+                this.utszakasz.havazikRa(this);
+            }
         }
-    }
-
-    public void soSzoras() {
-        this.sozott = 9; // A só hatása 9 szimulációs körig tart [cite: 476, 1130]
-        this.allapot.sotKap(this);
-    }
-
-    public boolean hoTisztit() {
-        return this.allapot.hoTisztit(this); // [cite: 1129]
+        System.out.println("<- void");
     }
 
     public boolean jegTisztit() {
-        return this.allapot.jegTisztit(this); // [cite: 1128]
+        System.out.println("> sav:Sav.jegTisztit()");
+        boolean ret = (allapot != null) && allapot.jegTisztit(this);
+        System.out.println("<- " + ret);
+        return ret;
+    }
+
+    public boolean hoTisztit() {
+        System.out.println("> sav:Sav.hoTisztit()");
+        boolean ret = (allapot != null) && allapot.hoTisztit(this);
+        System.out.println("<- " + ret);
+        return ret;
+    }
+
+    public void soSzoras() {
+        System.out.println("> sav:Sav.soSzoras()");
+        if (allapot != null) {
+            allapot.sotKap(this);
+        }
+        System.out.println("<- void");
     }
 }
