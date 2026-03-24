@@ -23,13 +23,7 @@ public class Keresztezodes extends Csomopont {
     // JAVÍTVA: void helyett boolean visszatérés
     @Override
     public boolean befogad(Jarmu jarmu) {
-        System.out.println("> keresztezodes:Keresztezodes.befogad(jarmu)");
-        
-        // Ha nem akarjuk, hogy végtelen sok jármű legyen benne, itt lehetne ellenőrizni a foglaltságot.
-        // Mivel a kereszteződés a korábbi kódod alapján listát használt, egyelőre mindig beengedjük:
         this.bentLevoJarmuvek.add(jarmu); 
-        
-        System.out.println("<- true");
         return true; 
     }
 
@@ -62,8 +56,5 @@ public class Keresztezodes extends Csomopont {
     // JAVÍTVA: Hiányzó hoesesEseten() metódus pótlása
     @Override
     public void hoesesEseten() {
-        System.out.println("> keresztezodes:Keresztezodes.hoesesEseten()");
-        // A dokumentáció alapján a kereszteződésre nem hat a havazás, így üresen hagyjuk
-        System.out.println("<- void");
     }
 }

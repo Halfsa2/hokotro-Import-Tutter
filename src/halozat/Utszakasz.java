@@ -18,11 +18,9 @@ public class Utszakasz {
 
     // DOUBLE DISPATCH LOGIKA
     public void havazikRa(Sav s) {
-        System.out.println("> utszakasz:Utszakasz.havazikRa(s1)");
         // Ha nem alagútban vagyunk, a sáv állapota megkapja a havat
         if (s.getAllapot() != null) {
             s.getAllapot().hoesesEseten(s);
         }
-        System.out.println("<- void");
     }
 }

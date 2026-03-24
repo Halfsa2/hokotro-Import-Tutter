@@ -22,11 +22,7 @@ public class Checkpoint extends Csomopont {
     // JAVÍTVA: void helyett boolean visszatérés
     @Override
     public boolean befogad(Jarmu jarmu) {
-        System.out.println("> checkpoint:Checkpoint.befogad(jarmu)");
-        
         this.varakozoJarmuvek.add(jarmu); 
-        
-        System.out.println("<- true");
         return true;
     }
 
@@ -64,8 +60,5 @@ public class Checkpoint extends Csomopont {
     // JAVÍTVA: Hiányzó hoesesEseten() metódus pótlása
     @Override
     public void hoesesEseten() {
-        System.out.println("> checkpoint:Checkpoint.hoesesEseten()");
-        // A checkpointra sem hat a hó a jelenlegi modell alapján
-        System.out.println("<- void");
     }
 }

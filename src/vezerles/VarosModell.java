@@ -18,8 +18,6 @@ public class VarosModell implements IJatekKezelo {
 
     @Override
     public void epit() {
-        System.out.println("> varosmodell:VarosModell.epit()");
-        System.out.println("<- void");
     }
 
     public void addCsomopont(Csomopont csp) {
@@ -28,11 +26,9 @@ public class VarosModell implements IJatekKezelo {
 
     @Override
     public void palyaFrissit() {
-        System.out.println("> varosmodell:VarosModell.palyaFrissit()");
         for (Csomopont csp : varosGraf) {
             csp.frissit();
         }
-        System.out.println("<- void");
     }
 
     @Override
@@ -47,12 +43,9 @@ public class VarosModell implements IJatekKezelo {
 
     @Override
     public void havazas() {
-        System.out.println("> varosmodell:VarosModell.havazas()");
-        // Az Utszakasz lista helyett a varosGraf csomópontjain (pl. Sávokon) hívjuk a havazást
         for (Csomopont csp : varosGraf) {
             csp.hoesesEseten(); 
         }
-        System.out.println("<- void");
     }
 
     @Override
