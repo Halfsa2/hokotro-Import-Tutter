@@ -22,7 +22,9 @@ public class Checkpoint extends Csomopont {
     // JAVÍTVA: void helyett boolean visszatérés
     @Override
     public boolean befogad(Jarmu jarmu) {
+        System.out.println("\t\t> vegallomas1:Checkpoint.befogad(busz1:Busz)"); //log miatt
         this.varakozoJarmuvek.add(jarmu); 
+        System.out.println("\t\t<- true"); //visszatérés logolása
         return true;
     }
 
