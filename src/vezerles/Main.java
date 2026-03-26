@@ -2,9 +2,12 @@ package vezerles;
 
 import allapot.*;
 import felszereles.*;
+import gazdasag.*;
 import halozat.Sav;
 import halozat.Utszakasz;
+import halozat.Checkpoint; 
 import jarmu.Hokotro;
+import jarmu.Busz; 
 import java.util.Scanner;
 
 // így futtatjátok:
@@ -34,6 +37,16 @@ public class Main {
             System.out.println("10. Sikertelen takarítás söprővel (jég eltávolításának kísérlete)");
             System.out.println("11. Sikeres takarítás hányófejjel (havat tisztít)");
             System.out.println("12. Sikertelen takarítás hányófejjel (Jég eltávolításának kísérlete)");
+            
+            //Innentől Kata 
+            System.out.println("13. Sikeres buszforduló (Pénzkeresés)");
+            System.out.println("14. Vásárlás a boltban (Sárkányfej)");
+            System.out.println("15. Sikertelen vásárlás a boltban (nincs elég pénz)");
+            System.out.println("16. Fogyóeszköz vásárlása a boltban (Só)");
+            System.out.println("17. Fogyóeszköz vásárlása a boltban (Kerozin)");
+            System.out.println("18. Új Hókotró vásárlása a boltban");
+            System.out.println("19. Globális felmelegedés vásárlása a boltban");
+
             System.out.println("0.  Kilépés");
             System.out.print("\nVálasztás: ");
 
@@ -47,6 +60,7 @@ public class Main {
             Sav sav = new Sav();
             Hokotro hokotro = new Hokotro(null);
             boolean sikeresTakaritas = false;
+            boolean sikeresTranzakcio = false; //vásárlások sikerességére
 
             System.out.println("\n----------------------------------------------------------");
 
@@ -232,16 +246,109 @@ public class Main {
                     sikeresTakaritas = hokotro.takarit(sav);
                     break;
 
+                case "13":
+                    System.out.println("[ USE-CASE: Sikeres buszforduló (Pénzkeresés) ]");
+                    KozosKassza kassza13 = new KozosKassza(0); 
+                    Checkpoint vegallomas1 = new Checkpoint();
+                    Busz busz1 = new Busz(vegallomas1, vegallomas1); //busz példányosítása
+                    sikeresTranzakcio = busz1.lep(vegallomas1);
+                    kassza13.penzHozzaadas(100);
+                    break;
+
+                case "14":
+                    System.out.println("[ USE-CASE: Vásárlás a boltban (Sárkányfej) ]");
+                    // 1. Objektumok létrehozása
+                    KozosKassza kassza14 = new KozosKassza(1000); // 1000 tallérral indulunk, hogy legyen elég pénz
+                    Bolt bolt1 = new Bolt();
+                    Takarito takarito1 = new Takarito(kassza14);
+                    Hokotro hokotro1 = new Hokotro(takarito1);
+                    
+                    // 2. A hívási lánc elindítása a diagram alapján
+                    sikeresTranzakcio = bolt1.vasarol(Arucikk.SARKANYFEJ, takarito1, hokotro1);
+                    break;
+                    
+                case "15":
+                    System.out.println("[ USE-CASE: Sikertelen vásárlás a boltban (nincs elég pénz) ]");
+                    // 1. Objektumok létrehozása
+                    KozosKassza kassza15 = new KozosKassza(50); // Csak 50 tallér van, de a Sárkányfej 300-ba kerül (vagy amennyit beállítottál)
+                    Bolt bolt15 = new Bolt();
+                    Takarito takarito15 = new Takarito(kassza15);
+                    Hokotro hokotro15 = new Hokotro(takarito15);
+                    
+                    // 2. A hívási lánc elindítása a diagram alapján
+                    sikeresTranzakcio = bolt15.vasarol(Arucikk.SARKANYFEJ, takarito15, hokotro15);
+                    break;
+
+                case "16":
+                    System.out.println("[ USE-CASE: Fogyóeszköz vásárlása a boltban (Só) ]");
+                    KozosKassza kassza16 = new KozosKassza(1000); 
+                    Bolt bolt16 = new Bolt();
+                    Takarito takarito16 = new Takarito(kassza16);
+                    Hokotro hokotro16 = new Hokotro(takarito16);
+                    
+                    sikeresTranzakcio = bolt16.vasarol(Arucikk.SO, takarito16, hokotro16);
+                    break;
+
+                case "17":
+                    System.out.println("[ USE-CASE: Fogyóeszköz vásárlása a boltban (Kerozin) ]");
+                    KozosKassza kassza17 = new KozosKassza(1000); 
+                    Bolt bolt17 = new Bolt();
+                    Takarito takarito17 = new Takarito(kassza17);
+                    Hokotro hokotro17 = new Hokotro(takarito17);
+                    
+                    sikeresTranzakcio = bolt17.vasarol(Arucikk.KEROZIN, takarito17, hokotro17);
+                    break;
+
+                case "18":
+                    System.out.println("[ USE-CASE: Új Hókotró vásárlása a boltban ]");
+                    KozosKassza kassza18 = new KozosKassza(1000); 
+                    Bolt bolt18 = new Bolt();
+                    Takarito takarito18 = new Takarito(kassza18);
+                    Hokotro hokotro18 = new Hokotro(takarito18);
+                    
+                    sikeresTranzakcio = bolt18.vasarol(Arucikk.HOKOTRO, takarito18, hokotro18);
+                    break;
+
+                case "19":
+                    System.out.println("[ USE-CASE: Globális felmelegedés vásárlása a boltban ]");
+                    KozosKassza kassza19 = new KozosKassza(10000); // Ide sok pénz kell!
+                    Bolt bolt19 = new Bolt();
+                    Takarito takarito19 = new Takarito(kassza19);
+                    Hokotro hokotro19 = new Hokotro(takarito19);
+                    
+                    sikeresTranzakcio = bolt19.vasarol(Arucikk.GLOBAL_WARMING, takarito19, hokotro19);
+                    break;
+
                 default:
                     System.out.println("Érvénytelen választás! Kérlek 0 és 12 közötti számot adj meg.");
                     continue; 
             }
 
             System.out.println("----------------------------------------------------------");
-            if (sikeresTakaritas) {
-                System.out.println(">>> EREDMÉNY: A takarítás megtörtént");
-            } else {
-                System.out.println(">>> EREDMÉNY: Nem történt takarítás");
+            int tesztSzam = Integer.parseInt(valasz);
+            if (tesztSzam >= 1 && tesztSzam <= 12) {
+                // Csak a takarítós teszteknél írjuk ki ezt
+                if (sikeresTakaritas) {
+                    System.out.println(">>> EREDMÉNY: A takarítás megtörtént");
+                } 
+                else {
+                    System.out.println(">>> EREDMÉNY: Nem történt takarítás");
+                }
+            } 
+            else if (tesztSzam == 13) {
+                if (sikeresTranzakcio) {
+                    System.out.println(">>> EREDMÉNY: A buszforduló sikeresen megtörtént");
+                } else {
+                    System.out.println(">>> EREDMÉNY: A buszforduló nem tud megtörténni");
+                }
+            } 
+            // Ha a te 14-19-es vásárlásaid futottak:
+            else if (tesztSzam >= 14 && tesztSzam <= 19) {
+                if (sikeresTranzakcio) {
+                    System.out.println(">>> EREDMÉNY: A vásárlás sikeresen megtörtént");
+                } else {
+                    System.out.println(">>> EREDMÉNY: A vásárlás sikertelen");
+                }
             }
             System.out.println("----------------------------------------------------------");
         }
