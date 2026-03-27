@@ -18,6 +18,6 @@ public abstract class Csomopont {
     
     public abstract boolean foglalt();
 
-    // MÓDOSÍTÁS: Új metódus az osztálydiagram alapján
-    public abstract void hoesesEseten();
+    // Csomopont és Keresztezodes osztályokon nem esik a hó, Sav felülírja
+    public void hoesesEseten(){    }
 }

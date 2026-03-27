@@ -2,6 +2,7 @@ package halozat;
 
 import java.util.ArrayList;
 import java.util.List;
+import vezerles.SkeletonLogger;
 
 public class Utszakasz {
     
@@ -18,10 +19,9 @@ public class Utszakasz {
 
     // DOUBLE DISPATCH LOGIKA
     public void havazikRa(Sav s) {
-        // Ha nem alagútban vagyunk, a sáv állapota megkapja a havat
-        if (s.getAllapot() != null) {
-            s.getAllapot().hoesesEseten(s);
-        }
+        SkeletonLogger.enter(this, "havazikRa", s);
+        s.getAllapot().hoesesEseten(s); // Az útszakasz hatása a sávra, ami továbbadja a hatást az állapotnak
+        SkeletonLogger.exit("void");
     }
     /**
      * 

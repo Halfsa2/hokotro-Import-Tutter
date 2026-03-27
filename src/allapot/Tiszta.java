@@ -1,6 +1,7 @@
 package allapot;
 import halozat.Sav;
 import jarmu.Jarmu;
+import vezerles.SkeletonLogger;
 /**
  * Tiszta, akadálymentes útfelület. [cite: 1239]
  */
@@ -14,7 +15,13 @@ public class Tiszta extends Savallapot {
     @Override
     public void hoesesEseten(Sav sav) {
         // Havazás esetén átvált Sekély Hó állapotba [cite: 1249]
-        sav.setAllapot(new SekelyHo());
+        
+        SkeletonLogger.enter(this, "hoesesEseten", sav);
+        SekelyHo sekelyHo = new SekelyHo();
+        SkeletonLogger.register(sekelyHo, "sekelyHo");
+        sav.setAllapot(sekelyHo);
+        SkeletonLogger.exit("void");
+        
     }
     
     @Override
