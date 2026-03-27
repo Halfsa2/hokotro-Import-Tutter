@@ -12,7 +12,7 @@ public class SekelyHo extends Savallapot {
     public SekelyHo() { /* Konstruktor [cite: 1173] */ 
         SkeletonLogger.create(this);
         SkeletonLogger.register(this, "sekelyHo");
-        SkeletonLogger.exitCreate(this);
+        SkeletonLogger.exit(this);
     }
     @Override
     public void befogad(Sav sav, Jarmu jarmu) {

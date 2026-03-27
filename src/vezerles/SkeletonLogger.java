@@ -8,7 +8,7 @@ public class SkeletonLogger {
     private static int depth = 0;
     
     //Szótár az objektumok és a nevük tárolására, hogy szép logokat kapjunk
-    private static Map<Object, String> nevTarak = new HashMap<>();
+    private static final Map<Object, String> nevTarak = new HashMap<>();
 
     // A Tesztelő osztályban ezzel adunk nevet az objektumoknak a teszt elején
     public static void register(Object obj, String nev) {
@@ -19,12 +19,12 @@ public class SkeletonLogger {
     public static String getNev(Object obj) {
         if (obj == null) return "null";
         
-        // 1. Ha regisztráltuk (pl. s1, b1, alagut)
+        // Először megnézzük, hogy van-e neve a nevTarakban
         if (nevTarak.containsKey(obj)) {
             return nevTarak.get(obj);
         }
         
-        // A statikus értékek kiíratásához szükséges
+        // A statikus értékek (int, string, boolean) értékének kiíratásához szükséges
         if (obj instanceof String || obj instanceof Integer || obj instanceof Boolean) {
             return obj.toString();
         }
@@ -45,28 +45,36 @@ public class SkeletonLogger {
             if (i < parameterek.length - 1) paramsStr.append(", ");
         }
         paramsStr.append(")");
-        // Összerakja a tökéletes formátumot: > s1:Sav.frissit()
+        // Összerakja a  formátumot, pl.: > s1:Sav.frissit()
         System.out.println("> " + peldanyNev + ":" + osztalyNev + "." + metodusNev + paramsStr.toString());
         depth++;
     }
 
-    public static void exit(String returnValue) {
+    public static void exit(Object returnValue) {
         depth--;
         printIndent();
-        System.out.println("<- " + returnValue);
+        
+        if (returnValue == null) {
+            System.out.println("<- null");
+            return;
+        }
+        
+        // Egyszerű típusok esetén a toString értékét írjuk ki
+        if (returnValue instanceof String || returnValue instanceof Integer || returnValue instanceof Boolean) {
+            System.out.println("<- " + returnValue.toString());
+        }
+        //objektumok esetén a nevTarakból próbáljuk meg kinyerni a nevet, hogy szép logunk legyen
+        else {
+            String nev = getNev(returnValue);
+            String osztaly = returnValue.getClass().getSimpleName();
+            System.out.println("<- " + nev + ":" + osztaly);
+        }
     }
     // KIFEJEZETTEN KONSTRUKTOROKNAK: A "> new OsztalyNev()" formátumért
     public static void create(Object ujObjektum) {
         printIndent();
         System.out.println("> new " + ujObjektum.getClass().getSimpleName() + "()");
         depth++;
-    }
-
-    // VISSZATÉRÉS A KONSTRUKTORBÓL: "<- nev:OsztalyNev" formátum
-    public static void exitCreate(Object ujObjektum) {
-        depth--;
-        printIndent();
-        System.out.println("<- " + getNev(ujObjektum) + ":" + ujObjektum.getClass().getSimpleName());
     }
     private static void printIndent() {
         for (int i = 0; i < depth; i++) {
