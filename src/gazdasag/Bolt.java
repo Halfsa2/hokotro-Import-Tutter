@@ -1,12 +1,12 @@
 package gazdasag;
 import felszereles.*;
 import jarmu.Hokotro;
+import vezerles.SkeletonLogger;
 /**
  * A hely, ahol a közös kasszába megszerzett Zúzmara Tallérokat el lehet költeni [cite: 786-787].
  */
 public class Bolt implements IMegvasarolhato {
-
-    // Segédmetódus a termékek árainak meghatározására (példa árakkal)
+    // Segédmetódus a termékek árainak meghatározására 
     private int getAr(Arucikk termek) {
         switch (termek) {
             case HANYOFEJ: return 100;
@@ -19,17 +19,13 @@ public class Bolt implements IMegvasarolhato {
             default: return 0;
         }
     }
-
     @Override
     public boolean vasarol(Arucikk termek, Takarito vevo, Hokotro gep) {
-        //log: A Bolt.vasarol meghívása
-        System.out.println("\t> bolt1:Bolt.vasarol(" + termek + ", takarito1: Takarito, hokotro1:Hokotro)");
+        SkeletonLogger.enter(this, "vasarol", termek, vevo, gep);
         int ar = getAr(termek);
-
-        // Meghívjuk a Takarító fizet() metódusát (ami majd meghívja a kasszát)
-        boolean fizetesSikeres = vevo.fizet(ar);
+        boolean fizetesSikeres = vevo.fizet(ar); //takarító fizet metódusa
+        
         if (fizetesSikeres) {
-            // Szkeleton szintű "létrehozás" és hozzáadás logolása a termék alapján
             if (termek == Arucikk.SARKANYFEJ) {
                 System.out.println("\t\t> new ujFej: Sarkanyfej()");
                 System.out.println("\t\t<- ujFej: Sarkanyfej");
@@ -47,17 +43,16 @@ public class Bolt implements IMegvasarolhato {
             else if (termek == Arucikk.HOKOTRO) {
                 System.out.println("\t\t> new ujHokotro:Hokotro()");
                 System.out.println("\t\t<- ujHokotro: Hokotro");
-                // Itt a doksi szerint takarito1:Takarito.addHokotro hívás nincs a diagramon [cite: 194-209]
             }
-            
-            System.out.println("\t<- true");
+            SkeletonLogger.exit(true);
             return true;
         } 
         else {
-            // Nincs elég pénz (Sikertelen vásárlás use-case) [cite: 262-273]
-            System.out.println("\t<- false");
+            // Nincs elég pénz (Sikertelen vásárlás)
+            SkeletonLogger.exit(false);
             return false;
         }
+    }
 
         /* ez még nem kell
         // A bolt ellenőrzi, hogy a Takarító tud-e fizetni
@@ -95,5 +90,5 @@ public class Bolt implements IMegvasarolhato {
         // Nincs elég pénz
         System.out.println("Nincs elég Zúzmara Tallér a Közös Kasszában!");
         return false;*/
-    } 
-}
+} 
+

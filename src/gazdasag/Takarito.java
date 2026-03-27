@@ -2,52 +2,52 @@ package gazdasag;
 import jarmu.Hokotro;
 import java.util.ArrayList;
 import java.util.List;
+import vezerles.SkeletonLogger;
 /**
  * A városi úthálózat karbantartásáért és téli akadálymentesítéséért felelős játékos[cite: 1267].
  */
-public class Takarito extends Jatekos {
-    
-    // A takarító birtokol és irányít egy vagy több hókotró járművet[cite: 1274].
-    private List<Hokotro> hokotrok; 
-
-    public Takarito(KozosKassza kassza) {
+public class Takarito extends Jatekos {    
+   // A takarító birtokol és irányít egy vagy több hókotró járművet.
+   private List<Hokotro> hokotrok; 
+   public Takarito(KozosKassza kassza) {
         super(kassza);
-        this.hokotrok = new ArrayList<>();
+        SkeletonLogger.create(this);
+        SkeletonLogger.register(this, "takarito"); // Automatikus regisztráció       
+        this.hokotrok = new ArrayList<>();       
+        SkeletonLogger.exit(this);
     }
 
     public void addHokotro(Hokotro gep) {
-        System.out.println("\t\t> takarito1:Takarito.addHokotro(ujHokotro: Hokotro)");
-        this.hokotrok.add(gep);
-        System.out.println("\t\t<- void");
+        SkeletonLogger.enter(this, "addHokotro", gep);        
+        this.hokotrok.add(gep);        
+        SkeletonLogger.exit("void"); // Void metódusnál nincs visszatérési érték
     }
 
     /**
-     * Sót tölt a megadott hókotró számára, amely a sószóró fej működéséhez szükséges[cite: 1277].
+     * Sót tölt a megadott hókotró számára, amely a sószóró fej működéséhez szükséges.
      */
     public void soToltes(Hokotro gep) {
-        System.out.println("\t\t> takarito1:Takarito.soToltes(hokotro1: Hokotro)");
-        // Logika a sószóró fej újratöltésére
-        System.out.println("\t\t<- void");
+        SkeletonLogger.enter(this, "soToltes", gep);       
+        // Logika a sószóró fej újratöltésére        
+        SkeletonLogger.exit("void");
     }
 
     /**
-     * Kerozinnal tölti fel a paraméterként átadott hókotrót[cite: 1278].
+     * Kerozinnal tölti fel a paraméterként átadott hókotrót.
      */
     public void kerozinToltes(Hokotro gep) {
-        System.out.println("\t\t> takarito1:Takarito.kerozinToltes(hokotro1: Hokotro)");
-        
-        // Itt lenne a sárkányfej újratöltése
-        
-        System.out.println("\t\t<- void");
+        SkeletonLogger.enter(this, "kerozinToltes", gep);        
+        // Itt lenne a sárkányfej újratöltése        
+        SkeletonLogger.exit("void");
     }
 
     /**
-     * Levonja a kapott pénzösszeget a KozosKassza objektumon keresztül [cite: 1279-1280].
+     * Levonja a kapott pénzösszeget a KozosKassza objektumon keresztül.
      */
     public boolean fizet(int osszeg) {
-        System.out.println("\t\t> takarito1:Takarito.fizet(" + osszeg + ")");
-        boolean siker = this.kassza.penzKivonas(osszeg);
-        System.out.println("\t\t<- " + siker);
+        SkeletonLogger.enter(this, "fizet", osszeg);       
+        boolean siker = this.kassza.penzKivonas(osszeg);       
+        SkeletonLogger.exit(siker);
         return siker;
     }
 }
