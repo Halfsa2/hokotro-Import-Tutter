@@ -3,11 +3,13 @@ package vezerles;
 import allapot.*;
 import felszereles.*;
 import gazdasag.*;
+import halozat.Alagut;
+import halozat.Checkpoint;
+import halozat.Keresztezodes;
 import halozat.Sav;
 import halozat.Utszakasz;
-import halozat.Checkpoint; 
-import jarmu.Hokotro;
 import jarmu.Busz; 
+import jarmu.Hokotro;
 import java.util.Scanner;
 
 // így futtatjátok:
@@ -46,7 +48,13 @@ public class Main {
             System.out.println("17. Fogyóeszköz vásárlása a boltban (Kerozin)");
             System.out.println("18. Új Hókotró vásárlása a boltban");
             System.out.println("19. Globális felmelegedés vásárlása a boltban");
-
+            
+            //Innentől Alex
+            System.out.println("20. Hóesés tiszta, sózatlan útszakaszon");
+            System.out.println("21. Hóesés tiszta, sózott útszakaszon");
+            System.out.println("22. Hóesés alagúton");
+            System.out.println("23. Kereszteződés frissítése");
+            
             System.out.println("0.  Kilépés");
             System.out.print("\nVálasztás: ");
 
@@ -318,12 +326,26 @@ public class Main {
                     
                     sikeresTranzakcio = bolt19.vasarol(Arucikk.GLOBAL_WARMING, takarito19, hokotro19);
                     break;
-
+                case "20":
+                    System.out.println("[ USE-CASE: Hóesés tiszta, sózatlan útszakaszon ]");
+                    hoesesTisztaUtszakaszonSozatlan();
+                    break;
+                case "21":
+                    System.out.println("[ USE-CASE: Hóesés tiszta, sózott útszakaszon ]");
+                    hoesesTisztaUtszakaszonSozott();
+                    break;
+                case "22":
+                    System.out.println("[ USE-CASE: Hóesés alagúton ]");
+                    hoesesAlaguton();
+                    break;
+                case "23":
+                    System.out.println("[ USE-CASE: Kereszteződés frissítése ]");
+                    keresztezodesFrissitese();
+                    break;
                 default:
                     System.out.println("Érvénytelen választás! Kérlek 0 és 12 közötti számot adj meg.");
                     continue; 
             }
-
             System.out.println("----------------------------------------------------------");
             int tesztSzam = Integer.parseInt(valasz);
             if (tesztSzam >= 1 && tesztSzam <= 12) {
@@ -351,9 +373,65 @@ public class Main {
                 }
             }
             System.out.println("----------------------------------------------------------");
+            System.out.println("\n[?] --- Nyomj ENTER-t a folytatáshoz ---");
+            try {
+                System.in.read();
+            } catch (Exception e) {
+            }
         }
 
         System.out.println("\n--- Szimuláció Vége ---");
         scanner.close();
+    }
+    public static void hoesesTisztaUtszakaszonSozatlan(){
+        VarosModell vM = new VarosModell();
+        SkeletonLogger.register(vM, "vM");
+        Utszakasz utszakasz = new Utszakasz();
+        SkeletonLogger.register(utszakasz, "utszakasz");
+        Sav s1 = new Sav();
+        SkeletonLogger.register(s1, "s1");
+        vM.addCsomopont(s1);
+        utszakasz.addSav(s1);
+        Tiszta tiszta = new Tiszta();
+        SkeletonLogger.register(tiszta, "tiszta");
+        s1.setAllapot(tiszta);
+        vM.havazas();
+    }
+    public static void hoesesTisztaUtszakaszonSozott(){
+        VarosModell vM = new VarosModell();
+        SkeletonLogger.register(vM, "vM");
+        Utszakasz utszakasz = new Utszakasz();
+        SkeletonLogger.register(utszakasz, "utszakasz");
+        Sav s1 = new Sav();
+        SkeletonLogger.register(s1, "s1");
+        vM.addCsomopont(s1);
+        utszakasz.addSav(s1);
+        Tiszta tiszta = new Tiszta();
+        SkeletonLogger.register(tiszta, "tiszta");
+        s1.setAllapot(tiszta);
+        s1.soSzoras();
+        vM.havazas();
+    }
+    public static void hoesesAlaguton(){
+        VarosModell vM = new VarosModell();
+        SkeletonLogger.register(vM, "vM");
+        Alagut alagut = new Alagut();
+        SkeletonLogger.register(alagut, "alagut");
+        Sav s1 = new Sav();
+        SkeletonLogger.register(s1, "s1");
+        vM.addCsomopont(s1);
+        alagut.addSav(s1);
+        Tiszta tiszta = new Tiszta();
+        SkeletonLogger.register(tiszta, "tiszta");
+        s1.setAllapot(tiszta);
+        vM.havazas();
+    }
+    public static void keresztezodesFrissitese(){
+        VarosModell vM = new VarosModell();
+        SkeletonLogger.register(vM, "vM");
+        Keresztezodes keresztezodes = new Keresztezodes();
+        SkeletonLogger.register(keresztezodes, "keresztezodes");
+        vM.addCsomopont(keresztezodes);
+        vM.palyaFrissit();
     }
 }

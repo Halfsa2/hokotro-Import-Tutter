@@ -5,6 +5,7 @@ import allapot.Tiszta;
 import jarmu.Jarmu;
 import java.util.ArrayList;
 import java.util.List;
+import vezerles.SkeletonLogger;
 
 public class Sav extends Csomopont {
     
@@ -24,7 +25,9 @@ public class Sav extends Csomopont {
     }
 
     public void setAllapot(Savallapot allapot) {
+        SkeletonLogger.enter(this, "setAllapot", allapot);
         this.allapot = allapot;
+        SkeletonLogger.exit("void");
     }
 
     public Savallapot getAllapot() {
@@ -86,6 +89,13 @@ public class Sav extends Csomopont {
     // DOUBLE DISPATCH INDÍTÁSA
     @Override
     public void hoesesEseten() {
+        SkeletonLogger.enter(this, "hoesesEseten");
+        if(sozott == 0){
+            utszakasz.havazikRa(this);// Először az útvonalra hat a hó, ami továbbadja a hatást a sávállapotnak
+        }else{
+            sozott--;
+        } 
+        SkeletonLogger.exit("void");
     }
 
     public boolean jegTisztit() {
@@ -102,5 +112,6 @@ public class Sav extends Csomopont {
         if (allapot != null) {
             allapot.sotKap(this);
         }
+        sozott = 3; // Sózottság 3 hóhullásig tart [cite: 1191]
     }
 }

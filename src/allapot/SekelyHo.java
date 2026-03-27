@@ -1,6 +1,7 @@
 package allapot;
 import halozat.Sav;
 import jarmu.Jarmu;
+import vezerles.SkeletonLogger;
 /**
  * Vékonyabb hóréteg, belső állapottal (hóvastagság, nyomvonal). [cite: 1168, 1169]
  */
@@ -8,6 +9,11 @@ public class SekelyHo extends Savallapot {
     protected int horeteg = 1; // [cite: 1174]
     protected int nyomvonal = 0; // [cite: 1176]
 
+    public SekelyHo() { /* Konstruktor [cite: 1173] */ 
+        SkeletonLogger.create(this);
+        SkeletonLogger.register(this, "sekelyHo");
+        SkeletonLogger.exit(this);
+    }
     @Override
     public void befogad(Sav sav, Jarmu jarmu) {
         nyomvonal++; // Járművek letapossák a havat [cite: 1183]

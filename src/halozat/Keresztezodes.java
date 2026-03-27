@@ -2,6 +2,7 @@ package halozat;
 import jarmu.Jarmu;
 import java.util.ArrayList;
 import java.util.List;
+import vezerles.SkeletonLogger;
 
 /**
  * Olyan csomópont, ahol több útvonal találkozik, és elosztja a forgalmat.
@@ -35,6 +36,8 @@ public class Keresztezodes extends Csomopont {
     @Override
     public void frissit() {
         // A szimulációs idő múlására reagáló kód
+        SkeletonLogger.enter(this, "frissit");
+        SkeletonLogger.exit("void");
     }
 
     @Override

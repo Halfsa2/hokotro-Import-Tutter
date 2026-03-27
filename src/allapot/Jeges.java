@@ -1,6 +1,6 @@
 package allapot;
-import jarmu.Jarmu;
 import halozat.Sav;
+import jarmu.Jarmu;
 
 /**
  * A State (Állapot) tervezési minta egyik konkrét állapot-megvalósítása.

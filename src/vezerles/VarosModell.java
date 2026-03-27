@@ -11,6 +11,10 @@ public class VarosModell implements IJatekKezelo {
     private List<Csomopont> varosGraf; 
     private KozosKassza kassza; 
 
+    public VarosModell(){
+        kassza = new KozosKassza(0);
+        varosGraf = new ArrayList<>();
+    }
     public VarosModell(KozosKassza kassza) {
         this.varosGraf = new ArrayList<>();
         this.kassza = kassza;
@@ -26,9 +30,11 @@ public class VarosModell implements IJatekKezelo {
 
     @Override
     public void palyaFrissit() {
+        SkeletonLogger.enter(this, "palyaFrissit");
         for (Csomopont csp : varosGraf) {
             csp.frissit();
         }
+        SkeletonLogger.exit("void");
     }
 
     @Override
@@ -43,9 +49,11 @@ public class VarosModell implements IJatekKezelo {
 
     @Override
     public void havazas() {
+        SkeletonLogger.enter(this, "havazas");
         for (Csomopont csp : varosGraf) {
             csp.hoesesEseten(); 
         }
+        SkeletonLogger.exit("void");
     }
 
     @Override
