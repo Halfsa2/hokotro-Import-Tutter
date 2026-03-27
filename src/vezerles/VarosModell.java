@@ -30,9 +30,11 @@ public class VarosModell implements IJatekKezelo {
 
     @Override
     public void palyaFrissit() {
+        SkeletonLogger.enter(this, "palyaFrissit");
         for (Csomopont csp : varosGraf) {
             csp.frissit();
         }
+        SkeletonLogger.exit("void");
     }
 
     @Override

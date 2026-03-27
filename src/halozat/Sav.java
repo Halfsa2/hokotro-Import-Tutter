@@ -90,7 +90,11 @@ public class Sav extends Csomopont {
     @Override
     public void hoesesEseten() {
         SkeletonLogger.enter(this, "hoesesEseten");
-        utszakasz.havazikRa(this); // Először az útvonalra hat a hó, ami továbbadja a hatást a savnak
+        if(sozott == 0){
+            utszakasz.havazikRa(this);// Először az útvonalra hat a hó, ami továbbadja a hatást a sávállapotnak
+        }else{
+            sozott--;
+        } 
         SkeletonLogger.exit("void");
     }
 
@@ -108,5 +112,6 @@ public class Sav extends Csomopont {
         if (allapot != null) {
             allapot.sotKap(this);
         }
+        sozott = 3; // Sózottság 3 hóhullásig tart [cite: 1191]
     }
 }
