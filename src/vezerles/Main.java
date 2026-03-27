@@ -254,78 +254,37 @@ public class Main {
                     sikeresTakaritas = hokotro.takarit(sav);
                     break;
 
+                // Kata tesztjei (Refaktorálva Alex mintájára)
                 case "13":
                     System.out.println("[ USE-CASE: Sikeres buszforduló (Pénzkeresés) ]");
-                    KozosKassza kassza13 = new KozosKassza(0); 
-                    Checkpoint vegallomas1 = new Checkpoint();
-                    Busz busz1 = new Busz(vegallomas1, vegallomas1); //busz példányosítása
-                    sikeresTranzakcio = busz1.lep(vegallomas1);
-                    kassza13.penzHozzaadas(100);
+                    sikeresTranzakcio = buszfordulo();
                     break;
-
                 case "14":
                     System.out.println("[ USE-CASE: Vásárlás a boltban (Sárkányfej) ]");
-                    // 1. Objektumok létrehozása
-                    KozosKassza kassza14 = new KozosKassza(1000); // 1000 tallérral indulunk, hogy legyen elég pénz
-                    Bolt bolt1 = new Bolt();
-                    Takarito takarito1 = new Takarito(kassza14);
-                    Hokotro hokotro1 = new Hokotro(takarito1);
-                    
-                    // 2. A hívási lánc elindítása a diagram alapján
-                    sikeresTranzakcio = bolt1.vasarol(Arucikk.SARKANYFEJ, takarito1, hokotro1);
+                    sikeresTranzakcio = vasarlasSarkanyfej();
                     break;
-                    
                 case "15":
                     System.out.println("[ USE-CASE: Sikertelen vásárlás a boltban (nincs elég pénz) ]");
-                    // 1. Objektumok létrehozása
-                    KozosKassza kassza15 = new KozosKassza(50); // Csak 50 tallér van, de a Sárkányfej 300-ba kerül (vagy amennyit beállítottál)
-                    Bolt bolt15 = new Bolt();
-                    Takarito takarito15 = new Takarito(kassza15);
-                    Hokotro hokotro15 = new Hokotro(takarito15);
-                    
-                    // 2. A hívási lánc elindítása a diagram alapján
-                    sikeresTranzakcio = bolt15.vasarol(Arucikk.SARKANYFEJ, takarito15, hokotro15);
+                    sikeresTranzakcio = sikertelenVasarlas();
                     break;
-
                 case "16":
                     System.out.println("[ USE-CASE: Fogyóeszköz vásárlása a boltban (Só) ]");
-                    KozosKassza kassza16 = new KozosKassza(1000); 
-                    Bolt bolt16 = new Bolt();
-                    Takarito takarito16 = new Takarito(kassza16);
-                    Hokotro hokotro16 = new Hokotro(takarito16);
-                    
-                    sikeresTranzakcio = bolt16.vasarol(Arucikk.SO, takarito16, hokotro16);
+                    sikeresTranzakcio = vasarlasSo();
                     break;
-
                 case "17":
                     System.out.println("[ USE-CASE: Fogyóeszköz vásárlása a boltban (Kerozin) ]");
-                    KozosKassza kassza17 = new KozosKassza(1000); 
-                    Bolt bolt17 = new Bolt();
-                    Takarito takarito17 = new Takarito(kassza17);
-                    Hokotro hokotro17 = new Hokotro(takarito17);
-                    
-                    sikeresTranzakcio = bolt17.vasarol(Arucikk.KEROZIN, takarito17, hokotro17);
+                    sikeresTranzakcio = vasarlasKerozin();
                     break;
-
                 case "18":
                     System.out.println("[ USE-CASE: Új Hókotró vásárlása a boltban ]");
-                    KozosKassza kassza18 = new KozosKassza(1000); 
-                    Bolt bolt18 = new Bolt();
-                    Takarito takarito18 = new Takarito(kassza18);
-                    Hokotro hokotro18 = new Hokotro(takarito18);
-                    
-                    sikeresTranzakcio = bolt18.vasarol(Arucikk.HOKOTRO, takarito18, hokotro18);
+                    sikeresTranzakcio = vasarlasHokotro();
                     break;
-
                 case "19":
                     System.out.println("[ USE-CASE: Globális felmelegedés vásárlása a boltban ]");
-                    KozosKassza kassza19 = new KozosKassza(10000); // Ide sok pénz kell!
-                    Bolt bolt19 = new Bolt();
-                    Takarito takarito19 = new Takarito(kassza19);
-                    Hokotro hokotro19 = new Hokotro(takarito19);
-                    
-                    sikeresTranzakcio = bolt19.vasarol(Arucikk.GLOBAL_WARMING, takarito19, hokotro19);
+                    sikeresTranzakcio = vasarlasGlobalisFelmelegedes();
                     break;
+                
+                //Alex
                 case "20":
                     System.out.println("[ USE-CASE: Hóesés tiszta, sózatlan útszakaszon ]");
                     hoesesTisztaUtszakaszonSozatlan();
@@ -364,11 +323,12 @@ public class Main {
                     System.out.println(">>> EREDMÉNY: A buszforduló nem tud megtörténni");
                 }
             } 
-            // Ha a te 14-19-es vásárlásaid futottak:
+            // Ha 14-19-es vásárlásaid futottak:
             else if (tesztSzam >= 14 && tesztSzam <= 19) {
                 if (sikeresTranzakcio) {
                     System.out.println(">>> EREDMÉNY: A vásárlás sikeresen megtörtént");
-                } else {
+                } 
+                else {
                     System.out.println(">>> EREDMÉNY: A vásárlás sikertelen");
                 }
             }
@@ -376,13 +336,101 @@ public class Main {
             System.out.println("\n[?] --- Nyomj ENTER-t a folytatáshoz ---");
             try {
                 System.in.read();
-            } catch (Exception e) {
+            } 
+            catch (Exception e) {
             }
         }
 
         System.out.println("\n--- Szimuláció Vége ---");
         scanner.close();
+    }   
+    //Kata
+    public static boolean buszfordulo() {
+        KozosKassza kassza = new KozosKassza(0); 
+        SkeletonLogger.register(kassza, "kassza");
+        Checkpoint vegallomas = new Checkpoint();
+        SkeletonLogger.register(vegallomas, "vegallomas");
+        Busz busz = new Busz(vegallomas, vegallomas);
+        SkeletonLogger.register(busz, "busz");
+        
+        boolean siker = busz.lep(vegallomas);
+        if(siker) kassza.penzHozzaadas(100);
+        return siker;
     }
+    public static boolean vasarlasSarkanyfej() {
+        KozosKassza kassza = new KozosKassza(1000);
+        SkeletonLogger.register(kassza, "kassza");
+        Bolt bolt = new Bolt();
+        SkeletonLogger.register(bolt, "bolt");
+        Takarito takarito = new Takarito(kassza);
+        SkeletonLogger.register(takarito, "takarito");
+        Hokotro hokotro = new Hokotro(takarito);
+        SkeletonLogger.register(hokotro, "hokotro");
+        
+        return bolt.vasarol(Arucikk.SARKANYFEJ, takarito, hokotro);
+    }
+    public static boolean sikertelenVasarlas() {
+        KozosKassza kassza = new KozosKassza(50);
+        SkeletonLogger.register(kassza, "kassza");
+        Bolt bolt = new Bolt();
+        SkeletonLogger.register(bolt, "bolt");
+        Takarito takarito = new Takarito(kassza);
+        SkeletonLogger.register(takarito, "takarito");
+        Hokotro hokotro = new Hokotro(takarito);
+        SkeletonLogger.register(hokotro, "hokotro");
+        
+        return bolt.vasarol(Arucikk.SARKANYFEJ, takarito, hokotro);
+    }
+    public static boolean vasarlasSo() {
+        KozosKassza kassza = new KozosKassza(1000);
+        SkeletonLogger.register(kassza, "kassza");
+        Bolt bolt = new Bolt();
+        SkeletonLogger.register(bolt, "bolt");
+        Takarito takarito = new Takarito(kassza);
+        SkeletonLogger.register(takarito, "takarito");
+        Hokotro hokotro = new Hokotro(takarito);
+        SkeletonLogger.register(hokotro, "hokotro");
+        
+        return bolt.vasarol(Arucikk.SO, takarito, hokotro);
+    }
+    public static boolean vasarlasKerozin() {
+        KozosKassza kassza = new KozosKassza(1000);
+        SkeletonLogger.register(kassza, "kassza");
+        Bolt bolt = new Bolt();
+        SkeletonLogger.register(bolt, "bolt");
+        Takarito takarito = new Takarito(kassza);
+        SkeletonLogger.register(takarito, "takarito");
+        Hokotro hokotro = new Hokotro(takarito);
+        SkeletonLogger.register(hokotro, "hokotro");
+        
+        return bolt.vasarol(Arucikk.KEROZIN, takarito, hokotro);
+    }
+    public static boolean vasarlasHokotro() {
+        KozosKassza kassza = new KozosKassza(1000);
+        SkeletonLogger.register(kassza, "kassza");
+        Bolt bolt = new Bolt();
+        SkeletonLogger.register(bolt, "bolt");
+        Takarito takarito = new Takarito(kassza);
+        SkeletonLogger.register(takarito, "takarito");
+        Hokotro hokotro = new Hokotro(takarito);
+        SkeletonLogger.register(hokotro, "hokotro");
+        
+        return bolt.vasarol(Arucikk.HOKOTRO, takarito, hokotro);
+    }
+    public static boolean vasarlasGlobalisFelmelegedes() {
+        KozosKassza kassza = new KozosKassza(10000);
+        SkeletonLogger.register(kassza, "kassza");
+        Bolt bolt = new Bolt();
+        SkeletonLogger.register(bolt, "bolt");
+        Takarito takarito = new Takarito(kassza);
+        SkeletonLogger.register(takarito, "takarito");
+        Hokotro hokotro = new Hokotro(takarito);
+        SkeletonLogger.register(hokotro, "hokotro");
+        
+        return bolt.vasarol(Arucikk.GLOBAL_WARMING, takarito, hokotro);
+    }
+    
+    //Alex
     public static void hoesesTisztaUtszakaszonSozatlan(){
         VarosModell vM = new VarosModell();
         SkeletonLogger.register(vM, "vM");

@@ -3,15 +3,13 @@ package jarmu;
 import halozat.Checkpoint;
 import halozat.Csomopont;
 import java.util.Scanner;
-
+import vezerles.SkeletonLogger;
 /**
  * A Sofőr által irányított jármű, amely fordulók megtételével pénzt keres.
  */
-public class Busz extends IranyitottJarmu {
-    
+public class Busz extends IranyitottJarmu {    
     private Checkpoint start; // A busz kiindulási pozíciója
     private Checkpoint cel;   // A busz célállomása
-
     public Busz(Checkpoint start, Checkpoint cel) {
         this.start = start;
         this.cel = cel;
@@ -22,20 +20,19 @@ public class Busz extends IranyitottJarmu {
      */
     @Override
     public boolean lep(Csomopont celCsomopont) {
-        System.out.println("\t> busz1:Busz.lep(vegallomas1:Checkpoint)");
-        // 2. Kérdés a tesztelőhöz (szkeleton heurisztika)
+        SkeletonLogger.enter(this, "lep", celCsomopont);
+        //Kérdés a tesztelőhöz
         System.out.print("\t[?] Foglalt a célállomás? (i/n): ");
         Scanner sc = new Scanner(System.in);
-        String valasz = sc.nextLine();
-        
+        String valasz = sc.nextLine();       
         if (valasz.equalsIgnoreCase("n")) {
-            // Ha nem foglalt, akkor befogadjuk
-            celCsomopont.befogad(this);
-            System.out.println("\t<- true");
+            celCsomopont.befogad(this);             // Ha nem foglalt, akkor a célállomás befogadja a buszt
+            SkeletonLogger.exit(true);
             return true;
-        } else {
+        } 
+        else {
             // Ha foglalt, nem lépünk
-            System.out.println("\t<- false");
+            SkeletonLogger.exit(false);
             return false;
         }
 
