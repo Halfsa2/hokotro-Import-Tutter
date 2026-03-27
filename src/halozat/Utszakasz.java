@@ -23,4 +23,22 @@ public class Utszakasz {
             s.getAllapot().hoesesEseten(s);
         }
     }
+    /**
+     * 
+     * @param sav
+     * @return paramétertől jobbra lévő sáv referenciája, vagy null érték, ha nincs az adott irányban szomszédja
+     */
+    public Sav getJobbSzomszed(Sav sav){
+        int id = savok.indexOf(sav);
+        return savok.get(id+1);
+    }
+    /**
+     * 
+     * @param sav
+     * @return paramétertől balra lévő sáv referenciája, vagy null érték, ha nincs az adott irányban szomszédja
+     */
+    public Sav getBalSzomszed(Sav sav){
+        int id = savok.indexOf(sav);
+        return savok.get(id-1);
+    }
 }
