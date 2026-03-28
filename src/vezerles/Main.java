@@ -354,7 +354,10 @@ public class Main {
         SkeletonLogger.register(busz, "busz");
         
         boolean siker = busz.lep(vegallomas);
-        if(siker) kassza.penzHozzaadas(100);
+        if(siker) {
+            System.out.print("> [Sikeres érkezés] ");
+            kassza.penzHozzaadas(100);
+        }
         return siker;
     }
     public static boolean vasarlasSarkanyfej() {
