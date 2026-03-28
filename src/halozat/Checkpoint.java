@@ -1,5 +1,7 @@
 package halozat;
 import jarmu.Jarmu;
+import vezerles.SkeletonLogger;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +24,9 @@ public class Checkpoint extends Csomopont {
     // JAVÍTVA: void helyett boolean visszatérés
     @Override
     public boolean befogad(Jarmu jarmu) {
-        System.out.println("\t\t> vegallomas1:Checkpoint.befogad(busz1:Busz)"); //log miatt
-        this.varakozoJarmuvek.add(jarmu); 
-        System.out.println("\t\t<- true"); //visszatérés logolása
+        SkeletonLogger.enter(this, "befogad", jarmu); // Ez írja ki a hívást és kezeli a behúzást
+        this.varakozoJarmuvek.add(jarmu);  
+        SkeletonLogger.exit(true); // Ez írja ki a <- true-t és csökkenti a behúzást
         return true;
     }
 
@@ -40,10 +42,12 @@ public class Checkpoint extends Csomopont {
 
     @Override
     public List<Csomopont> getNext() {
+        SkeletonLogger.enter(this, "getNext"); // Logoljuk a hívást
         List<Csomopont> kimenetek = new ArrayList<>();
         if (kimenet != null) {
             kimenetek.add(kimenet);
-        }
+        }   
+        SkeletonLogger.exit("lista"); 
         return kimenetek;
     }
 

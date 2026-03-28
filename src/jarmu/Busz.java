@@ -21,6 +21,9 @@ public class Busz extends IranyitottJarmu {
     @Override
     public boolean lep(Csomopont celCsomopont) {
         SkeletonLogger.enter(this, "lep", celCsomopont);
+
+        celCsomopont.getNext(); 
+
         //Kérdés a tesztelőhöz
         System.out.print("\t[?] Foglalt a célállomás? (i/n): ");
         Scanner sc = new Scanner(System.in);
