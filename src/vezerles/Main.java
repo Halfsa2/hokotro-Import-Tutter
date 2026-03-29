@@ -332,6 +332,7 @@ public class Main {
 
         Sav szomszedos = new Sav();
         SkeletonLogger.register(szomszedos, "szomszedos");
+        SkeletonLogger.register(szomszedos.getAllapot(), "tiszta2");
         Utszakasz utszakasz = new Utszakasz();
         SkeletonLogger.register(utszakasz, "utszakasz");
         utszakasz.addSav(sav1);
