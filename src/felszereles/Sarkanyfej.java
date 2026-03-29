@@ -1,12 +1,13 @@
 package felszereles;
 import halozat.Sav;
+import vezerles.SkeletonLogger; // <-- IMPORT HOZZÁADVA
+
 /**
- * Hő és kerozin felhasználásával azonnal elolvasztja a havat és a jeget[cite: 1097].
+ * Hő és kerozin felhasználásával azonnal elolvasztja a havat és a jeget.
  */
 public class Sarkanyfej extends Kotrofej {
 
-    // A tartályban lévő kerozin mennyisége[cite: 1106].
-    protected int kerozin_mennyiseg; //
+    protected int kerozin_mennyiseg;
 
     public Sarkanyfej(int kezdetiKerozin) {
         this.kerozin_mennyiseg = kezdetiKerozin;
@@ -14,16 +15,20 @@ public class Sarkanyfej extends Kotrofej {
 
     @Override
     public boolean takarit(Sav s) {
+        SkeletonLogger.enter(this, "takarit", s);
+        
         if (kerozin_mennyiseg > 0) {
-            // Üzemanyag felhasználásával azonnali olvasztást végez[cite: 1109].
+            // Üzemanyag felhasználásával azonnali olvasztást végez.
             boolean hoEltakaritva = s.hoTisztit();
             boolean jegEltakaritva = s.jegTisztit();
             
-            kerozin_mennyiseg--; // Fogyóeszköz csökkentése
+            kerozin_mennyiseg--;
             
-            return hoEltakaritva || jegEltakaritva;
+            boolean siker = hoEltakaritva || jegEltakaritva;
+            SkeletonLogger.exit(siker);
+            return siker;
         }
-        // Kerozin nélkül nem használható[cite: 1098].
+        SkeletonLogger.exit(false);
         return false;
     }
 }

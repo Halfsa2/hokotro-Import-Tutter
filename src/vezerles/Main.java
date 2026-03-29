@@ -26,18 +26,19 @@ public class Main {
         System.out.println("==========================================================");
 
         while (fut) {
+            //Innentől Anna
             System.out.println("\n--- Válassz egy tesztesetet! ---");
             System.out.println("1.  Sikeres takarítás sárkányfejjel (havat tisztít)");
-            System.out.println("2.  Sikeres takarítás sárkányfejjel (jeget tisztít)");
-            System.out.println("3.  Sikertelen takarítás sárkányfejjel (nincs kerozin)");
-            System.out.println("4.  Sikeres takarítás sószóróval");
-            System.out.println("5.  Sikertelen takarítás sószóróval (nincs só)");
-            System.out.println("6.  Sikeres takarítás jégtörővel (jeget tisztít)");
-            System.out.println("7.  Sikertelen takarítás jégtörővel (hó eltávolításának kísérlete)");
-            System.out.println("8.  Sikeres hóeltakarítás söprő fejjel (van szomszédos sáv)");
-            System.out.println("9.  Sikeres hóeltakarítás söprő fejjel (nincs szomszédos sáv)");
-            System.out.println("10. Sikertelen takarítás söprővel (jég eltávolításának kísérlete)");
-            System.out.println("11. Sikeres takarítás hányófejjel (havat tisztít)");
+            System.out.println("2.  Sikeres takarítás sárkányfejjel (Jeget tisztít)");
+            System.out.println("3.  Sikertelen sárkányfej használat (nincs kerozin)");
+            System.out.println("4.  Sikeres takarítás sószóró fejjel (Pénzkeresés)");
+            System.out.println("5.  Sikertelen sószóró használat (nincs só)");
+            System.out.println("6.  Sikeres hóeltakarítás söprő fejjel (van szomszédos sáv)");
+            System.out.println("7.  Sikeres hóeltakarítás söprő fejjel (nincs szomszédos sáv)");
+            System.out.println("8.  Sikertelen takarítás tiszta sávon (Nincs pénzkeresés)");
+            System.out.println("9.  Sikeres jégtörés (Pénzkeresés)");
+            System.out.println("10. Sikertelen jégtörés sekély havon (Nincs pénzkeresés)");
+            System.out.println("11. Sikeres hóeltakarítás hányófejjel (Pénzkeresés)");
             System.out.println("12. Sikertelen takarítás hányófejjel (Jég eltávolításának kísérlete)");
             
             //Innentől Kata 
@@ -75,183 +76,51 @@ public class Main {
             switch (valasz) {
                 case "1":
                     System.out.println("[ USE-CASE: Sikeres takarítás sárkányfejjel (havat tisztít) ]");
-                    System.out.print("[?] Van elég kerozin a sárkányfej tartályában? (I/N): ");
-                    int kerozin1 = scanner.nextLine().equalsIgnoreCase("I") ? 5 : 0;
-                    System.out.print("[?] Havat tisztít? (I/N): ");
-                    if (scanner.nextLine().equalsIgnoreCase("I")) {
-                        sav.setAllapot(new SekelyHo());
-                    } else {
-                        sav.setAllapot(new Jeges());
-                    }
-                    Sarkanyfej sarkany1 = new Sarkanyfej(kerozin1);
-                    hokotro.addFej(sarkany1);
-                    hokotro.cserelFej(sarkany1);
-                    sikeresTakaritas = hokotro.takarit(sav);
+                    sikeresTakaritas = sikeresSarkanyfejHavatTisztit();
                     break;
-
                 case "2":
-                    System.out.println("[ USE-CASE: Sikeres takarítás sárkányfejjel (jeget tisztít) ]");
-                    System.out.print("[?] Van elég kerozin a sárkányfej tartályában? (I/N): ");
-                    int kerozin2 = scanner.nextLine().equalsIgnoreCase("I") ? 5 : 0;
-                    System.out.print("[?] Jeget tisztít? (I/N): ");
-                    if (scanner.nextLine().equalsIgnoreCase("I")) {
-                        sav.setAllapot(new Jeges());
-                    } else {
-                        sav.setAllapot(new SekelyHo());
-                    }
-                    Sarkanyfej sarkany2 = new Sarkanyfej(kerozin2);
-                    hokotro.addFej(sarkany2);
-                    hokotro.cserelFej(sarkany2);
-                    sikeresTakaritas = hokotro.takarit(sav);
+                    System.out.println("[ USE-CASE: Sikeres takarítás sárkányfejjel (Jeget tisztít) ]");
+                    sikeresTakaritas = sikeresSarkanyfejJegetTisztit();
                     break;
-
                 case "3":
-                    System.out.println("[ USE-CASE: Sikertelen takarítás sárkányfejjel (nincs kerozin) ]");
-                    System.out.print("[?] Van elég kerozin a sárkányfej tartályában? (I/N): ");
-                    int kerozin3 = scanner.nextLine().equalsIgnoreCase("I") ? 5 : 0;
-                    sav.setAllapot(new SekelyHo());
-                    Sarkanyfej sarkany3 = new Sarkanyfej(kerozin3);
-                    hokotro.addFej(sarkany3);
-                    hokotro.cserelFej(sarkany3);
-                    sikeresTakaritas = hokotro.takarit(sav);
+                    System.out.println("[ USE-CASE: Sikertelen sárkányfej használat (nincs kerozin) ]");
+                    sikeresTakaritas = sikertelenSarkanyfejNincsKerozin();
                     break;
-
                 case "4":
-                    System.out.println("[ USE-CASE: Sikeres takarítás sószóróval ]");
-                    System.out.print("[?] Van elég só a sószóró tartályában? (I/N): ");
-                    int so4 = scanner.nextLine().equalsIgnoreCase("I") ? 5 : 0;
-                    sav.setAllapot(new Jeges());
-                    Soszoro soszoro4 = new Soszoro(so4);
-                    hokotro.addFej(soszoro4);
-                    hokotro.cserelFej(soszoro4);
-                    sikeresTakaritas = hokotro.takarit(sav);
+                    System.out.println("[ USE-CASE: Sikeres takarítás sószóró fejjel (Pénzkeresés) ]");
+                    sikeresTakaritas = sikeresSoszoro();
                     break;
-
                 case "5":
-                    System.out.println("[ USE-CASE: Sikertelen takarítás sószóróval (nincs só) ]");
-                    System.out.print("[?] Van elég só a sószóró tartályában? (I/N): ");
-                    int so5 = scanner.nextLine().equalsIgnoreCase("I") ? 5 : 0;
-                    sav.setAllapot(new Jeges());
-                    Soszoro soszoro5 = new Soszoro(so5);
-                    hokotro.addFej(soszoro5);
-                    hokotro.cserelFej(soszoro5);
-                    sikeresTakaritas = hokotro.takarit(sav);
+                    System.out.println("[ USE-CASE: Sikertelen sószóró használat (nincs só) ]");
+                    sikeresTakaritas = sikertelenSoszoroNincsSo();
                     break;
-
                 case "6":
-                    System.out.println("[ USE-CASE: Sikeres takarítás jégtörővel (jeget tisztít) ]");
-                    System.out.print("[?] Jeget tisztít? (I/N): ");
-                    if (scanner.nextLine().equalsIgnoreCase("I")) {
-                        sav.setAllapot(new Jeges());
-                    } else {
-                        sav.setAllapot(new SekelyHo());
-                    }
-                    Jegtoro jegtoro6 = new Jegtoro();
-                    hokotro.addFej(jegtoro6);
-                    hokotro.cserelFej(jegtoro6);
-                    sikeresTakaritas = hokotro.takarit(sav);
-                    break;
-
-                case "7":
-                    System.out.println("[ USE-CASE: Sikertelen takarítás jégtörővel (hó eltávolításának kísérlete) ]");
-                    System.out.print("[?] Jeget tisztít? (I/N): ");
-                    if (scanner.nextLine().equalsIgnoreCase("I")) {
-                        sav.setAllapot(new Jeges());
-                    } else {
-                        sav.setAllapot(new SekelyHo());
-                    }
-                    Jegtoro jegtoro7 = new Jegtoro();
-                    hokotro.addFej(jegtoro7);
-                    hokotro.cserelFej(jegtoro7);
-                    sikeresTakaritas = hokotro.takarit(sav);
-                    break;
-
-                case "8":
                     System.out.println("[ USE-CASE: Sikeres hóeltakarítás söprő fejjel (van szomszédos sáv) ]");
-                    System.out.print("[?] Havat tisztít? (I/N): ");
-                    if (scanner.nextLine().equalsIgnoreCase("I")) {
-                        sav.setAllapot(new SekelyHo());
-                    } else {
-                        sav.setAllapot(new Jeges());
-                    }
-                    System.out.print("[?] Van szomszédos sáv? (I/N): ");
-                    if (scanner.nextLine().equalsIgnoreCase("I")) {
-                        Utszakasz u8 = new Utszakasz();
-                        u8.addSav(sav);
-                        u8.addSav(new Sav());
-                        sav.setUtszakasz(u8);
-                    }
-                    Sopro sopro8 = new Sopro();
-                    hokotro.addFej(sopro8);
-                    hokotro.cserelFej(sopro8);
-                    sikeresTakaritas = hokotro.takarit(sav);
+                    sikeresTakaritas = sikeresSoproVanSzomszedos();
                     break;
-
-                case "9":
+                case "7":
                     System.out.println("[ USE-CASE: Sikeres hóeltakarítás söprő fejjel (nincs szomszédos sáv) ]");
-                    System.out.print("[?] Havat tisztít? (I/N): ");
-                    if (scanner.nextLine().equalsIgnoreCase("I")) {
-                        sav.setAllapot(new SekelyHo());
-                    } else {
-                        sav.setAllapot(new Jeges());
-                    }
-                    System.out.print("[?] Van szomszédos sáv? (I/N): ");
-                    if (scanner.nextLine().equalsIgnoreCase("I")) {
-                        Utszakasz u9 = new Utszakasz();
-                        u9.addSav(sav);
-                        u9.addSav(new Sav());
-                        sav.setUtszakasz(u9);
-                    } else {
-                        Utszakasz u9 = new Utszakasz();
-                        u9.addSav(sav);
-                        sav.setUtszakasz(u9);
-                    }
-                    Sopro sopro9 = new Sopro();
-                    hokotro.addFej(sopro9);
-                    hokotro.cserelFej(sopro9);
-                    sikeresTakaritas = hokotro.takarit(sav);
+                    sikeresTakaritas = sikeresSoproNincsSzomszedos();
                     break;
-
+                case "8":
+                    System.out.println("[ USE-CASE: Sikertelen takarítás tiszta sávon (Nincs pénzkeresés) ]");
+                    sikeresTakaritas = sikertelenSoproTisztaSav();
+                    break;
+                case "9":
+                    System.out.println("[ USE-CASE: Sikeres jégtörés (Pénzkeresés) ]");
+                    sikeresTakaritas = sikeresJegtores();
+                    break;
                 case "10":
-                    System.out.println("[ USE-CASE: Sikertelen takarítás söprővel (jég eltávolításának kísérlete) ]");
-                    System.out.print("[?] Havat tisztít? (I/N): ");
-                    if (scanner.nextLine().equalsIgnoreCase("N")) {
-                        sav.setAllapot(new Jeges());
-                    } else {
-                        sav.setAllapot(new SekelyHo());
-                    }
-                    Sopro sopro10 = new Sopro();
-                    hokotro.addFej(sopro10);
-                    hokotro.cserelFej(sopro10);
-                    sikeresTakaritas = hokotro.takarit(sav);
+                    System.out.println("[ USE-CASE: Sikertelen jégtörés sekély havon (Nincs pénzkeresés) ]");
+                    sikeresTakaritas = sikertelenJegtoresSekelyHavon();
                     break;
-
                 case "11":
-                    System.out.println("[ USE-CASE: Sikeres takarítás hányófejjel (havat tisztít) ]");
-                    System.out.print("[?] Havat tisztít? (I/N): ");
-                    if (scanner.nextLine().equalsIgnoreCase("I")) {
-                        sav.setAllapot(new MelyHo());
-                    } else {
-                        sav.setAllapot(new Jeges());
-                    }
-                    Hanyofej hanyofej11 = new Hanyofej();
-                    hokotro.addFej(hanyofej11);
-                    hokotro.cserelFej(hanyofej11);
-                    sikeresTakaritas = hokotro.takarit(sav);
+                    System.out.println("[ USE-CASE: Sikeres hóeltakarítás hányófejjel (Pénzkeresés) ]");
+                    sikeresTakaritas = sikeresHanyofej();
                     break;
-
                 case "12":
                     System.out.println("[ USE-CASE: Sikertelen takarítás hányófejjel (Jég eltávolításának kísérlete) ]");
-                    System.out.print("[?] Havat tisztít? (I/N): ");
-                    if (scanner.nextLine().equalsIgnoreCase("N")) {
-                        sav.setAllapot(new Jeges());
-                    } else {
-                        sav.setAllapot(new MelyHo());
-                    }
-                    Hanyofej hanyofej12 = new Hanyofej();
-                    hokotro.addFej(hanyofej12);
-                    hokotro.cserelFej(hanyofej12);
-                    sikeresTakaritas = hokotro.takarit(sav);
+                    sikeresTakaritas = sikertelenHanyofejJeg();
                     break;
 
                 // Kata tesztjei (Refaktorálva Alex mintájára)
@@ -343,6 +212,265 @@ public class Main {
 
         System.out.println("\n--- Szimuláció Vége ---");
         scanner.close();
+    }
+    // Anna
+    public static boolean sikeresSarkanyfejHavatTisztit() {
+        KozosKassza kassza = new KozosKassza(0);
+        SkeletonLogger.register(kassza, "kassza");
+        Sav sav1 = new Sav();
+        SkeletonLogger.register(sav1, "sav1");
+        Hokotro hokotro1 = new Hokotro(null);
+        SkeletonLogger.register(hokotro1, "hokotro1");
+
+        SekelyHo sekelyho1 = new SekelyHo();
+        SkeletonLogger.register(sekelyho1, "sekelyho1");
+        sav1.setAllapot(sekelyho1);
+
+        Sarkanyfej sarkanyfej1 = new Sarkanyfej(5);
+        SkeletonLogger.register(sarkanyfej1, "sarkanyfej1");
+        hokotro1.addFej(sarkanyfej1);
+        hokotro1.cserelFej(sarkanyfej1);
+
+        boolean siker = hokotro1.takarit(sav1);
+        if (siker) kassza.penzHozzaadas(5);
+        return siker;
+    }
+
+    public static boolean sikeresSarkanyfejJegetTisztit() {
+        KozosKassza kassza = new KozosKassza(0);
+        SkeletonLogger.register(kassza, "kassza");
+        Sav sav1 = new Sav();
+        SkeletonLogger.register(sav1, "sav1");
+        Hokotro hokotro1 = new Hokotro(null);
+        SkeletonLogger.register(hokotro1, "hokotro1");
+
+        Jeges jeges1 = new Jeges();
+        SkeletonLogger.register(jeges1, "jeges1");
+        sav1.setAllapot(jeges1);
+
+        Sarkanyfej sarkanyfej1 = new Sarkanyfej(5);
+        SkeletonLogger.register(sarkanyfej1, "sarkanyfej1");
+        hokotro1.addFej(sarkanyfej1);
+        hokotro1.cserelFej(sarkanyfej1);
+
+        Jeges.sarkanfejOlvassza = true;
+        boolean siker = hokotro1.takarit(sav1);
+        Jeges.sarkanfejOlvassza = false;
+        if (siker) kassza.penzHozzaadas(5);
+        return siker;
+    }
+
+    public static boolean sikertelenSarkanyfejNincsKerozin() {
+        Sav sav1 = new Sav();
+        SkeletonLogger.register(sav1, "sav1");
+        Hokotro hokotro1 = new Hokotro(null);
+        SkeletonLogger.register(hokotro1, "hokotro1");
+
+        SekelyHo sekelyho1 = new SekelyHo();
+        SkeletonLogger.register(sekelyho1, "sekelyho1");
+        sav1.setAllapot(sekelyho1);
+
+        Sarkanyfej sarkanyfej1 = new Sarkanyfej(0);
+        SkeletonLogger.register(sarkanyfej1, "sarkanyfej1");
+        hokotro1.addFej(sarkanyfej1);
+        hokotro1.cserelFej(sarkanyfej1);
+
+        return hokotro1.takarit(sav1);
+    }
+
+    public static boolean sikeresSoszoro() {
+        KozosKassza kassza = new KozosKassza(0);
+        SkeletonLogger.register(kassza, "kassza");
+        Sav sav1 = new Sav();
+        SkeletonLogger.register(sav1, "sav1");
+        Hokotro hokotro1 = new Hokotro(null);
+        SkeletonLogger.register(hokotro1, "hokotro1");
+
+        SekelyHo sekelyho1 = new SekelyHo();
+        SkeletonLogger.register(sekelyho1, "sekelyho1");
+        sav1.setAllapot(sekelyho1);
+
+        Soszoro soszoro1 = new Soszoro(5);
+        SkeletonLogger.register(soszoro1, "soszoro1");
+        hokotro1.addFej(soszoro1);
+        hokotro1.cserelFej(soszoro1);
+
+        boolean siker = hokotro1.takarit(sav1);
+        if (siker) kassza.penzHozzaadas(5);
+        return siker;
+    }
+
+    public static boolean sikertelenSoszoroNincsSo() {
+        Sav sav1 = new Sav();
+        SkeletonLogger.register(sav1, "sav1");
+        Hokotro hokotro1 = new Hokotro(null);
+        SkeletonLogger.register(hokotro1, "hokotro1");
+
+        SekelyHo sekelyho1 = new SekelyHo();
+        SkeletonLogger.register(sekelyho1, "sekelyho1");
+        sav1.setAllapot(sekelyho1);
+
+        Soszoro soszoro1 = new Soszoro(0);
+        SkeletonLogger.register(soszoro1, "soszoro1");
+        hokotro1.addFej(soszoro1);
+        hokotro1.cserelFej(soszoro1);
+
+        return hokotro1.takarit(sav1);
+    }
+
+    public static boolean sikeresSoproVanSzomszedos() {
+        KozosKassza kassza = new KozosKassza(0);
+        SkeletonLogger.register(kassza, "kassza");
+        Sav sav1 = new Sav();
+        SkeletonLogger.register(sav1, "sav1");
+        Hokotro hokotro1 = new Hokotro(null);
+        SkeletonLogger.register(hokotro1, "hokotro1");
+
+        SekelyHo sekelyho1 = new SekelyHo();
+        SkeletonLogger.register(sekelyho1, "sekelyho1");
+        sav1.setAllapot(sekelyho1);
+
+        Sav szomszedos = new Sav();
+        SkeletonLogger.register(szomszedos, "szomszedos");
+        Utszakasz utszakasz = new Utszakasz();
+        SkeletonLogger.register(utszakasz, "utszakasz");
+        utszakasz.addSav(sav1);
+        utszakasz.addSav(szomszedos);
+        sav1.setUtszakasz(utszakasz);
+
+        Sopro sopro1 = new Sopro();
+        SkeletonLogger.register(sopro1, "sopro1");
+        hokotro1.addFej(sopro1);
+        hokotro1.cserelFej(sopro1);
+
+        boolean siker = hokotro1.takarit(sav1);
+        if (siker) kassza.penzHozzaadas(5);
+        return siker;
+    }
+
+    public static boolean sikeresSoproNincsSzomszedos() {
+        KozosKassza kassza = new KozosKassza(0);
+        SkeletonLogger.register(kassza, "kassza");
+        Sav sav1 = new Sav();
+        SkeletonLogger.register(sav1, "sav1");
+        Hokotro hokotro1 = new Hokotro(null);
+        SkeletonLogger.register(hokotro1, "hokotro1");
+
+        SekelyHo sekelyho1 = new SekelyHo();
+        SkeletonLogger.register(sekelyho1, "sekelyho1");
+        sav1.setAllapot(sekelyho1);
+
+        Utszakasz utszakasz = new Utszakasz();
+        SkeletonLogger.register(utszakasz, "utszakasz");
+        utszakasz.addSav(sav1); // Csak 1 sáv
+        sav1.setUtszakasz(utszakasz);
+
+        Sopro sopro1 = new Sopro();
+        SkeletonLogger.register(sopro1, "sopro1");
+        hokotro1.addFej(sopro1);
+        hokotro1.cserelFej(sopro1);
+
+        boolean siker = hokotro1.takarit(sav1);
+        if (siker) kassza.penzHozzaadas(5);
+        return siker;
+    }
+
+    public static boolean sikertelenSoproTisztaSav() {
+        Sav sav1 = new Sav();
+        SkeletonLogger.register(sav1, "sav1");
+        Hokotro hokotro1 = new Hokotro(null);
+        SkeletonLogger.register(hokotro1, "hokotro1");
+
+        Tiszta tiszta1 = new Tiszta();
+        SkeletonLogger.register(tiszta1, "tiszta1");
+        sav1.setAllapot(tiszta1);
+
+        Sopro sopro1 = new Sopro();
+        SkeletonLogger.register(sopro1, "sopro1");
+        hokotro1.addFej(sopro1);
+        hokotro1.cserelFej(sopro1);
+
+        return hokotro1.takarit(sav1);
+    }
+
+    public static boolean sikeresJegtores() {
+        KozosKassza kassza = new KozosKassza(0);
+        SkeletonLogger.register(kassza, "kassza");
+        Sav sav1 = new Sav();
+        SkeletonLogger.register(sav1, "sav1");
+        Hokotro hokotro1 = new Hokotro(null);
+        SkeletonLogger.register(hokotro1, "hokotro1");
+
+        Jeges jeges1 = new Jeges();
+        SkeletonLogger.register(jeges1, "jeges1");
+        sav1.setAllapot(jeges1);
+
+        Jegtoro jegtoro1 = new Jegtoro();
+        SkeletonLogger.register(jegtoro1, "jegtoro1");
+        hokotro1.addFej(jegtoro1);
+        hokotro1.cserelFej(jegtoro1);
+
+        boolean siker = hokotro1.takarit(sav1);
+        if (siker) kassza.penzHozzaadas(5);
+        return siker;
+    }
+
+    public static boolean sikertelenJegtoresSekelyHavon() {
+        Sav sav1 = new Sav();
+        SkeletonLogger.register(sav1, "sav1");
+        Hokotro hokotro1 = new Hokotro(null);
+        SkeletonLogger.register(hokotro1, "hokotro1");
+
+        SekelyHo sekely1 = new SekelyHo();
+        SkeletonLogger.register(sekely1, "sekely1");
+        sav1.setAllapot(sekely1);
+
+        Jegtoro jegtoro1 = new Jegtoro();
+        SkeletonLogger.register(jegtoro1, "jegtoro1");
+        hokotro1.addFej(jegtoro1);
+        hokotro1.cserelFej(jegtoro1);
+
+        return hokotro1.takarit(sav1);
+    }
+
+    public static boolean sikeresHanyofej() {
+        KozosKassza kassza = new KozosKassza(0);
+        SkeletonLogger.register(kassza, "kassza");
+        Sav sav1 = new Sav();
+        SkeletonLogger.register(sav1, "sav1");
+        Hokotro hokotro1 = new Hokotro(null);
+        SkeletonLogger.register(hokotro1, "hokotro1");
+
+        MelyHo melyho1 = new MelyHo();
+        SkeletonLogger.register(melyho1, "melyho1");
+        sav1.setAllapot(melyho1);
+
+        Hanyofej hanyofej1 = new Hanyofej();
+        SkeletonLogger.register(hanyofej1, "hanyofej1");
+        hokotro1.addFej(hanyofej1);
+        hokotro1.cserelFej(hanyofej1);
+
+        boolean siker = hokotro1.takarit(sav1);
+        if (siker) kassza.penzHozzaadas(5);
+        return siker;
+    }
+
+    public static boolean sikertelenHanyofejJeg() {
+        Sav sav1 = new Sav();
+        SkeletonLogger.register(sav1, "sav1");
+        Hokotro hokotro1 = new Hokotro(null);
+        SkeletonLogger.register(hokotro1, "hokotro1");
+
+        Jeges jeges1 = new Jeges();
+        SkeletonLogger.register(jeges1, "jeges1");
+        sav1.setAllapot(jeges1);
+
+        Hanyofej hanyofej1 = new Hanyofej();
+        SkeletonLogger.register(hanyofej1, "hanyofej1");
+        hokotro1.addFej(hanyofej1);
+        hokotro1.cserelFej(hanyofej1);
+
+        return hokotro1.takarit(sav1);
     }   
     //Kata
     public static boolean buszfordulo() {
