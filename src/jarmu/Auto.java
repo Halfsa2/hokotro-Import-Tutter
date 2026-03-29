@@ -8,9 +8,9 @@ import vezerles.SkeletonLogger;
  * A városban közlekedő, alapszintű, önvezető jármű.
  */
 public class Auto extends Jarmu {
-    
+
     private Checkpoint start; // Az autó kiindulási pozíciója
-    private Checkpoint cel;   // Az autó célállomása
+    private Checkpoint cel; // Az autó célállomása
 
     public Auto(Checkpoint start, Checkpoint cel) {
         SkeletonLogger.create(this);
@@ -24,12 +24,18 @@ public class Auto extends Jarmu {
      */
     @Override
     public boolean lep(Csomopont celCsomopont) {
+<<<<<<< HEAD
         
         SkeletonLogger.enter(this, "lep", celCsomopont);
         // Ha az autó balesetet szenvedett, várakoznia kell
         if (varakozik > 0) {
             varakozik--;
             // LOGOLÁS KILÉPÉSKOR
+=======
+        SkeletonLogger.enter(this, "lep", celCsomopont);
+        if (varakozik > 0) {
+            varakozik--;
+>>>>>>> main
             SkeletonLogger.exit(false);
             return false;
         }
@@ -39,8 +45,14 @@ public class Auto extends Jarmu {
             }
             this.aktualisCsomopont = celCsomopont;
             SkeletonLogger.exit(true);
+<<<<<<< HEAD
             return true; // A lépés megtörtént
         }
+=======
+            return true;
+        }
+
+>>>>>>> main
         SkeletonLogger.exit(false);
         return false;
     }

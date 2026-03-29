@@ -8,7 +8,8 @@ import halozat.Checkpoint;
 import halozat.Keresztezodes;
 import halozat.Sav;
 import halozat.Utszakasz;
-import jarmu.Busz; 
+import jarmu.Auto;
+import jarmu.Busz;
 import jarmu.Hokotro;
 import jarmu.Auto;
 import java.util.Scanner;
@@ -27,7 +28,7 @@ public class Main {
         System.out.println("==========================================================");
 
         while (fut) {
-            //Innentől Anna
+            // Innentől Anna
             System.out.println("\n--- Válassz egy tesztesetet! ---");
             System.out.println("1.  Sikeres takarítás sárkányfejjel (havat tisztít)");
             System.out.println("2.  Sikeres takarítás sárkányfejjel (Jeget tisztít)");
@@ -41,8 +42,8 @@ public class Main {
             System.out.println("10. Sikertelen jégtörés sekély havon (Nincs pénzkeresés)");
             System.out.println("11. Sikeres hóeltakarítás hányófejjel (Pénzkeresés)");
             System.out.println("12. Sikertelen takarítás hányófejjel (Jég eltávolításának kísérlete)");
-            
-            //Innentől Kata 
+
+            // Innentől Kata
             System.out.println("13. Sikeres buszforduló (Pénzkeresés)");
             System.out.println("14. Vásárlás a boltban (Sárkányfej)");
             System.out.println("15. Sikertelen vásárlás a boltban (nincs elég pénz)");
@@ -50,16 +51,27 @@ public class Main {
             System.out.println("17. Fogyóeszköz vásárlása a boltban (Kerozin)");
             System.out.println("18. Új Hókotró vásárlása a boltban");
             System.out.println("19. Globális felmelegedés vásárlása a boltban");
-            
-            //Innentől Alex
+
+            // Innentől Alex
             System.out.println("20. Hóesés tiszta, sózatlan útszakaszon");
             System.out.println("21. Hóesés tiszta, sózott útszakaszon");
             System.out.println("22. Hóesés alagúton");
             System.out.println("23. Kereszteződés frissítése");
 
+            // Bibi
+            System.out.println("24. Hófelhalmozódás");
+            System.out.println("25. Hó jeggé tömörülése");
+            System.out.println("26. MelyHo jarhatatlan");
+            System.out.println("27. Só hatása tiszta sávon");
+            System.out.println("28. Só hatása sekély havas sávon, 2 hóréteggel");
+            System.out.println("29. Só hatása sekély havas savon, 1 hóréteggel");
+            System.out.println("30. Só hatása mély havas savon");
+            System.out.println("31. Só hatása jeges sávon, kevesebb, mint 2 köre sózva");
+            System.out.println("32. Só hatása jeges sávon, pontosan 2 köre sózva");
+
             //Innentől Noémi
             System.out.println("33. Autó sikeresen sávot vált");
-            
+
             System.out.println("0.  Kilépés");
             System.out.print("\nVálasztás: ");
 
@@ -73,7 +85,7 @@ public class Main {
             Sav sav = new Sav();
             Hokotro hokotro = new Hokotro(null);
             boolean sikeresTakaritas = false;
-            boolean sikeresTranzakcio = false; //vásárlások sikerességére
+            boolean sikeresTranzakcio = false; // vásárlások sikerességére
 
             System.out.println("\n----------------------------------------------------------");
 
@@ -123,7 +135,8 @@ public class Main {
                     sikeresTakaritas = sikeresHanyofej();
                     break;
                 case "12":
-                    System.out.println("[ USE-CASE: Sikertelen takarítás hányófejjel (Jég eltávolításának kísérlete) ]");
+                    System.out
+                            .println("[ USE-CASE: Sikertelen takarítás hányófejjel (Jég eltávolításának kísérlete) ]");
                     sikeresTakaritas = sikertelenHanyofejJeg();
                     break;
 
@@ -156,8 +169,8 @@ public class Main {
                     System.out.println("[ USE-CASE: Globális felmelegedés vásárlása a boltban ]");
                     sikeresTranzakcio = vasarlasGlobalisFelmelegedes();
                     break;
-                
-                //Alex
+
+                // Alex
                 case "20":
                     System.out.println("[ USE-CASE: Hóesés tiszta, sózatlan útszakaszon ]");
                     hoesesTisztaUtszakaszonSozatlan();
@@ -174,14 +187,51 @@ public class Main {
                     System.out.println("[ USE-CASE: Kereszteződés frissítése ]");
                     keresztezodesFrissitese();
                     break;
+                case "24":
+                    System.out.println("[ USE-CASE: Hófelhalmozódás ]");
+                    horetegFelhalmozodas();
+                    break;
+                case "25":
+                    System.out.println("[ USE-CASE: Hó jeggé tömörülése ]");
+                    hoJeggeTomorulese();
+                    break;
+                case "26":
+                    System.out.println("[ USE-CASE: MelyHo jarhatatlan ]");
+                    melyHoJarhatatlan();
+                    break;
+                case "27":
+                    System.out.println("[ USE-CASE: Só hatása tiszta sávon ]");
+                    soHatasTisztaSavon();
+                    break;
+                case "28":
+                    System.out.println("[ USE-CASE: Só hatása sekély havas sávon, 2 hóréteggel ]");
+                    soHatasSekelyHavasSavon2();
+                    break;
+                case "29":
+                    System.out.println("[ USE-CASE: Só hatása sekély havas savon, 1 hóréteggel ]");
+                    soHatasSekelyHavasSavon1();
+                    break;
+                case "30":
+                    System.out.println("[ USE-CASE: Só hatása mély havas savon ]");
+                    soHatasaMelyHavasSavon();
+                    break;
+                case "31":
+                    System.out.println("USE-CASE: Só hatása jeges sávon, kevesebb, mint 2 köre sózva");
+                    soHatasaJegesSavonKevesebbMint2();
+                    break;
+                case "32":
+                    System.out.println("USE-CASE: Só hatása jeges sávon, pontosan 2 köre sózva");
+                    soHatasaJegesSavonPontosan2();
+                    break;
+
                 //Noemi
                 case "33":
                     System.out.println("[ USE-CASE: Autó sikeresen sávot vált]");
                     autoSikeresenSavotValt();
                     break;
                 default:
-                    System.out.println("Érvénytelen választás! Kérlek 0 és 12 közötti számot adj meg.");
-                    continue; 
+                    System.out.println("Érvénytelen választás! Kérlek 0 és 32 közötti számot adj meg.");
+                    continue;
             }
             System.out.println("----------------------------------------------------------");
             int tesztSzam = Integer.parseInt(valasz);
@@ -189,24 +239,21 @@ public class Main {
                 // Csak a takarítós teszteknél írjuk ki ezt
                 if (sikeresTakaritas) {
                     System.out.println(">>> EREDMÉNY: A takarítás megtörtént");
-                } 
-                else {
+                } else {
                     System.out.println(">>> EREDMÉNY: Nem történt takarítás");
                 }
-            } 
-            else if (tesztSzam == 13) {
+            } else if (tesztSzam == 13) {
                 if (sikeresTranzakcio) {
                     System.out.println(">>> EREDMÉNY: A buszforduló sikeresen megtörtént");
                 } else {
                     System.out.println(">>> EREDMÉNY: A buszforduló nem tud megtörténni");
                 }
-            } 
+            }
             // Ha 14-19-es vásárlásaid futottak:
             else if (tesztSzam >= 14 && tesztSzam <= 19) {
                 if (sikeresTranzakcio) {
                     System.out.println(">>> EREDMÉNY: A vásárlás sikeresen megtörtént");
-                } 
-                else {
+                } else {
                     System.out.println(">>> EREDMÉNY: A vásárlás sikertelen");
                 }
             }
@@ -214,14 +261,15 @@ public class Main {
             System.out.println("\n[?] --- Nyomj ENTER-t a folytatáshoz ---");
             try {
                 System.in.read();
-            } 
-            catch (Exception e) {
+            } catch (Exception e) {
             }
         }
 
         System.out.println("\n--- Szimuláció Vége ---");
         scanner.close();
     }
+
+    // Kata
     // Anna
     public static boolean sikeresSarkanyfejHavatTisztit() {
         KozosKassza kassza = new KozosKassza(0);
@@ -241,7 +289,8 @@ public class Main {
         hokotro1.cserelFej(sarkanyfej1);
 
         boolean siker = hokotro1.takarit(sav1);
-        if (siker) kassza.penzHozzaadas(5);
+        if (siker)
+            kassza.penzHozzaadas(5);
         return siker;
     }
 
@@ -265,7 +314,8 @@ public class Main {
         Jeges.sarkanfejOlvassza = true;
         boolean siker = hokotro1.takarit(sav1);
         Jeges.sarkanfejOlvassza = false;
-        if (siker) kassza.penzHozzaadas(5);
+        if (siker)
+            kassza.penzHozzaadas(5);
         return siker;
     }
 
@@ -305,7 +355,8 @@ public class Main {
         hokotro1.cserelFej(soszoro1);
 
         boolean siker = hokotro1.takarit(sav1);
-        if (siker) kassza.penzHozzaadas(5);
+        if (siker)
+            kassza.penzHozzaadas(5);
         return siker;
     }
 
@@ -354,7 +405,8 @@ public class Main {
         hokotro1.cserelFej(sopro1);
 
         boolean siker = hokotro1.takarit(sav1);
-        if (siker) kassza.penzHozzaadas(5);
+        if (siker)
+            kassza.penzHozzaadas(5);
         return siker;
     }
 
@@ -381,7 +433,8 @@ public class Main {
         hokotro1.cserelFej(sopro1);
 
         boolean siker = hokotro1.takarit(sav1);
-        if (siker) kassza.penzHozzaadas(5);
+        if (siker)
+            kassza.penzHozzaadas(5);
         return siker;
     }
 
@@ -421,7 +474,8 @@ public class Main {
         hokotro1.cserelFej(jegtoro1);
 
         boolean siker = hokotro1.takarit(sav1);
-        if (siker) kassza.penzHozzaadas(5);
+        if (siker)
+            kassza.penzHozzaadas(5);
         return siker;
     }
 
@@ -461,7 +515,8 @@ public class Main {
         hokotro1.cserelFej(hanyofej1);
 
         boolean siker = hokotro1.takarit(sav1);
-        if (siker) kassza.penzHozzaadas(5);
+        if (siker)
+            kassza.penzHozzaadas(5);
         return siker;
     }
 
@@ -481,23 +536,25 @@ public class Main {
         hokotro1.cserelFej(hanyofej1);
 
         return hokotro1.takarit(sav1);
-    }   
-    //Kata
+    }
+
+    // Kata
     public static boolean buszfordulo() {
-        KozosKassza kassza = new KozosKassza(0); 
+        KozosKassza kassza = new KozosKassza(0);
         SkeletonLogger.register(kassza, "kassza");
         Checkpoint vegallomas = new Checkpoint();
         SkeletonLogger.register(vegallomas, "vegallomas");
         Busz busz = new Busz(vegallomas, vegallomas);
         SkeletonLogger.register(busz, "busz");
-        
+
         boolean siker = busz.lep(vegallomas);
-        if(siker) {
+        if (siker) {
             System.out.print("> [Sikeres érkezés] ");
             kassza.penzHozzaadas(100);
         }
         return siker;
     }
+
     public static boolean vasarlasSarkanyfej() {
         KozosKassza kassza = new KozosKassza(1000);
         SkeletonLogger.register(kassza, "kassza");
@@ -507,9 +564,10 @@ public class Main {
         SkeletonLogger.register(takarito, "takarito");
         Hokotro hokotro = new Hokotro(takarito);
         SkeletonLogger.register(hokotro, "hokotro");
-        
+
         return bolt.vasarol(Arucikk.SARKANYFEJ, takarito, hokotro);
     }
+
     public static boolean sikertelenVasarlas() {
         KozosKassza kassza = new KozosKassza(50);
         SkeletonLogger.register(kassza, "kassza");
@@ -519,9 +577,10 @@ public class Main {
         SkeletonLogger.register(takarito, "takarito");
         Hokotro hokotro = new Hokotro(takarito);
         SkeletonLogger.register(hokotro, "hokotro");
-        
+
         return bolt.vasarol(Arucikk.SARKANYFEJ, takarito, hokotro);
     }
+
     public static boolean vasarlasSo() {
         KozosKassza kassza = new KozosKassza(1000);
         SkeletonLogger.register(kassza, "kassza");
@@ -531,9 +590,10 @@ public class Main {
         SkeletonLogger.register(takarito, "takarito");
         Hokotro hokotro = new Hokotro(takarito);
         SkeletonLogger.register(hokotro, "hokotro");
-        
+
         return bolt.vasarol(Arucikk.SO, takarito, hokotro);
     }
+
     public static boolean vasarlasKerozin() {
         KozosKassza kassza = new KozosKassza(1000);
         SkeletonLogger.register(kassza, "kassza");
@@ -543,9 +603,10 @@ public class Main {
         SkeletonLogger.register(takarito, "takarito");
         Hokotro hokotro = new Hokotro(takarito);
         SkeletonLogger.register(hokotro, "hokotro");
-        
+
         return bolt.vasarol(Arucikk.KEROZIN, takarito, hokotro);
     }
+
     public static boolean vasarlasHokotro() {
         KozosKassza kassza = new KozosKassza(1000);
         SkeletonLogger.register(kassza, "kassza");
@@ -555,9 +616,10 @@ public class Main {
         SkeletonLogger.register(takarito, "takarito");
         Hokotro hokotro = new Hokotro(takarito);
         SkeletonLogger.register(hokotro, "hokotro");
-        
+
         return bolt.vasarol(Arucikk.HOKOTRO, takarito, hokotro);
     }
+
     public static boolean vasarlasGlobalisFelmelegedes() {
         KozosKassza kassza = new KozosKassza(10000);
         SkeletonLogger.register(kassza, "kassza");
@@ -567,12 +629,12 @@ public class Main {
         SkeletonLogger.register(takarito, "takarito");
         Hokotro hokotro = new Hokotro(takarito);
         SkeletonLogger.register(hokotro, "hokotro");
-        
+
         return bolt.vasarol(Arucikk.GLOBAL_WARMING, takarito, hokotro);
     }
-    
-    //Alex
-    public static void hoesesTisztaUtszakaszonSozatlan(){
+
+    // Alex
+    public static void hoesesTisztaUtszakaszonSozatlan() {
         VarosModell vM = new VarosModell();
         SkeletonLogger.register(vM, "vM");
         Utszakasz utszakasz = new Utszakasz();
@@ -586,7 +648,8 @@ public class Main {
         s1.setAllapot(tiszta);
         vM.havazas();
     }
-    public static void hoesesTisztaUtszakaszonSozott(){
+
+    public static void hoesesTisztaUtszakaszonSozott() {
         VarosModell vM = new VarosModell();
         SkeletonLogger.register(vM, "vM");
         Utszakasz utszakasz = new Utszakasz();
@@ -601,7 +664,8 @@ public class Main {
         s1.soSzoras();
         vM.havazas();
     }
-    public static void hoesesAlaguton(){
+
+    public static void hoesesAlaguton() {
         VarosModell vM = new VarosModell();
         SkeletonLogger.register(vM, "vM");
         Alagut alagut = new Alagut();
@@ -615,12 +679,159 @@ public class Main {
         s1.setAllapot(tiszta);
         vM.havazas();
     }
-    public static void keresztezodesFrissitese(){
+
+    public static void keresztezodesFrissitese() {
         VarosModell vM = new VarosModell();
         SkeletonLogger.register(vM, "vM");
         Keresztezodes keresztezodes = new Keresztezodes();
         SkeletonLogger.register(keresztezodes, "keresztezodes");
         vM.addCsomopont(keresztezodes);
+        vM.palyaFrissit();
+    }
+
+    public static void horetegFelhalmozodas() {
+        VarosModell vm = new VarosModell();
+        Utszakasz u = new Utszakasz();
+        Sav s1 = new Sav();
+        SekelyHo sh = new SekelyHo();
+        s1.setUtszakasz(u);
+        u.addSav(s1);
+        s1.setAllapot(sh);
+        vm.addCsomopont(s1);
+        SkeletonLogger.register(vm, "vm");
+        SkeletonLogger.register(u, "utszakasz");
+        SkeletonLogger.register(s1, "s1");
+        SkeletonLogger.register(sh, "sekelyho");
+        vm.havazas();
+    }
+
+    public static void hoJeggeTomorulese() {
+        Sav aktualis = new Sav();
+        Sav cel = new Sav();
+        SekelyHo sh = new SekelyHo();
+        Busz busz1 = new Busz(null, null);
+        aktualis.setAllapot(sh);
+        aktualis.befogad(busz1);
+        busz1.setAktualisCsomopont(aktualis);
+        SkeletonLogger.register(aktualis, "aktualis");
+        SkeletonLogger.register(cel, "cel");
+        SkeletonLogger.register(sh, "sekelyho");
+        SkeletonLogger.register(busz1, "busz1");
+        busz1.lep(cel);
+    }
+
+    public static void melyHoJarhatatlan() {
+        Checkpoint cp1 = new Checkpoint();
+        Checkpoint cp2 = new Checkpoint();
+        Sav s1 = new Sav();
+        MelyHo melyho = new MelyHo();
+        Auto a = new Auto(cp2, cp1);
+        s1.setAllapot(melyho);
+        SkeletonLogger.register(s1, "cel");
+        SkeletonLogger.register(melyho, "melyHo");
+        SkeletonLogger.register(a, "a");
+        a.lep(s1);
+    }
+
+    public static void soHatasTisztaSavon() {
+        VarosModell vM = new VarosModell();
+        Sav s1 = new Sav();
+        Tiszta tiszta = new Tiszta();
+        vM.addCsomopont(s1);
+        s1.setAllapot(tiszta);
+        SkeletonLogger.register(vM, "vM");
+        SkeletonLogger.register(s1, "s1");
+        SkeletonLogger.register(tiszta, "tiszta");
+        vM.palyaFrissit();
+    }
+
+    public static void soHatasSekelyHavasSavon2() {
+        VarosModell vM = new VarosModell();
+        Sav s1 = new Sav();
+        SekelyHo sekelyHo = new SekelyHo();
+
+        // Állítsuk 3-ra:
+        // - 1 elmegy a sotKap-nál (marad 2)
+        // - 1 elmegy a frissit-nél (marad 1) -> ÍGY NEM LESZ 0!
+        sekelyHo.setHoreteg(3);
+
+        SkeletonLogger.register(vM, "vM");
+        SkeletonLogger.register(s1, "s1");
+        SkeletonLogger.register(sekelyHo, "sekelyHo");
+
+        vM.addCsomopont(s1);
+
+        // Ez levon egyet (3 -> 2)
+        sekelyHo.sotKap(s1);
+
+        s1.setAllapot(sekelyHo);
+
+        // Ez meghívja a frissit-et, ami levon még egyet (2 -> 1)
+        // Mivel 1 != 0, az if nem fut le, a log tiszta marad!
+        vM.palyaFrissit();
+    }
+
+    public static void soHatasSekelyHavasSavon1() {
+        VarosModell vM = new VarosModell();
+        Sav s1 = new Sav();
+        SekelyHo sekelyHo = new SekelyHo();
+        Tiszta tisztaMinta = new Tiszta();
+
+        sekelyHo.setHoreteg(1); // 1-ről indulunk
+
+        SkeletonLogger.register(vM, "vM");
+        SkeletonLogger.register(s1, "s1");
+        SkeletonLogger.register(sekelyHo, "sekelyHo");
+        SkeletonLogger.register(tisztaMinta, "tiszta");
+
+        vM.addCsomopont(s1);
+        s1.setAllapot(sekelyHo);
+
+        // Csak EGYIKET használd a kettő közül, hogy ne fogyjon el a hó túl korán!
+        // sekelyHo.sotKap(s1); // Ezt hagyd ki, ha a soSzoras-t használod
+        s1.soSzoras();
+
+        vM.palyaFrissit();
+    }
+
+    public static void soHatasaMelyHavasSavon() {
+        VarosModell vM = new VarosModell();
+        Sav s1 = new Sav();
+        MelyHo melyHo = new MelyHo();
+        SkeletonLogger.register(vM, "vM");
+        SkeletonLogger.register(s1, "s1");
+        SkeletonLogger.register(melyHo, "melyHo");
+        vM.addCsomopont(s1);
+        s1.setAllapot(melyHo);
+        s1.soSzoras();
+        vM.palyaFrissit();
+    }
+
+    public static void soHatasaJegesSavonKevesebbMint2() {
+        VarosModell vM = new VarosModell();
+        Sav s1 = new Sav();
+        Jeges jeges = new Jeges();
+        jeges.sozott = 3;
+        SkeletonLogger.register(vM, "vM");
+        SkeletonLogger.register(s1, "s1");
+        SkeletonLogger.register(jeges, "jeges");
+        vM.addCsomopont(s1);
+        s1.setAllapot(jeges);
+        s1.soSzoras();
+        vM.palyaFrissit();
+    }
+
+    public static void soHatasaJegesSavonPontosan2() {
+        VarosModell vM = new VarosModell();
+        Sav s1 = new Sav();
+        Jeges jeges = new Jeges();
+        jeges.sozott = 1;
+        SkeletonLogger.register(vM, "vM");
+        SkeletonLogger.register(s1, "s1");
+        SkeletonLogger.register(jeges, "jeges");
+        vM.addCsomopont(s1);
+        s1.setAllapot(jeges);
+        s1.soSzoras();
         vM.palyaFrissit();
     }
 
