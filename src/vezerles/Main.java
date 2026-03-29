@@ -22,7 +22,7 @@ public class Main {
         boolean fut = true;
 
         System.out.println("==========================================================");
-        System.out.println("  Zúzmaraváros Szimuláció - Kotrófej Szkeleton Tesztek    ");
+        System.out.println("  Zúzmaraváros Szimuláció   ");
         System.out.println("==========================================================");
 
         while (fut) {
