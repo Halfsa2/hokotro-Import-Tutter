@@ -10,6 +10,7 @@ import halozat.Sav;
 import halozat.Utszakasz;
 import jarmu.Busz; 
 import jarmu.Hokotro;
+import jarmu.Auto;
 import java.util.Scanner;
 
 // így futtatjátok:
@@ -55,6 +56,9 @@ public class Main {
             System.out.println("21. Hóesés tiszta, sózott útszakaszon");
             System.out.println("22. Hóesés alagúton");
             System.out.println("23. Kereszteződés frissítése");
+
+            //Innentől Noémi
+            System.out.println("33. Autó sikeresen sávot vált");
             
             System.out.println("0.  Kilépés");
             System.out.print("\nVálasztás: ");
@@ -169,6 +173,11 @@ public class Main {
                 case "23":
                     System.out.println("[ USE-CASE: Kereszteződés frissítése ]");
                     keresztezodesFrissitese();
+                    break;
+                //Noemi
+                case "33":
+                    System.out.println("[ USE-CASE: Autó sikeresen sávot vált]");
+                    autoSikeresenSavotValt();
                     break;
                 default:
                     System.out.println("Érvénytelen választás! Kérlek 0 és 12 közötti számot adj meg.");
@@ -613,5 +622,36 @@ public class Main {
         SkeletonLogger.register(keresztezodes, "keresztezodes");
         vM.addCsomopont(keresztezodes);
         vM.palyaFrissit();
+    }
+
+    //Noemi
+    public static void autoSikeresenSavotValt() {
+        Checkpoint startCp = new Checkpoint();
+        SkeletonLogger.register(startCp, "startCp");
+        
+        Checkpoint celCp = new Checkpoint();
+        SkeletonLogger.register(celCp, "celCp");
+
+        jarmu.Auto auto1 = new jarmu.Auto(startCp, celCp);
+        SkeletonLogger.register(auto1, "auto1");
+
+        Sav aktualisSav = new Sav();
+        SkeletonLogger.register(aktualisSav, "aktualisSav");
+
+        Sav celSav = new Sav();
+        SkeletonLogger.register(celSav, "celSav");
+
+        Tiszta tiszta1 = new Tiszta();
+        SkeletonLogger.register(tiszta1, "tiszta1");
+
+        Tiszta tiszta2 = new Tiszta();
+        SkeletonLogger.register(tiszta2, "tiszta2");
+
+        aktualisSav.setAllapot(tiszta1);
+        celSav.setAllapot(tiszta2);
+        aktualisSav.befogad(auto1); 
+
+        
+        auto1.lep(celSav);
     }
 }
