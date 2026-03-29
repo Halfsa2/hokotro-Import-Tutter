@@ -26,7 +26,10 @@ public class Tiszta extends Savallapot {
     public boolean lepesTeszt(Jarmu jarmu) { return true; }
     
     @Override
-    public void sotKap(Sav sav) {}
+    public void sotKap(Sav sav) { 
+        SkeletonLogger.enter(this, "sotKap", sav);
+        SkeletonLogger.exit("void"); 
+    }
     
     @Override
     public boolean hoTisztit(Sav sav) { 

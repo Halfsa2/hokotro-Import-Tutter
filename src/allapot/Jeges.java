@@ -40,7 +40,7 @@ public class Jeges extends Savallapot {
     public void sotKap(Sav sav) {
         SkeletonLogger.enter(this, "sotKap", sav);
         this.sozott = 3; 
-        SkeletonLogger.exit(null);
+        SkeletonLogger.exit("void");
     }
 
     @Override

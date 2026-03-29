@@ -99,16 +99,11 @@ public class Sav extends Csomopont {
         return (this.jarmu != null);
     }
 
-    @Override
+   @Override
     public void hoesesEseten() {
         SkeletonLogger.enter(this, "hoesesEseten");
         if(sozott == 0){
-            if (utszakasz != null) {
-                utszakasz.havazikRa(this);
-            } else if (allapot != null) {
-                // Ha a Söprő áttolja, és nincs útszakasz regisztrálva, közvetlenül is hívható
-                allapot.hoesesEseten(this); 
-            }
+            utszakasz.havazikRa(this);
         }else{
             sozott--;
         } 

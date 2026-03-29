@@ -41,13 +41,7 @@ public class SekelyHo extends Savallapot {
     @Override
     public void sotKap(Sav sav) {
         SkeletonLogger.enter(this, "sotKap", sav);
-        horeteg--;
-        if (horeteg <= 0) {
-            Tiszta tiszta = new Tiszta();
-            SkeletonLogger.register(tiszta, "tiszta1");
-            sav.setAllapot(tiszta); 
-        }
-        SkeletonLogger.exit(null);
+        SkeletonLogger.exit("void");
     }
 
     @Override

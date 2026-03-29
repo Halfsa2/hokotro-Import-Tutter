@@ -18,7 +18,7 @@ public class Soszoro extends Kotrofej {
         SkeletonLogger.enter(this, "takarit", s);
         
         if (so_mennyiseg > 0) {
-            s.soSzoras(); // Sót juttat a sávra, ami beállítja a 9 körös védettséget
+            s.soSzoras(); // Sót juttat a sávra, ami 3 hóhullásig védettséget ad
             so_mennyiseg--; // Fogyóeszköz csökkentése
             
             SkeletonLogger.exit(true);
