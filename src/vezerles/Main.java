@@ -68,8 +68,9 @@ public class Main {
             System.out.println("31. Só hatása jeges sávon, kevesebb, mint 2 köre sózva");
             System.out.println("32. Só hatása jeges sávon, pontosan 2 köre sózva");
 
-            //Innentől Noémi
+            // Innentől Noémi
             System.out.println("33. Autó sikeresen sávot vált");
+            System.out.println("34. Autó balesete jégen");
 
             System.out.println("0.  Kilépés");
             System.out.print("\nVálasztás: ");
@@ -223,10 +224,14 @@ public class Main {
                     soHatasaJegesSavonPontosan2();
                     break;
 
-                //Noemi
+                // Noemi
                 case "33":
                     System.out.println("[ USE-CASE: Autó sikeresen sávot vált]");
                     autoSikeresenSavotValt();
+                    break;
+                case "34":
+                    System.out.println("[ USE-CASE: Autó balesete jégen ]");
+                    autoBaleseteJegen();
                     break;
                 default:
                     System.out.println("Érvénytelen választás! Kérlek 0 és 32 közötti számot adj meg.");
@@ -834,7 +839,7 @@ public class Main {
         vM.palyaFrissit();
     }
 
-    //Noemi
+    // Noemi
     public static void autoSikeresenSavotValt() {
         Checkpoint startCp = new Checkpoint();
         SkeletonLogger.register(startCp, "startCp");
@@ -856,9 +861,31 @@ public class Main {
 
         aktualisSav.setAllapot(tiszta2);
         celSav.setAllapot(tiszta1);
-        aktualisSav.befogad(auto1); 
+        aktualisSav.befogad(auto1);
         auto1.setAktualisCsomopont(aktualisSav);
-        
+
+        auto1.lep(celSav);
+    }
+
+    public static void autoBaleseteJegen() {
+        Checkpoint cp = new Checkpoint();
+        Auto auto1 = new Auto(cp, cp);
+        SkeletonLogger.register(auto1, "auto1");
+
+        Sav aktualisSav = new Sav();
+        SkeletonLogger.register(aktualisSav, "aktualisSav");
+
+        Sav celSav = new Sav();
+        SkeletonLogger.register(celSav, "celSav");
+
+        Jeges jeges1 = new Jeges();
+        SkeletonLogger.register(jeges1, "jeges1");
+
+        celSav.setAllapot(jeges1);
+
+        aktualisSav.befogad(auto1);
+        auto1.setAktualisCsomopont(aktualisSav);
+
         auto1.lep(celSav);
     }
 }
