@@ -28,6 +28,10 @@ public class Sav extends Csomopont {
         this.utszakasz = utszakasz;
     }
 
+    public Utszakasz getUtszakasz() {
+        return this.utszakasz;
+    }
+
     public void setAllapot(Savallapot allapot) {
         SkeletonLogger.enter(this, "setAllapot", allapot);
         this.allapot = allapot;
@@ -87,6 +91,17 @@ public class Sav extends Csomopont {
         return szomszedok;
     }
 
+    // Szomszédos sáv lekérése a Söprőfej miatt
+    public Sav getJobbSzomszed(Sav sav) {
+        SkeletonLogger.enter(this, "getJobbSzomszed", sav);
+        Sav szomszed = null;
+        if (this.utszakasz != null) {
+            szomszed = this.utszakasz.getJobbSzomszed(this); // Továbbadjuk a kérést az útszakasznak
+        }
+        SkeletonLogger.exit(szomszed);
+        return szomszed;
+    }
+
     public boolean lepesTeszt(Jarmu jarmu) {
         boolean teszt = false;
         if (allapot != null) {
@@ -97,18 +112,15 @@ public class Sav extends Csomopont {
 
     @Override
     public void balesetEseten() {
-        // Baleset logikája
         if (this.jarmu != null) {
         }
     }
 
     @Override
     public boolean foglalt() {
-        boolean isFoglalt = (this.jarmu != null);
-        return isFoglalt;
+        return (this.jarmu != null);
     }
 
-    // DOUBLE DISPATCH INDÍTÁSA
     @Override
     public void hoesesEseten() {
         SkeletonLogger.enter(this, "hoesesEseten");
@@ -121,19 +133,31 @@ public class Sav extends Csomopont {
     }
 
     public boolean jegTisztit() {
-        boolean ret = (allapot != null) && allapot.jegTisztit(this);
+        SkeletonLogger.enter(this, "jegTisztit");
+        boolean ret = false;
+        if (allapot != null) {
+            ret = allapot.jegTisztit(this);
+        }
+        SkeletonLogger.exit(ret);
         return ret;
     }
 
     public boolean hoTisztit() {
-        boolean ret = (allapot != null) && allapot.hoTisztit(this);
+        SkeletonLogger.enter(this, "hoTisztit");
+        boolean ret = false;
+        if (allapot != null) {
+            ret = allapot.hoTisztit(this);
+        }
+        SkeletonLogger.exit(ret);
         return ret;
     }
 
     public void soSzoras() {
+        SkeletonLogger.enter(this, "soSzoras");
         if (allapot != null) {
             allapot.sotKap(this);
         }
-        sozott = 3; // Sózottság 3 hóhullásig tart [cite: 1191]
+        sozott = 3;
+        SkeletonLogger.exit("void");
     }
 }

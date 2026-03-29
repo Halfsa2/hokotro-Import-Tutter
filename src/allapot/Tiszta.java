@@ -4,9 +4,6 @@ import halozat.Sav;
 import jarmu.Jarmu;
 import vezerles.SkeletonLogger;
 
-/**
- * Tiszta, akadálymentes útfelület. [cite: 1239]
- */
 public class Tiszta extends Savallapot {
 
     public Tiszta() { /* Konstruktor [cite: 1173] */
@@ -18,46 +15,47 @@ public class Tiszta extends Savallapot {
     @Override
     public boolean befogad(Sav sav, Jarmu jarmu) {
         return true;
-        /* Normál érkezés [cite: 1246] */ }
+    }
 
     @Override
     public void elenged(Sav sav, Jarmu jarmu) {
-        /* Normál távozás [cite: 1247] */ }
+    }
 
     @Override
     public void hoesesEseten(Sav sav) {
-        // Havazás esetén átvált Sekély Hó állapotba [cite: 1249]
-
         SkeletonLogger.enter(this, "hoesesEseten", sav);
         SekelyHo sekelyHo = new SekelyHo();
         SkeletonLogger.register(sekelyHo, "sekelyHo");
         sav.setAllapot(sekelyHo);
         SkeletonLogger.exit("void");
-
     }
 
     @Override
     public void frissit(Sav sav) {
-        SkeletonLogger.enter(this, "frissit", sav);
-        SkeletonLogger.exit("void");
     }
 
     @Override
     public boolean lepesTeszt(Jarmu jarmu) {
         return true;
-        /* Mindenki ráléphet [cite: 1253] */ }
+    }
 
     @Override
     public void sotKap(Sav sav) {
-        /* Növeli a sózottságot a kontextusban [cite: 1255] */ }
+        SkeletonLogger.enter(this, "sotKap", sav);
+        SkeletonLogger.exit("void");
+    }
 
     @Override
     public boolean hoTisztit(Sav sav) {
+        SkeletonLogger.enter(this, "hoTisztit", sav);
+        SkeletonLogger.exit(false);
         return false;
-        /* Nincs hó [cite: 1260] */ }
+    }
 
     @Override
     public boolean jegTisztit(Sav sav) {
+        SkeletonLogger.enter(this, "jegTisztit", sav);
+        SkeletonLogger.exit(false);
         return false;
-        /* Nincs jég [cite: 1262] */ }
+    }
 }

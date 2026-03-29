@@ -1,22 +1,28 @@
 package felszereles;
 import halozat.Sav;
+import vezerles.SkeletonLogger; 
+
 /**
- * A söprő fej a havat az aktuális sávról jobbra tolja[cite: 523].
- * Jeget nem képes eltávolítani[cite: 526].
+ * A söprő fej a havat az aktuális sávról jobbra tolja.
+ * Jeget nem képes eltávolítani.
  */
 public class Sopro extends Kotrofej {
 
     @Override
     public boolean takarit(Sav s) {
+        SkeletonLogger.enter(this, "takarit", s);
+        
         // Megpróbáljuk eltakarítani a havat a jelenlegi sávról
-        boolean sikeres = s.hoTisztit(); //
+        boolean sikeres = s.hoTisztit();
         
         if (sikeres) {
-            // A specifikáció szerint a havat a jobb oldali sávra kell tolni[cite: 1211, 1212].
-            // (Ennek teljes megvalósításához a VárosModellnek biztosítania kellene 
-            // egy metódust a szomszédos sáv lekérdezésére, pl. s.getJobbSzomszed().hoesesEseten())
+            Sav szomszedos = s.getJobbSzomszed(s); 
+            if (szomszedos != null) {
+                szomszedos.hoesesEseten(); // Áttoljuk rá a havat
+            }
         }
         
+        SkeletonLogger.exit(sikeres);
         return sikeres;
     }
 }

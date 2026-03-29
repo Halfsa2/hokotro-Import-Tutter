@@ -6,22 +6,15 @@ import halozat.Sav;
 import jarmu.Jarmu;
 import vezerles.SkeletonLogger;
 
-/**
- * Vékonyabb hóréteg, belső állapottal (hóvastagság, nyomvonal). [cite: 1168,
- * 1169]
- */
 public class SekelyHo extends Savallapot {
-    protected int horeteg = 1; // [cite: 1174]
-    protected int nyomvonal = 0; // [cite: 1176]
 
-    public SekelyHo() { /* Konstruktor [cite: 1173] */
+    protected int horeteg = 1;
+    protected int nyomvonal = 0;
+
+    public SekelyHo() {
         SkeletonLogger.create(this);
         SkeletonLogger.register(this, "sekelyHo");
         SkeletonLogger.exit(this);
-    }
-
-    public int getHoreteg() {
-        return horeteg;
     }
 
     public void setHoreteg(int horeteg) {
@@ -30,9 +23,9 @@ public class SekelyHo extends Savallapot {
 
     @Override
     public boolean befogad(Sav sav, Jarmu jarmu) {
-        nyomvonal++; // Járművek letapossák a havat [cite: 1183]
+        nyomvonal++;
         if (nyomvonal >= 3) {
-            sav.setAllapot(new Jeges()); // 3 áthaladás után jég képződik [cite: 500]
+            sav.setAllapot(new Jeges());
         }
         return true;
     }
@@ -102,12 +95,20 @@ public class SekelyHo extends Savallapot {
 
     @Override
     public boolean hoTisztit(Sav sav) {
-        sav.setAllapot(new Tiszta()); // Takarítás után tiszta lesz [cite: 1193]
+        SkeletonLogger.enter(this, "hoTisztit", sav);
+
+        Tiszta tiszta = new Tiszta();
+        SkeletonLogger.register(tiszta, "tiszta1");
+        sav.setAllapot(tiszta);
+
+        SkeletonLogger.exit(true);
         return true;
     }
 
     @Override
     public boolean jegTisztit(Sav sav) {
+        SkeletonLogger.enter(this, "jegTisztit", sav);
+        SkeletonLogger.exit(false);
         return false;
-        /* Nincs jég [cite: 1195] */ }
+    }
 }

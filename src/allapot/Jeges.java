@@ -4,10 +4,6 @@ import halozat.Sav;
 import jarmu.Jarmu;
 import vezerles.SkeletonLogger;
 
-/**
- * A State (Állapot) tervezési minta egyik konkrét állapot-megvalósítása.
- * Egy sáv (Sav) viselkedését definiálja lefagyott útfelület esetén.
- */
 public class Jeges extends Savallapot {
 
     public Jeges() { /* Konstruktor [cite: 1173] */
@@ -20,6 +16,9 @@ public class Jeges extends Savallapot {
     // ami azt mutatja, hogy a jeges sáv mennyire sózott.
     public int sozott = 0;
 
+    // jelzi, ha a sárkányfej hívta a jégtisztítást
+    public static boolean sarkanfejOlvassza = false;
+
     @Override
     public boolean befogad(Sav sav, Jarmu jarmu) {
         // Lekezeli a jármű rálépését a jeges sávra.
@@ -30,7 +29,6 @@ public class Jeges extends Savallapot {
 
     @Override
     public void elenged(Sav sav, Jarmu jarmu) {
-        // Adminisztrálja a jármű kilépését a jeges sávról.
     }
 
     @Override
@@ -54,26 +52,40 @@ public class Jeges extends Savallapot {
 
     @Override
     public boolean lepesTeszt(Jarmu jarmu) {
-        // Eldönti, hogy a paraméterben kapott jármű rá tud-e lépni a jégre.
-        return true; // Ráléphet, de utána balesetet fog szenvedni a befogad() metódusban.
+        return true;
     }
 
     @Override
     public void sotKap(Sav sav) {
-        // Módosítja a sozott attribútum értékét.
-        this.sozott = 3; // A jég 3 kör után olvad el a só hatására
+        SkeletonLogger.enter(this, "sotKap", sav);
+        this.sozott = 3;
+        SkeletonLogger.exit("void");
     }
 
     @Override
     public boolean hoTisztit(Sav sav) {
-        // Mivel jeges állapotban nincs hó, így nincs hatása.
+        SkeletonLogger.enter(this, "hoTisztit", sav);
+        SkeletonLogger.exit(false);
         return false;
     }
 
     @Override
     public boolean jegTisztit(Sav sav) {
-        // Eltakarítja a sávról a jeget és átváltja a sáv állapotát Tiszta állapotra.
-        sav.setAllapot(new Tiszta());
+        SkeletonLogger.enter(this, "jegTisztit", sav);
+
+        if (sarkanfejOlvassza) {
+            // Ha Sárkányfej (2-es teszt), akkor tisztára olvasztja
+            Tiszta tiszta = new Tiszta();
+            SkeletonLogger.register(tiszta, "tiszta1");
+            sav.setAllapot(tiszta);
+        } else {
+            // Ha Jégtörő (9-es teszt), akkor marad egy réteg hó
+            SekelyHo sekely = new SekelyHo();
+            SkeletonLogger.register(sekely, "sekely1");
+            sav.setAllapot(sekely);
+        }
+
+        SkeletonLogger.exit(true);
         return true;
     }
 }

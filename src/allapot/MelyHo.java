@@ -26,7 +26,6 @@ public class MelyHo extends Savallapot {
 
     @Override
     public void elenged(Sav sav, Jarmu jarmu) {
-        // Adminisztrálja a jármű sikeres áthaladását és kilépését a sávról[cite: 1081].
     }
 
     @Override
@@ -54,27 +53,31 @@ public class MelyHo extends Savallapot {
         if (jarmu instanceof Hokotro) {
             return true;
         }
-        return false; // Normál autók és buszok nem léphetnek rá.
+        return false;
     }
 
     @Override
     public void sotKap(Sav sav) {
-        // Reagál a sószórásra. Elképzelhető, hogy a mély hó állapotában a só önmagában
-        // hatástalan,
-        // vagy csak nagyon lassan olvasztja fel a havat[cite: 1091].
+        SkeletonLogger.enter(this, "sotKap", sav);
+        SkeletonLogger.exit("void");
     }
 
     @Override
     public boolean hoTisztit(Sav sav) {
-        // Eltakarítja a sávról a havat és Tiszta állapotba váltja[cite: 1092].
-        sav.setAllapot(new Tiszta());
+        SkeletonLogger.enter(this, "hoTisztit", sav);
+
+        Tiszta tiszta = new Tiszta();
+        SkeletonLogger.register(tiszta, "tiszta1");
+        sav.setAllapot(tiszta);
+
+        SkeletonLogger.exit(true);
         return true;
     }
 
     @Override
     public boolean jegTisztit(Sav sav) {
-        // Mivel a sávon nincs jég MelyHo állapotban, így meghívásának nincs
-        // hatása[cite: 1093].
+        SkeletonLogger.enter(this, "jegTisztit", sav);
+        SkeletonLogger.exit(false);
         return false;
     }
 }
