@@ -72,6 +72,7 @@ public class Main {
             System.out.println("33. Autó sikeresen sávot vált");
             System.out.println("34. Autó balesete jégen");
             System.out.println("35. Sikeres érkezés checkpointra");
+            System.out.println("36. Foglalt Checkpoint célállomás");
 
             System.out.println("0.  Kilépés");
             System.out.print("\nVálasztás: ");
@@ -237,6 +238,10 @@ public class Main {
                 case "35":
                     System.out.println("[ USE-CASE: Sikeres érkezés checkpointra ]");
                     sikeresErkezesCheckpointra();
+                    break;
+                case "36":
+                    System.out.println("[ USE-CASE: Foglalt Checkpoint célállomás ]");
+                    foglaltCheckpoint();
                     break;
                 default:
                     System.out.println("Érvénytelen választás! Kérlek 0 és 32 közötti számot adj meg.");
@@ -908,6 +913,25 @@ public class Main {
         SkeletonLogger.register(tiszta1, "tiszta1");
 
         aktualisSav.setAllapot(tiszta1);
+        aktualisSav.befogad(auto1);
+        auto1.setAktualisCsomopont(aktualisSav);
+
+        auto1.lep(cel);
+    }
+
+    public static void foglaltCheckpoint() {
+        Checkpoint cel = new Checkpoint();
+        SkeletonLogger.register(cel, "cel");
+
+        Auto dummyAuto = new Auto(null, null);
+        SkeletonLogger.register(dummyAuto, "dummyAuto");
+        cel.befogad(dummyAuto); // Ezáltal a 'cel' foglalt lesz!
+
+        Auto auto1 = new Auto(null, cel);
+        SkeletonLogger.register(auto1, "auto1");
+
+        Sav aktualisSav = new Sav();
+        SkeletonLogger.register(aktualisSav, "aktualisSav");
         aktualisSav.befogad(auto1);
         auto1.setAktualisCsomopont(aktualisSav);
 
