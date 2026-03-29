@@ -1,4 +1,5 @@
 package halozat;
+
 import jarmu.Jarmu;
 import vezerles.SkeletonLogger;
 
@@ -10,8 +11,8 @@ import java.util.List;
  */
 public class Checkpoint extends Csomopont {
 
-    private Csomopont kimenet; 
-    private List<Jarmu> varakozoJarmuvek; 
+    private Csomopont kimenet;
+    private List<Jarmu> varakozoJarmuvek;
 
     public Checkpoint() {
         this.varakozoJarmuvek = new ArrayList<>();
@@ -21,18 +22,17 @@ public class Checkpoint extends Csomopont {
         this.kimenet = kimenet;
     }
 
-    // JAVÍTVA: void helyett boolean visszatérés
     @Override
     public boolean befogad(Jarmu jarmu) {
         SkeletonLogger.enter(this, "befogad", jarmu); // Ez írja ki a hívást és kezeli a behúzást
-        this.varakozoJarmuvek.add(jarmu);  
+        this.varakozoJarmuvek.add(jarmu);
         SkeletonLogger.exit(true); // Ez írja ki a <- true-t és csökkenti a behúzást
         return true;
     }
 
     @Override
     public void elenged(Jarmu jarmu) {
-        this.varakozoJarmuvek.remove(jarmu); 
+        this.varakozoJarmuvek.remove(jarmu);
     }
 
     @Override
@@ -46,8 +46,8 @@ public class Checkpoint extends Csomopont {
         List<Csomopont> kimenetek = new ArrayList<>();
         if (kimenet != null) {
             kimenetek.add(kimenet);
-        }   
-        SkeletonLogger.exit("lista"); 
+        }
+        SkeletonLogger.exit("lista");
         return kimenetek;
     }
 
@@ -58,8 +58,10 @@ public class Checkpoint extends Csomopont {
 
     @Override
     public boolean foglalt() {
-        // A te logikád alapján a Checkpoint valószínűleg sosem "foglalt" olyan értelemben, 
-        // hogy ne tudna több járművet fogadni (mivel listája van), de itt ezt implementálhatod.
+        // A te logikád alapján a Checkpoint valószínűleg sosem "foglalt" olyan
+        // értelemben,
+        // hogy ne tudna több járművet fogadni (mivel listája van), de itt ezt
+        // implementálhatod.
         return false;
     }
 

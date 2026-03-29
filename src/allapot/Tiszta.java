@@ -1,41 +1,63 @@
 package allapot;
+
 import halozat.Sav;
 import jarmu.Jarmu;
 import vezerles.SkeletonLogger;
+
 /**
  * Tiszta, akadálymentes útfelület. [cite: 1239]
  */
 public class Tiszta extends Savallapot {
+
+    public Tiszta() { /* Konstruktor [cite: 1173] */
+        SkeletonLogger.create(this);
+        SkeletonLogger.register(this, "tiszta");
+        SkeletonLogger.exit(this);
+    }
+
     @Override
-    public void befogad(Sav sav, Jarmu jarmu) { /* Normál érkezés [cite: 1246] */ }
-    
+    public boolean befogad(Sav sav, Jarmu jarmu) {
+        return true;
+        /* Normál érkezés [cite: 1246] */ }
+
     @Override
-    public void elenged(Sav sav, Jarmu jarmu) { /* Normál távozás [cite: 1247] */ }
-    
+    public void elenged(Sav sav, Jarmu jarmu) {
+        /* Normál távozás [cite: 1247] */ }
+
     @Override
     public void hoesesEseten(Sav sav) {
         // Havazás esetén átvált Sekély Hó állapotba [cite: 1249]
-        
+
         SkeletonLogger.enter(this, "hoesesEseten", sav);
         SekelyHo sekelyHo = new SekelyHo();
         SkeletonLogger.register(sekelyHo, "sekelyHo");
         sav.setAllapot(sekelyHo);
         SkeletonLogger.exit("void");
-        
+
     }
-    
+
     @Override
-    public void frissit(Sav sav) { /* Nincs drasztikus változás [cite: 1251] */ }
-    
+    public void frissit(Sav sav) {
+        SkeletonLogger.enter(this, "frissit", sav);
+        SkeletonLogger.exit("void");
+    }
+
     @Override
-    public boolean lepesTeszt(Jarmu jarmu) { return true; /* Mindenki ráléphet [cite: 1253] */ }
-    
+    public boolean lepesTeszt(Jarmu jarmu) {
+        return true;
+        /* Mindenki ráléphet [cite: 1253] */ }
+
     @Override
-    public void sotKap(Sav sav) { /* Növeli a sózottságot a kontextusban [cite: 1255] */ }
-    
+    public void sotKap(Sav sav) {
+        /* Növeli a sózottságot a kontextusban [cite: 1255] */ }
+
     @Override
-    public boolean hoTisztit(Sav sav) { return false; /* Nincs hó [cite: 1260] */ }
-    
+    public boolean hoTisztit(Sav sav) {
+        return false;
+        /* Nincs hó [cite: 1260] */ }
+
     @Override
-    public boolean jegTisztit(Sav sav) { return false; /* Nincs jég [cite: 1262] */ }
+    public boolean jegTisztit(Sav sav) {
+        return false;
+        /* Nincs jég [cite: 1262] */ }
 }

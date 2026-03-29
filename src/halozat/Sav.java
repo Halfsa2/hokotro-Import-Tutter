@@ -1,14 +1,18 @@
 package halozat;
 
+import allapot.MelyHo;
 import allapot.Savallapot;
+import allapot.SekelyHo;
 import allapot.Tiszta;
 import jarmu.Jarmu;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+
 import vezerles.SkeletonLogger;
 
 public class Sav extends Csomopont {
-    
+
     private Utszakasz utszakasz;
     private Savallapot allapot;
     private Jarmu jarmu;
@@ -36,28 +40,46 @@ public class Sav extends Csomopont {
 
     @Override
     public void frissit() {
+        SkeletonLogger.enter(this, "frissit");
         if (this.sozott > 0) {
             this.sozott--;
         }
         if (allapot != null) {
             allapot.frissit(this);
         }
+        SkeletonLogger.exit("void");
     }
 
     @Override
     public boolean befogad(Jarmu jarmu) {
+        SkeletonLogger.enter(this, "befogad", jarmu);
         if (this.foglalt()) {
-            return false; // Foglalt, elutasítjuk a lépést
+            SkeletonLogger.exit(false);
+            return false;
         }
-        this.jarmu = jarmu;
-        return true; // Sikeres rálépés
+        boolean siker = false;
+        if (this.allapot != null) {
+            siker = this.allapot.befogad(this, jarmu);
+        }
+        if (siker) {
+            this.jarmu = jarmu;
+        }
+        SkeletonLogger.exit(siker);
+        return siker;
     }
 
     @Override
     public void elenged(Jarmu jarmu) {
+        SkeletonLogger.enter(this, "elenged", jarmu);
+
         if (this.jarmu == jarmu) {
             this.jarmu = null;
+            if (allapot != null) {
+                allapot.elenged(this, jarmu);
+            }
         }
+
+        SkeletonLogger.exit("void");
     }
 
     @Override
@@ -90,11 +112,11 @@ public class Sav extends Csomopont {
     @Override
     public void hoesesEseten() {
         SkeletonLogger.enter(this, "hoesesEseten");
-        if(sozott == 0){
-            utszakasz.havazikRa(this);// Először az útvonalra hat a hó, ami továbbadja a hatást a sávállapotnak
-        }else{
+        if (sozott == 0) {
+            utszakasz.havazikRa(this);
+        } else {
             sozott--;
-        } 
+        }
         SkeletonLogger.exit("void");
     }
 

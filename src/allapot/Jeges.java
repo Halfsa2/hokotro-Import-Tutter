@@ -1,6 +1,8 @@
 package allapot;
+
 import halozat.Sav;
 import jarmu.Jarmu;
+import vezerles.SkeletonLogger;
 
 /**
  * A State (Állapot) tervezési minta egyik konkrét állapot-megvalósítása.
@@ -8,15 +10,22 @@ import jarmu.Jarmu;
  */
 public class Jeges extends Savallapot {
 
+    public Jeges() { /* Konstruktor [cite: 1173] */
+        SkeletonLogger.create(this);
+        SkeletonLogger.register(this, "sekelyHo");
+        SkeletonLogger.exit(this);
+    }
+
     // A jeges állapot saját maga is nyilvántart egy ilyen értéket,
     // ami azt mutatja, hogy a jeges sáv mennyire sózott.
-    public int sozott = 0; 
+    public int sozott = 0;
 
     @Override
-    public void befogad(Sav sav, Jarmu jarmu) {
+    public boolean befogad(Sav sav, Jarmu jarmu) {
         // Lekezeli a jármű rálépését a jeges sávra.
         // A jármű megcsúszik és balesetet szenved a jégen.
         jarmu.balesetetSzenved();
+        return true; // Ráléphet, de balesetet szenved.
     }
 
     @Override
@@ -27,21 +36,20 @@ public class Jeges extends Savallapot {
     @Override
     public void hoesesEseten(Sav sav) {
         // Reagál arra az eseményre, ha a jeges útszakaszon havazni kezd.
-        // Itt például vastagodhat a jégen lévő hóréteg, átválthat egy speciális havas-jeges állapotba.
+        // Itt például vastagodhat a jégen lévő hóréteg, átválthat egy speciális
+        // havas-jeges állapotba.
     }
 
     @Override
     public void frissit(Sav sav) {
-        // Kezelheti például a sózás hatására történő olvadás folyamatát, 
-        // csökkentve a sozott értéket.
-        if (sozott > 0) {
-            sozott--;
-            if (sozott == 0) {
-                // Ha a só kifejtette a hatását (3 kör után a dokumentáció korábbi része alapján), 
-                // a jég elolvad.
-                sav.setAllapot(new Tiszta());
-            }
+        SkeletonLogger.enter(this, "frissit", sav);
+        if (this.sozott <= 0) {
+            Tiszta tiszta = new Tiszta();
+            SkeletonLogger.register(tiszta, "tiszta");
+            sav.setAllapot(tiszta);
+            this.sozott--;
         }
+        SkeletonLogger.exit("void");
     }
 
     @Override
