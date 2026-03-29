@@ -71,6 +71,7 @@ public class Main {
             // Innentől Noémi
             System.out.println("33. Autó sikeresen sávot vált");
             System.out.println("34. Autó balesete jégen");
+            System.out.println("35. Sikeres érkezés checkpointra");
 
             System.out.println("0.  Kilépés");
             System.out.print("\nVálasztás: ");
@@ -232,6 +233,10 @@ public class Main {
                 case "34":
                     System.out.println("[ USE-CASE: Autó balesete jégen ]");
                     autoBaleseteJegen();
+                    break;
+                case "35":
+                    System.out.println("[ USE-CASE: Sikeres érkezés checkpointra ]");
+                    sikeresErkezesCheckpointra();
                     break;
                 default:
                     System.out.println("Érvénytelen választás! Kérlek 0 és 32 közötti számot adj meg.");
@@ -887,5 +892,25 @@ public class Main {
         auto1.setAktualisCsomopont(aktualisSav);
 
         auto1.lep(celSav);
+    }
+
+    public static void sikeresErkezesCheckpointra() {
+        Checkpoint cel = new Checkpoint();
+        SkeletonLogger.register(cel, "cel");
+
+        // Az autó tudja, hogy ez a célja
+        Auto auto1 = new Auto(null, cel);
+        SkeletonLogger.register(auto1, "auto1");
+
+        Sav aktualisSav = new Sav();
+        SkeletonLogger.register(aktualisSav, "aktualisSav");
+        Tiszta tiszta1 = new Tiszta();
+        SkeletonLogger.register(tiszta1, "tiszta1");
+
+        aktualisSav.setAllapot(tiszta1);
+        aktualisSav.befogad(auto1);
+        auto1.setAktualisCsomopont(aktualisSav);
+
+        auto1.lep(cel);
     }
 }
