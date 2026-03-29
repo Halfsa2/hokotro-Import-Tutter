@@ -27,13 +27,13 @@ public class Hokotro extends IranyitottJarmu {
         if (this.birtokolja.contains(ujFej)) {
             this.aktiv = ujFej;
         }
-        SkeletonLogger.exit(null); // KILÉPÉS LOGOLÁSA (void miatt null)
+        SkeletonLogger.exit("void");
     }
 
     public void addFej(Kotrofej ujFej) {
         SkeletonLogger.enter(this, "addFej", ujFej);
         this.birtokolja.add(ujFej); 
-        SkeletonLogger.exit(null);
+        SkeletonLogger.exit("void");
     }
 
     public boolean takarit(Sav s) {
@@ -50,7 +50,7 @@ public class Hokotro extends IranyitottJarmu {
     @Override
     public void balesetetSzenved() {
         SkeletonLogger.enter(this, "balesetetSzenved");
-        SkeletonLogger.exit(null);
+        SkeletonLogger.exit("void");
     }
 
     @Override
