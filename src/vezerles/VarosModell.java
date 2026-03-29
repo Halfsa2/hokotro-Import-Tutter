@@ -8,13 +8,14 @@ import java.util.List;
 
 public class VarosModell implements IJatekKezelo {
 
-    private List<Csomopont> varosGraf; 
-    private KozosKassza kassza; 
+    private List<Csomopont> varosGraf;
+    private KozosKassza kassza;
 
-    public VarosModell(){
+    public VarosModell() {
         kassza = new KozosKassza(0);
         varosGraf = new ArrayList<>();
     }
+
     public VarosModell(KozosKassza kassza) {
         this.varosGraf = new ArrayList<>();
         this.kassza = kassza;
@@ -25,7 +26,7 @@ public class VarosModell implements IJatekKezelo {
     }
 
     public void addCsomopont(Csomopont csp) {
-        this.varosGraf.add(csp); 
+        this.varosGraf.add(csp);
     }
 
     @Override
@@ -41,7 +42,7 @@ public class VarosModell implements IJatekKezelo {
     public Checkpoint getSzabadCheckpoint() {
         for (Csomopont csp : varosGraf) {
             if (csp instanceof Checkpoint && !csp.foglalt()) {
-                return (Checkpoint) csp; 
+                return (Checkpoint) csp;
             }
         }
         return null;
@@ -51,13 +52,13 @@ public class VarosModell implements IJatekKezelo {
     public void havazas() {
         SkeletonLogger.enter(this, "havazas");
         for (Csomopont csp : varosGraf) {
-            csp.hoesesEseten(); 
+            csp.hoesesEseten();
         }
         SkeletonLogger.exit("void");
     }
 
     @Override
     public List<Csomopont> legrovidebbUtvonal(Csomopont start, Csomopont cel) {
-        return new ArrayList<>(); 
+        return new ArrayList<>();
     }
 }
