@@ -11,7 +11,6 @@ import halozat.Utszakasz;
 import jarmu.Auto;
 import jarmu.Busz;
 import jarmu.Hokotro;
-import jarmu.Auto;
 import java.util.Scanner;
 
 // így futtatjátok:
@@ -839,7 +838,6 @@ public class Main {
     public static void autoSikeresenSavotValt() {
         Checkpoint startCp = new Checkpoint();
         SkeletonLogger.register(startCp, "startCp");
-        
         Checkpoint celCp = new Checkpoint();
         SkeletonLogger.register(celCp, "celCp");
 
@@ -848,20 +846,18 @@ public class Main {
 
         Sav aktualisSav = new Sav();
         SkeletonLogger.register(aktualisSav, "aktualisSav");
-
         Sav celSav = new Sav();
         SkeletonLogger.register(celSav, "celSav");
 
         Tiszta tiszta1 = new Tiszta();
         SkeletonLogger.register(tiszta1, "tiszta1");
-
         Tiszta tiszta2 = new Tiszta();
         SkeletonLogger.register(tiszta2, "tiszta2");
 
-        aktualisSav.setAllapot(tiszta1);
-        celSav.setAllapot(tiszta2);
+        aktualisSav.setAllapot(tiszta2);
+        celSav.setAllapot(tiszta1);
         aktualisSav.befogad(auto1); 
-
+        auto1.setAktualisCsomopont(aktualisSav);
         
         auto1.lep(celSav);
     }

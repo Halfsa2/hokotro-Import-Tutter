@@ -103,10 +103,12 @@ public class Sav extends Csomopont {
     }
 
     public boolean lepesTeszt(Jarmu jarmu) {
+        SkeletonLogger.enter(this, "lepesTeszt", jarmu);
         boolean teszt = false;
         if (allapot != null) {
             teszt = allapot.lepesTeszt(jarmu);
         }
+        SkeletonLogger.exit(teszt);
         return teszt;
     }
 
