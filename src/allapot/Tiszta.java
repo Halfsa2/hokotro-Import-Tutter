@@ -1,7 +1,5 @@
 package allapot;
 
-import java.util.Scanner;
-
 import halozat.Sav;
 import jarmu.Jarmu;
 import vezerles.SkeletonLogger;
@@ -9,9 +7,9 @@ import vezerles.SkeletonLogger;
 public class Tiszta extends Savallapot {
 
     public Tiszta() { /* Konstruktor  */
-        
+        SkeletonLogger.create(this);
         SkeletonLogger.register(this, "tiszta");
-        
+        SkeletonLogger.exit(this);
     }
 
     @Override

@@ -844,8 +844,8 @@ public class Main {
         SkeletonLogger.register(s1, "s1");
         SkeletonLogger.register(jeges, "jeges");
         vM.addCsomopont(s1);
-        s1.setAllapot(jeges);
         s1.soSzoras();
+        s1.setAllapot(jeges);
         vM.palyaFrissit();
     }
 

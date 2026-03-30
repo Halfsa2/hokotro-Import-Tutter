@@ -43,11 +43,11 @@ public class Jeges extends Savallapot {
     @Override
     public void frissit(Sav sav) {
         SkeletonLogger.enter(this, "frissit", sav);
+        this.sozott--;
         if (this.sozott <= 0) {
             Tiszta tiszta = new Tiszta();
             SkeletonLogger.register(tiszta, "tiszta");
             sav.setAllapot(tiszta);
-            this.sozott--;
         }
         SkeletonLogger.exit("void");
     }
