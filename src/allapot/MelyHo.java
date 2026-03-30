@@ -1,7 +1,6 @@
 package allapot;
 
 import halozat.Sav;
-import jarmu.Hokotro;
 import jarmu.Jarmu;
 import vezerles.SkeletonLogger;
 
@@ -20,8 +19,9 @@ public class MelyHo extends Savallapot {
     @Override
     public boolean befogad(Sav sav, Jarmu jarmu) {
         SkeletonLogger.enter(this, "befogad", jarmu);
-        SkeletonLogger.exit(false);
-        return false;
+        boolean lephet = lepesTeszt(jarmu);
+        SkeletonLogger.exit(lephet);
+        return lephet;
     }
 
     @Override
@@ -50,10 +50,7 @@ public class MelyHo extends Savallapot {
         // Kulcsfontosságú függvény, amely eldönti, hogy a jármű rá tud-e lépni a sávra.
         // A mély hó miatt ez egy sima Auto esetén hamis, míg egy Hokotro számára igaz
         // [cite: 1085-1090].
-        if (jarmu instanceof Hokotro) {
-            return true;
-        }
-        return false;
+        return jarmu.lephetMelyHora();
     }
 
     @Override

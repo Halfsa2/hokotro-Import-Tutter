@@ -30,6 +30,9 @@ public abstract class Jarmu implements IJarmuMozgas {
     public void setAktualisCsomopont(Csomopont aktualisCsomopont) {
         this.aktualisCsomopont = aktualisCsomopont;
     }
+    public boolean lephetMelyHora(){
+        return false;
+    }
 
     // Az IJarmuMozgas interfész megvalósítása, amit a leszármazottak definiálnak
     @Override
