@@ -73,4 +73,9 @@ public class Hokotro extends IranyitottJarmu {
         SkeletonLogger.exit(false);
         return false;
     }
+    
+    @Override
+    public boolean lephetMelyHora() {
+        return true; // A hókotró képes mély hóban is közlekedni
+    }
 }
