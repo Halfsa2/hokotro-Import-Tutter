@@ -99,8 +99,8 @@ public class Main {
                 continue;
             }
 
-            Sav sav = new Sav();
-            Hokotro hokotro = new Hokotro(null);
+            //Sav sav = new Sav();
+            //Hokotro hokotro = new Hokotro(null);
             boolean sikeresTakaritas = false;
             boolean sikeresTranzakcio = false; // vásárlások sikerességére
 
