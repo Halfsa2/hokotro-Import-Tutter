@@ -39,12 +39,5 @@ public class Auto extends Jarmu {
         SkeletonLogger.exit(false);
         return false;
     }
-    /**
-     * Dönt arról, hogy az autó képes-e mély hóban haladni.
-     * @return true, ha képes mély hóban haladni
-     */
-    @Override
-    public boolean lephetMelyHora() {
-        return true; // Az autó képes mélyhórában is közlekedni
-    }
+   
 }
