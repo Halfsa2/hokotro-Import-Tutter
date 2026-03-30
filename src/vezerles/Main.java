@@ -244,7 +244,7 @@ public class Main {
                     foglaltCheckpoint();
                     break;
                 default:
-                    System.out.println("Érvénytelen választás! Kérlek 0 és 32 közötti számot adj meg.");
+                    System.out.println("Érvénytelen választás! Kérlek 0 és 36 közötti számot adj meg.");
                     continue;
             }
             System.out.println("----------------------------------------------------------");
