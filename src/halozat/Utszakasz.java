@@ -5,6 +5,9 @@ import java.util.List;
 import vezerles.SkeletonLogger;
 
 public class Utszakasz {
+    /**
+     * Útszakaszt reprezentál, amely több sávból áll és kezeli a hóeső eseményeket.
+     */
     
     protected List<Sav> savok = new ArrayList<>();
 
@@ -13,10 +16,18 @@ public class Utszakasz {
         s.setUtszakasz(this);
     }
 
+    /**
+     * Visszaadja az útszakaszban lévő sávok listáját.
+     * @return az útszakasz sávjai
+     */
     public List<Sav> getSavok() {
         return savok;
     }
 
+    /**
+     * Hóesés hatását alkalmazza a megadott sávon.
+     * @param s a hóesés hatása alá kerülő sáv
+     */
     public void havazikRa(Sav s) {
         SkeletonLogger.enter(this, "havazikRa", s);
         s.getAllapot().hoesesEseten(s); // Az útszakasz hatása a sávra, ami továbbadja a hatást az állapotnak

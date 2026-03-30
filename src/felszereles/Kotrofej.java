@@ -10,5 +10,5 @@ public abstract class Kotrofej {
      * @param s A sáv, amit takarítani kell.
      * @return Igaz, ha a takarítás sikeres volt.
      */
-    public abstract boolean takarit(Sav s); //
+    public abstract boolean takarit(Sav s); 
 }

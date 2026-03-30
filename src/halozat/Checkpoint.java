@@ -1,10 +1,9 @@
 package halozat;
 
 import jarmu.Jarmu;
-import vezerles.SkeletonLogger;
-
 import java.util.ArrayList;
 import java.util.List;
+import vezerles.SkeletonLogger;
 
 /**
  * A hálózat speciális, végpontként szolgáló csomópontja.
@@ -18,10 +17,19 @@ public class Checkpoint extends Csomopont {
         this.varakozoJarmuvek = new ArrayList<>();
     }
 
+    /**
+     * Beállítja a kimenő csomópontot a checkpointhoz.
+     * @param kimenet a célként szolgáló csomópont
+     */
     public void setKimenet(Csomopont kimenet) {
         this.kimenet = kimenet;
     }
 
+    /**
+     * Próbál befogadni egy járművet a checkpointra.
+     * @param jarmu befogadni kívánt jármű
+     * @return true, ha a járműt sikerült fogadni
+     */
     @Override
     public boolean befogad(Jarmu jarmu) {
         SkeletonLogger.enter(this, "befogad", jarmu); // Ez írja ki a hívást és kezeli a behúzást
@@ -34,16 +42,27 @@ public class Checkpoint extends Csomopont {
         return true;
     }
 
+    /**
+     * Elengedi a checkpointon várakozó járművet.
+     * @param jarmu elengedni kívánt jármű
+     */
     @Override
     public void elenged(Jarmu jarmu) {
         this.varakozoJarmuvek.remove(jarmu);
     }
 
+    /**
+     * Frissíti a checkpoint állapotát (pl. sor feldolgozása).
+     */
     @Override
     public void frissit() {
         // Checkpoint állapotának aktualizálása
     }
 
+    /**
+     * Visszaadja a checkpoint következő csomópontjait.
+     * @return a kimeneti csomópontok listája
+     */
     @Override
     public List<Csomopont> getNext() {
         SkeletonLogger.enter(this, "getNext"); // Logoljuk a hívást
@@ -55,21 +74,26 @@ public class Checkpoint extends Csomopont {
         return kimenetek;
     }
 
+    /**
+     * Baleset esetére meghívott logika. Jelenleg üres implementáció.
+     */
     @Override
     public void balesetEseten() {
         // Baleset esetén a Checkpointon
     }
 
+    /**
+     * Ellenőrzi, hogy a checkpoint foglalt-e.
+     * @return true, ha van várakozó jármű; false különben
+     */
     @Override
     public boolean foglalt() {
-        // A te logikád alapján a Checkpoint valószínűleg sosem "foglalt" olyan
-        // értelemben,
-        // hogy ne tudna több járművet fogadni (mivel listája van), de itt ezt
-        // implementálhatod.
         return !varakozoJarmuvek.isEmpty();
     }
 
-    // JAVÍTVA: Hiányzó hoesesEseten() metódus pótlása
+    /**
+     * Hőesés esetén végrehajtandó logika a checkpointon.
+     */
     @Override
     public void hoesesEseten() {
     }

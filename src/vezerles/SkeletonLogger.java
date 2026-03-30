@@ -4,18 +4,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SkeletonLogger {
+    /**
+     * Segéd osztály a szimuláció metódushívásainak és állapotváltozásainak naplózásához.
+     * Statikus helper, amely depth-alapú behúzást használ a konzolos kimenetben.
+     */
     private SkeletonLogger() {} // Privát konstruktor, hogy ne lehessen példányosítani
     private static int depth = 0;
     
     //Szótár az objektumok és a nevük tárolására, hogy szép logokat kapjunk
     private static final Map<Object, String> nevTarak = new HashMap<>();
 
-    // A Tesztelő osztályban ezzel adunk nevet az objektumoknak a teszt elején
+    /**
+     * Regisztrálja az objektumot emberi olvasható névvel a log céljára.
+     * @param obj a logolandó objektum
+     * @param nev a megjelenítendő név
+     */
     public static void register(Object obj, String nev) {
         nevTarak.put(obj, nev);
     }
 
-    // Segédmetódus: megmondja, mi az objektum neve
+    /**
+     * Visszaadja az objektum nevének reprezentációját (regisztrált név, primitív érték vagy default).
+     * @param obj név lekérése
+     * @return a logba kerülő név
+     */
     public static String getNev(Object obj) {
         if (obj == null) return "null";
         
@@ -33,7 +45,12 @@ public class SkeletonLogger {
         return "ismeretlen_" + obj.getClass().getSimpleName(); 
     }
 
-    // AZ ÚJ ENTER METÓDUS: Most már kéri magát az objektumot is (this)!
+    /**
+     * Naplózza a metódushívás kezdetét (enter) és növeli a behúzást.
+     * @param hivoObjektum a hívó objektum
+     * @param metodusNev a metódus neve
+     * @param parameterek metódusparaméterek
+     */
     public static void enter(Object hivoObjektum, String metodusNev,Object... parameterek) {
         printIndent();
         
@@ -76,6 +93,9 @@ public class SkeletonLogger {
         System.out.println("> new " + ujObjektum.getClass().getSimpleName() + "()");
         depth++;
     }
+    /**
+     * Kiírja a behúzást az aktuális mélységnek megfelelően.
+     */
     private static void printIndent() {
         for (int i = 0; i < depth; i++) {
             System.out.print("    ");

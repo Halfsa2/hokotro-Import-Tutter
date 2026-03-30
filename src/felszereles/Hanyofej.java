@@ -1,6 +1,6 @@
 package felszereles;
 import halozat.Sav;
-import vezerles.SkeletonLogger; // <-- IMPORT HOZZÁADVA
+import vezerles.SkeletonLogger;
 
 /**
  * A hányófej a havat távolra szórja, így nem növeli a szomszédos sáv hómennyiségét.
@@ -8,6 +8,12 @@ import vezerles.SkeletonLogger; // <-- IMPORT HOZZÁADVA
  */
 public class Hanyofej extends Kotrofej {
 
+    /**
+     * Takarítja a havat a hányófejjel.
+     * A hó eltűnik a hálózatról, nem kerül a szomszédos sávra.
+     * @param s a tisztítandó sáv
+     * @return true, ha sikerült megtisztítani, különben false
+     */
     @Override
     public boolean takarit(Sav s) {
         SkeletonLogger.enter(this, "takarit", s);

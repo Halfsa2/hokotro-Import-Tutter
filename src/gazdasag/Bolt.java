@@ -1,11 +1,15 @@
 package gazdasag;
-import felszereles.*;
 import jarmu.Hokotro;
 import vezerles.SkeletonLogger;
 /**
  * A hely, ahol a közös kasszába megszerzett Zúzmara Tallérokat el lehet költeni [cite: 786-787].
  */
 public class Bolt implements IMegvasarolhato {
+    /**
+     * Segédmetódus a termékek árainak meghatározására.
+     * @param termek a megvásárolni kívánt termék
+     * @return a termék ára Zúzmara Tallérban
+     */
     // Segédmetódus a termékek árainak meghatározására 
     private int getAr(Arucikk termek) {
         switch (termek) {
@@ -19,6 +23,14 @@ public class Bolt implements IMegvasarolhato {
             default: return 0;
         }
     }
+    /**
+     * Megvalósítja a vásárlási logikát a boltban.
+     * A vevő (takarító) kifizet egy terméket a közös kasszából, majd a termék hatását alkalmazza.
+     * @param termek a megvásárolni kívánt termék
+     * @param vevo a vásárlást indító takarító
+     * @param gep a vásárolt termékhez kapcsolódó hókotró
+     * @return true, ha a vásárlás sikeres volt, különben false
+     */
     @Override
     public boolean vasarol(Arucikk termek, Takarito vevo, Hokotro gep) {
         SkeletonLogger.enter(this, "vasarol", termek, vevo, gep);

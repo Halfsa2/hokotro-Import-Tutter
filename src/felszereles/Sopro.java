@@ -8,6 +8,12 @@ import vezerles.SkeletonLogger;
  */
 public class Sopro extends Kotrofej {
 
+    /**
+     * Takarítja a havat a söprő fejjel.
+     * A havat jobbra tolja a szomszédos sávra.
+     * @param s a tisztítandó sáv
+     * @return true, ha sikerült megtisztítani, különben false
+     */
     @Override
     public boolean takarit(Sav s) {
         SkeletonLogger.enter(this, "takarit", s);

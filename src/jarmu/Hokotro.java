@@ -22,6 +22,10 @@ public class Hokotro extends IranyitottJarmu {
         this.birtokolja = new ArrayList<>();
     }
 
+    /**
+     * Kicseréli az aktív fejet a hókotróban.
+     * @param ujFej az új fej, amire át akar kapcsolni
+     */
     public void cserelFej(Kotrofej ujFej) {
         SkeletonLogger.enter(this, "cserelFej", ujFej); // BELÉPÉS LOGOLÁSA
         if (this.birtokolja.contains(ujFej)) {
@@ -30,12 +34,21 @@ public class Hokotro extends IranyitottJarmu {
         SkeletonLogger.exit("void");
     }
 
+    /**
+     * Hozzáad egy további takarítófejet a hókotró készletéhez.
+     * @param ujFej az új fej, amit hozzáad
+     */
     public void addFej(Kotrofej ujFej) {
         SkeletonLogger.enter(this, "addFej", ujFej);
         this.birtokolja.add(ujFej); 
         SkeletonLogger.exit("void");
     }
 
+    /**
+     * Takarítja a megadott sávot a jelenleg aktív takarítófejjel.
+     * @param s a takarítandó sáv
+     * @return true, ha sikerült a takarítás
+     */
     public boolean takarit(Sav s) {
         SkeletonLogger.enter(this, "takarit", s);
         if (this.aktiv != null) {
@@ -47,6 +60,9 @@ public class Hokotro extends IranyitottJarmu {
         return false;
     }
 
+    /**
+     * Kezeli, ha a hókotró balesetet szenved.
+     */
     @Override
     public void balesetetSzenved() {
         SkeletonLogger.enter(this, "balesetetSzenved");

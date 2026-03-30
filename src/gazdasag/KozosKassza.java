@@ -1,6 +1,4 @@
 package gazdasag;
-import java.util.Scanner;
-
 import vezerles.SkeletonLogger;
 /**
  * A játékosok közös perselye, amely a megszerzett Zúzmara Tallérokat tárolja.
@@ -25,8 +23,9 @@ public class KozosKassza {
 
     /**
      * Levonja a megadott összeget a kasszából egy vásárlás során.
+        * @param osszeg a levonni kívánt Zúzmara Tallérok összege
+        * @return true, ha a vásárlás engedélyezett, különben false
      */
-    
     public boolean penzKivonas(int osszeg) {
         SkeletonLogger.enter(this, "penzKivonas", osszeg);        
         System.out.print("\t\t\t[?] Van elég pénz a közös kasszában a termékre? (i/n): ");         // interakció

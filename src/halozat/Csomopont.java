@@ -4,10 +4,12 @@ import jarmu.Jarmu;
 import java.util.List;
 
 public abstract class Csomopont {
-    
+
+    /**
+     * Általános csomópont absztrakt osztály a városi hálózaton.
+     */
     public abstract void frissit();
     
-    // MÓDOSÍTÁS: boolean visszatérési érték a Tell, don't ask elv miatt
     public abstract boolean befogad(Jarmu jarmu);
     
     public abstract void elenged(Jarmu jarmu);
@@ -18,6 +20,9 @@ public abstract class Csomopont {
     
     public abstract boolean foglalt();
 
-    // Csomopont és Keresztezodes osztályokon nem esik a hó, Sav felülírja
+    /**
+     * Kezeli a hóesés eseményét az adott csomóponton.
+     * Alapvetően nem tesz semmit, ha nincs felülírás.
+     */
     public void hoesesEseten(){    }
 }

@@ -16,8 +16,15 @@ import java.util.Scanner;
 // így futtatjátok:
 //javac -cp . src/**/*.java -d bin
 //java -cp bin vezerles.Main
+/**
+ * A szimuláció indító osztálya, amely menüvezérelt módon teszteseteket futtat.
+ */
 public class Main {
 
+    /**
+     * A program belépési pontja. Felhasználói menüt jelenít meg és teszteseteket futtat.
+     * @param args parancssori argumentumok (jelenleg nem használtak)
+     */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         boolean fut = true;
@@ -81,6 +88,14 @@ public class Main {
 
             if (valasz.equals("0")) {
                 fut = false;
+                continue;
+            }
+
+            int tesztSzam;
+            try {
+                tesztSzam = Integer.parseInt(valasz);
+            } catch (NumberFormatException ex) {
+                System.out.println("Érvénytelen választás! Kérlek számot adj meg.");
                 continue;
             }
 
@@ -247,8 +262,6 @@ public class Main {
                     System.out.println("Érvénytelen választás! Kérlek 0 és 36 közötti számot adj meg.");
                     continue;
             }
-            System.out.println("----------------------------------------------------------");
-            int tesztSzam = Integer.parseInt(valasz);
             if (tesztSzam >= 1 && tesztSzam <= 12) {
                 // Csak a takarítós teszteknél írjuk ki ezt
                 if (sikeresTakaritas) {
@@ -283,8 +296,11 @@ public class Main {
         scanner.close();
     }
 
-    // Kata
     // Anna
+    /**
+     * Teszt: sárkányfejjel történő hótakarítás sekély hó esetén.
+     * @return true, ha a takarítás és pénz hozzáadás sikeres
+     */
     public static boolean sikeresSarkanyfejHavatTisztit() {
         KozosKassza kassza = new KozosKassza(0);
         SkeletonLogger.register(kassza, "kassza");
@@ -308,6 +324,10 @@ public class Main {
         return siker;
     }
 
+    /**
+     * Teszt: sárkányfejjel történő jégtörés sekély hórétegen.
+     * @return true, ha a jégtörés és pénz hozzáadás sikeres
+     */
     public static boolean sikeresSarkanyfejJegetTisztit() {
         KozosKassza kassza = new KozosKassza(0);
         SkeletonLogger.register(kassza, "kassza");
@@ -333,6 +353,10 @@ public class Main {
         return siker;
     }
 
+    /**
+     * Teszt: sikertelen sárkányfej használat kerozin hiány miatt.
+     * @return true, ha a próbálkozás sikertelen (nincs kerozin)
+     */
     public static boolean sikertelenSarkanyfejNincsKerozin() {
         Sav sav1 = new Sav();
         SkeletonLogger.register(sav1, "sav1");
@@ -351,6 +375,10 @@ public class Main {
         return hokotro1.takarit(sav1);
     }
 
+    /**
+     * Teszt: sószóróval történő sikeres hótakarítás.
+     * @return true, ha a takarítás és pénz hozzáadás sikeres
+     */
     public static boolean sikeresSoszoro() {
         KozosKassza kassza = new KozosKassza(0);
         SkeletonLogger.register(kassza, "kassza");
@@ -374,6 +402,10 @@ public class Main {
         return siker;
     }
 
+    /**
+     * Teszt: sikertelen sószórás sóhiány miatt.
+     * @return true, ha a próbálkozás sikertelen
+     */
     public static boolean sikertelenSoszoroNincsSo() {
         Sav sav1 = new Sav();
         SkeletonLogger.register(sav1, "sav1");
@@ -392,6 +424,10 @@ public class Main {
         return hokotro1.takarit(sav1);
     }
 
+    /**
+     * Teszt: sikeres söprőfejes takarítás, ha van szomszédos sáv.
+     * @return true, ha a takarítás sikeres és pénz hozzáadás megtörténik
+     */
     public static boolean sikeresSoproVanSzomszedos() {
         KozosKassza kassza = new KozosKassza(0);
         SkeletonLogger.register(kassza, "kassza");
@@ -424,6 +460,10 @@ public class Main {
         return siker;
     }
 
+    /**
+     * Teszt: sikeres söprőfejes takarítás, ha nincsen szomszédos sáv.
+     * @return true, ha a takarítás sikeres és pénz hozzáadás megtörténik
+     */
     public static boolean sikeresSoproNincsSzomszedos() {
         KozosKassza kassza = new KozosKassza(0);
         SkeletonLogger.register(kassza, "kassza");
@@ -452,6 +492,10 @@ public class Main {
         return siker;
     }
 
+    /**
+     * Teszt: sikertelen söprőfejes takarítás tiszta sávon.
+     * @return true, ha a próbálkozás sikertelen
+     */
     public static boolean sikertelenSoproTisztaSav() {
         Sav sav1 = new Sav();
         SkeletonLogger.register(sav1, "sav1");
@@ -470,6 +514,10 @@ public class Main {
         return hokotro1.takarit(sav1);
     }
 
+    /**
+     * Teszt: sikeres jégtörés takarítás esetén.
+     * @return true, ha a jégtörés sikeres és pénz hozzáadás megtörténik
+     */
     public static boolean sikeresJegtores() {
         KozosKassza kassza = new KozosKassza(0);
         SkeletonLogger.register(kassza, "kassza");
@@ -493,6 +541,10 @@ public class Main {
         return siker;
     }
 
+    /**
+     * Teszt: sikertelen jégtörés sekély havon.
+     * @return true, ha a próbálkozás sikertelen
+     */
     public static boolean sikertelenJegtoresSekelyHavon() {
         Sav sav1 = new Sav();
         SkeletonLogger.register(sav1, "sav1");
@@ -511,6 +563,10 @@ public class Main {
         return hokotro1.takarit(sav1);
     }
 
+    /**
+     * Teszt: sikeres hányófejes takarítás mély hóban.
+     * @return true, ha a takarítás és pénz hozzáadás sikeres
+     */
     public static boolean sikeresHanyofej() {
         KozosKassza kassza = new KozosKassza(0);
         SkeletonLogger.register(kassza, "kassza");
@@ -534,6 +590,10 @@ public class Main {
         return siker;
     }
 
+    /**
+     * Teszt: sikertelen hányófej alkalmazása jégen.
+     * @return true, ha a próbálkozás sikertelen
+     */
     public static boolean sikertelenHanyofejJeg() {
         Sav sav1 = new Sav();
         SkeletonLogger.register(sav1, "sav1");
@@ -553,6 +613,10 @@ public class Main {
     }
 
     // Kata
+    /**
+     * Teszt: busz sikeres célba érkezése egy checkpointnál.
+     * @return true, ha a busz sikeresen fordul és pénz hozzáadás történik
+     */
     public static boolean buszfordulo() {
         KozosKassza kassza = new KozosKassza(0);
         SkeletonLogger.register(kassza, "kassza");
@@ -569,6 +633,10 @@ public class Main {
         return siker;
     }
 
+    /**
+     * Teszt: sárkányfej vásárlása boltban.
+     * @return true, ha vásárlás sikeres
+     */
     public static boolean vasarlasSarkanyfej() {
         KozosKassza kassza = new KozosKassza(1000);
         SkeletonLogger.register(kassza, "kassza");
@@ -582,6 +650,10 @@ public class Main {
         return bolt.vasarol(Arucikk.SARKANYFEJ, takarito, hokotro);
     }
 
+    /**
+     * Teszt: sikertelen vásárlás pénzhiány miatt.
+     * @return true, ha vásárlás nem történik meg
+     */
     public static boolean sikertelenVasarlas() {
         KozosKassza kassza = new KozosKassza(50);
         SkeletonLogger.register(kassza, "kassza");
@@ -595,6 +667,10 @@ public class Main {
         return bolt.vasarol(Arucikk.SARKANYFEJ, takarito, hokotro);
     }
 
+    /**
+     * Teszt: só vásárlása boltban.
+     * @return true, ha vásárlás sikeres
+     */
     public static boolean vasarlasSo() {
         KozosKassza kassza = new KozosKassza(1000);
         SkeletonLogger.register(kassza, "kassza");
@@ -608,6 +684,10 @@ public class Main {
         return bolt.vasarol(Arucikk.SO, takarito, hokotro);
     }
 
+    /**
+     * Teszt: kerozin vásárlása boltban.
+     * @return true, ha vásárlás sikeres
+     */
     public static boolean vasarlasKerozin() {
         KozosKassza kassza = new KozosKassza(1000);
         SkeletonLogger.register(kassza, "kassza");
@@ -621,6 +701,10 @@ public class Main {
         return bolt.vasarol(Arucikk.KEROZIN, takarito, hokotro);
     }
 
+    /**
+     * Teszt: hókotró vásárlása boltban.
+     * @return true, ha vásárlás sikeres
+     */
     public static boolean vasarlasHokotro() {
         KozosKassza kassza = new KozosKassza(1000);
         SkeletonLogger.register(kassza, "kassza");
@@ -634,6 +718,10 @@ public class Main {
         return bolt.vasarol(Arucikk.HOKOTRO, takarito, hokotro);
     }
 
+    /**
+     * Teszt: globális felmelegedés vásárlása boltban.
+     * @return true, ha vásárlás sikeres
+     */
     public static boolean vasarlasGlobalisFelmelegedes() {
         KozosKassza kassza = new KozosKassza(10000);
         SkeletonLogger.register(kassza, "kassza");
@@ -648,6 +736,9 @@ public class Main {
     }
 
     // Alex
+    /**
+     * Teszt: hóesés tiszta, sózatlan útszakaszon.
+     */
     public static void hoesesTisztaUtszakaszonSozatlan() {
         VarosModell vM = new VarosModell();
         SkeletonLogger.register(vM, "vM");
@@ -663,6 +754,9 @@ public class Main {
         vM.havazas();
     }
 
+    /**
+     * Teszt: hóesés tiszta, sózott útszakaszon.
+     */
     public static void hoesesTisztaUtszakaszonSozott() {
         VarosModell vM = new VarosModell();
         SkeletonLogger.register(vM, "vM");
@@ -679,6 +773,9 @@ public class Main {
         vM.havazas();
     }
 
+    /**
+     * Teszt: hóesés alagútban.
+     */
     public static void hoesesAlaguton() {
         VarosModell vM = new VarosModell();
         SkeletonLogger.register(vM, "vM");
@@ -694,6 +791,9 @@ public class Main {
         vM.havazas();
     }
 
+    /**
+     * Teszt: kereszteződés frissítése a városmodellben.
+     */
     public static void keresztezodesFrissitese() {
         VarosModell vM = new VarosModell();
         SkeletonLogger.register(vM, "vM");
@@ -703,6 +803,9 @@ public class Main {
         vM.palyaFrissit();
     }
 
+    /**
+     * Teszt: hófelhalmozódás szimulációja.
+     */
     public static void horetegFelhalmozodas() {
         VarosModell vm = new VarosModell();
         Utszakasz u = new Utszakasz();
@@ -719,6 +822,9 @@ public class Main {
         vm.havazas();
     }
 
+    /**
+     * Teszt: hó jeggé tömörülése, járművek és sávok megjelenítésével.
+     */
     public static void hoJeggeTomorulese() {
         Sav aktualis = new Sav();
         Sav cel = new Sav();
@@ -734,6 +840,9 @@ public class Main {
         busz1.lep(cel);
     }
 
+    /**
+     * Teszt: mély hó miatt járhatatlan sáv.
+     */
     public static void melyHoJarhatatlan() {
         Checkpoint cp1 = new Checkpoint();
         Checkpoint cp2 = new Checkpoint();
@@ -747,6 +856,9 @@ public class Main {
         a.lep(s1);
     }
 
+    /**
+     * Teszt: só hatása tiszta sávon.
+     */
     public static void soHatasTisztaSavon() {
         VarosModell vM = new VarosModell();
         Sav s1 = new Sav();
@@ -759,6 +871,9 @@ public class Main {
         vM.palyaFrissit();
     }
 
+    /**
+     * Teszt: só hatása sekély havas sávon, 2 hóréteggel.
+     */
     public static void soHatasSekelyHavasSavon2() {
         VarosModell vM = new VarosModell();
         Sav s1 = new Sav();
@@ -785,6 +900,9 @@ public class Main {
         vM.palyaFrissit();
     }
 
+    /**
+     * Teszt: só hatása sekély havas sávon, 1 hóréteggel.
+     */
     public static void soHatasSekelyHavasSavon1() {
         VarosModell vM = new VarosModell();
         Sav s1 = new Sav();
@@ -800,14 +918,14 @@ public class Main {
 
         vM.addCsomopont(s1);
         s1.setAllapot(sekelyHo);
-
-        // Csak EGYIKET használd a kettő közül, hogy ne fogyjon el a hó túl korán!
-        // sekelyHo.sotKap(s1); // Ezt hagyd ki, ha a soSzoras-t használod
         s1.soSzoras();
 
         vM.palyaFrissit();
     }
 
+    /**
+     * Teszt: só hatása mély havas sávon.
+     */
     public static void soHatasaMelyHavasSavon() {
         VarosModell vM = new VarosModell();
         Sav s1 = new Sav();
@@ -821,6 +939,9 @@ public class Main {
         vM.palyaFrissit();
     }
 
+    /**
+     * Teszt: só hatása jeges sávon, ahol kevesebb mint 2 sózási kör van.
+     */
     public static void soHatasaJegesSavonKevesebbMint2() {
         VarosModell vM = new VarosModell();
         Sav s1 = new Sav();
@@ -834,7 +955,9 @@ public class Main {
         s1.soSzoras();
         vM.palyaFrissit();
     }
-
+    /**
+     * Teszt: só hatása jeges sávon, ahol pontosan 2 sózási kör van hátra.
+     */
     public static void soHatasaJegesSavonPontosan2() {
         VarosModell vM = new VarosModell();
         Sav s1 = new Sav();
@@ -849,7 +972,9 @@ public class Main {
         vM.palyaFrissit();
     }
 
-    // Noemi
+    /**
+     * Teszt: az autó sikeresen sávot vált egy üres cél sávba.
+     */
     public static void autoSikeresenSavotValt() {
         Checkpoint startCp = new Checkpoint();
         SkeletonLogger.register(startCp, "startCp");
@@ -877,6 +1002,9 @@ public class Main {
         auto1.lep(celSav);
     }
 
+    /**
+     * Teszt: autó balesete, amikor jeges cél sávra lép.
+     */
     public static void autoBaleseteJegen() {
         Checkpoint cp = new Checkpoint();
         Auto auto1 = new Auto(cp, cp);
@@ -899,11 +1027,13 @@ public class Main {
         auto1.lep(celSav);
     }
 
+    /**
+     * Teszt: az autó eléri a checkpointra történő célba érkezést.
+     */
     public static void sikeresErkezesCheckpointra() {
         Checkpoint cel = new Checkpoint();
         SkeletonLogger.register(cel, "cel");
 
-        // Az autó tudja, hogy ez a célja
         Auto auto1 = new Auto(null, cel);
         SkeletonLogger.register(auto1, "auto1");
 
@@ -919,13 +1049,16 @@ public class Main {
         auto1.lep(cel);
     }
 
+    /**
+     * Teszt: foglalt checkpoint megakadályozza, hogy az autó célba érjen.
+     */
     public static void foglaltCheckpoint() {
         Checkpoint cel = new Checkpoint();
         SkeletonLogger.register(cel, "cel");
 
         Auto dummyAuto = new Auto(null, null);
         SkeletonLogger.register(dummyAuto, "dummyAuto");
-        cel.befogad(dummyAuto); // Ezáltal a 'cel' foglalt lesz!
+        cel.befogad(dummyAuto);
 
         Auto auto1 = new Auto(null, cel);
         SkeletonLogger.register(auto1, "auto1");
