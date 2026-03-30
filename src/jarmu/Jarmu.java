@@ -1,5 +1,6 @@
 package jarmu;
 import halozat.Csomopont;
+import vezerles.SkeletonLogger;
 
 /**
  * A város úthálózatán mozgó összes entitás közös absztrakt ősosztálya.
@@ -17,7 +18,9 @@ public abstract class Jarmu implements IJarmuMozgas {
      * Alapértelmezésben a jármű ilyenkor leáll, és az általa elfoglalt sáv blokkolódik.
      */
     public void balesetetSzenved() {
+        SkeletonLogger.enter(this, "balesetetSzenved");
         this.varakozik = 3; // A dokumentáció szerint a baleset miatti lezárás 3 körre érvényes
+        SkeletonLogger.exit("void");
     }
 
     public Csomopont getAktualisCsomopont() {

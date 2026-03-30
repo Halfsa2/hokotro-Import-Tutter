@@ -25,6 +25,10 @@ public class Checkpoint extends Csomopont {
     @Override
     public boolean befogad(Jarmu jarmu) {
         SkeletonLogger.enter(this, "befogad", jarmu); // Ez írja ki a hívást és kezeli a behúzást
+        if (this.foglalt()) {
+            SkeletonLogger.exit(false);
+            return false;
+        }
         this.varakozoJarmuvek.add(jarmu);
         SkeletonLogger.exit(true); // Ez írja ki a <- true-t és csökkenti a behúzást
         return true;
@@ -62,7 +66,7 @@ public class Checkpoint extends Csomopont {
         // értelemben,
         // hogy ne tudna több járművet fogadni (mivel listája van), de itt ezt
         // implementálhatod.
-        return false;
+        return !varakozoJarmuvek.isEmpty();
     }
 
     // JAVÍTVA: Hiányzó hoesesEseten() metódus pótlása

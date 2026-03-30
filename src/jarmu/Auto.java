@@ -36,7 +36,6 @@ public class Auto extends Jarmu {
             SkeletonLogger.exit(true);
             return true;
         }
-
         SkeletonLogger.exit(false);
         return false;
     }

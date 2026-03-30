@@ -68,6 +68,12 @@ public class Main {
             System.out.println("31. Só hatása jeges sávon, kevesebb, mint 2 köre sózva");
             System.out.println("32. Só hatása jeges sávon, pontosan 2 köre sózva");
 
+            // Innentől Noémi
+            System.out.println("33. Autó sikeresen sávot vált");
+            System.out.println("34. Autó balesete jégen");
+            System.out.println("35. Sikeres érkezés checkpointra");
+            System.out.println("36. Foglalt Checkpoint célállomás");
+
             System.out.println("0.  Kilépés");
             System.out.print("\nVálasztás: ");
 
@@ -220,6 +226,23 @@ public class Main {
                     soHatasaJegesSavonPontosan2();
                     break;
 
+                // Noemi
+                case "33":
+                    System.out.println("[ USE-CASE: Autó sikeresen sávot vált]");
+                    autoSikeresenSavotValt();
+                    break;
+                case "34":
+                    System.out.println("[ USE-CASE: Autó balesete jégen ]");
+                    autoBaleseteJegen();
+                    break;
+                case "35":
+                    System.out.println("[ USE-CASE: Sikeres érkezés checkpointra ]");
+                    sikeresErkezesCheckpointra();
+                    break;
+                case "36":
+                    System.out.println("[ USE-CASE: Foglalt Checkpoint célállomás ]");
+                    foglaltCheckpoint();
+                    break;
                 default:
                     System.out.println("Érvénytelen választás! Kérlek 0 és 32 közötti számot adj meg.");
                     continue;
@@ -824,5 +847,94 @@ public class Main {
         s1.setAllapot(jeges);
         s1.soSzoras();
         vM.palyaFrissit();
+    }
+
+    // Noemi
+    public static void autoSikeresenSavotValt() {
+        Checkpoint startCp = new Checkpoint();
+        SkeletonLogger.register(startCp, "startCp");
+        Checkpoint celCp = new Checkpoint();
+        SkeletonLogger.register(celCp, "celCp");
+
+        jarmu.Auto auto1 = new jarmu.Auto(startCp, celCp);
+        SkeletonLogger.register(auto1, "auto1");
+
+        Sav aktualisSav = new Sav();
+        SkeletonLogger.register(aktualisSav, "aktualisSav");
+        Sav celSav = new Sav();
+        SkeletonLogger.register(celSav, "celSav");
+
+        Tiszta tiszta1 = new Tiszta();
+        SkeletonLogger.register(tiszta1, "tiszta1");
+        Tiszta tiszta2 = new Tiszta();
+        SkeletonLogger.register(tiszta2, "tiszta2");
+
+        aktualisSav.setAllapot(tiszta2);
+        celSav.setAllapot(tiszta1);
+        aktualisSav.befogad(auto1);
+        auto1.setAktualisCsomopont(aktualisSav);
+
+        auto1.lep(celSav);
+    }
+
+    public static void autoBaleseteJegen() {
+        Checkpoint cp = new Checkpoint();
+        Auto auto1 = new Auto(cp, cp);
+        SkeletonLogger.register(auto1, "auto1");
+
+        Sav aktualisSav = new Sav();
+        SkeletonLogger.register(aktualisSav, "aktualisSav");
+
+        Sav celSav = new Sav();
+        SkeletonLogger.register(celSav, "celSav");
+
+        Jeges jeges1 = new Jeges();
+        SkeletonLogger.register(jeges1, "jeges1");
+
+        celSav.setAllapot(jeges1);
+
+        aktualisSav.befogad(auto1);
+        auto1.setAktualisCsomopont(aktualisSav);
+
+        auto1.lep(celSav);
+    }
+
+    public static void sikeresErkezesCheckpointra() {
+        Checkpoint cel = new Checkpoint();
+        SkeletonLogger.register(cel, "cel");
+
+        // Az autó tudja, hogy ez a célja
+        Auto auto1 = new Auto(null, cel);
+        SkeletonLogger.register(auto1, "auto1");
+
+        Sav aktualisSav = new Sav();
+        SkeletonLogger.register(aktualisSav, "aktualisSav");
+        Tiszta tiszta1 = new Tiszta();
+        SkeletonLogger.register(tiszta1, "tiszta1");
+
+        aktualisSav.setAllapot(tiszta1);
+        aktualisSav.befogad(auto1);
+        auto1.setAktualisCsomopont(aktualisSav);
+
+        auto1.lep(cel);
+    }
+
+    public static void foglaltCheckpoint() {
+        Checkpoint cel = new Checkpoint();
+        SkeletonLogger.register(cel, "cel");
+
+        Auto dummyAuto = new Auto(null, null);
+        SkeletonLogger.register(dummyAuto, "dummyAuto");
+        cel.befogad(dummyAuto); // Ezáltal a 'cel' foglalt lesz!
+
+        Auto auto1 = new Auto(null, cel);
+        SkeletonLogger.register(auto1, "auto1");
+
+        Sav aktualisSav = new Sav();
+        SkeletonLogger.register(aktualisSav, "aktualisSav");
+        aktualisSav.befogad(auto1);
+        auto1.setAktualisCsomopont(aktualisSav);
+
+        auto1.lep(cel);
     }
 }

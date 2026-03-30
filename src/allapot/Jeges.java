@@ -6,7 +6,7 @@ import vezerles.SkeletonLogger;
 
 public class Jeges extends Savallapot {
 
-    public Jeges() { /* Konstruktor [cite: 1173] */
+    public Jeges() { /* Konstruktor */
         SkeletonLogger.create(this);
         SkeletonLogger.register(this, "sekelyHo");
         SkeletonLogger.exit(this);
@@ -23,7 +23,9 @@ public class Jeges extends Savallapot {
     public boolean befogad(Sav sav, Jarmu jarmu) {
         // Lekezeli a jármű rálépését a jeges sávra.
         // A jármű megcsúszik és balesetet szenved a jégen.
+        SkeletonLogger.enter(this, "befogad", sav, jarmu);
         jarmu.balesetetSzenved();
+        SkeletonLogger.exit(true);
         return true; // Ráléphet, de balesetet szenved.
     }
 
