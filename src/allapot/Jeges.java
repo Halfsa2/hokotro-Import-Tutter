@@ -29,7 +29,7 @@ public class Jeges extends Savallapot {
     /**
      * Jelzi, hogy a sárkányfej használata miatt olvad a jég.
      */
-    public static boolean sarkanfejOlvassza = false;
+    public boolean sarkanyfejOlvassza = false;
 
     /**
      * Ellenőrzi, hogy a jármű befogadható-e a jeges sávba.
@@ -131,8 +131,7 @@ public class Jeges extends Savallapot {
     @Override
     public boolean jegTisztit(Sav sav) {
         SkeletonLogger.enter(this, "jegTisztit", sav);
-
-        if (sarkanfejOlvassza) {
+        if (sarkanyfejOlvassza) {
             // Ha Sárkányfej (2-es teszt), akkor tisztára olvasztja
             Tiszta tiszta = new Tiszta();
             SkeletonLogger.register(tiszta, "tiszta1");

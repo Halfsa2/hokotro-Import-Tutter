@@ -2,7 +2,7 @@ package vezerles;
 
 import java.util.HashMap;
 import java.util.Map;
-
+//retired (öregecske szegény, bepakoljuk majd valami otthonba)
 public class SkeletonLogger {
     /**
      * Segéd osztály a szimuláció metódushívásainak és állapotváltozásainak naplózásához.

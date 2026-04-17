@@ -1,0 +1,76 @@
+package vezerles;
+
+import gazdasag.Arucikk;
+import gazdasag.Jatekos;
+import halozat.Csomopont;
+import jarmu.Auto;
+import jarmu.Hokotro;
+import java.util.HashMap;
+import java.util.List;
+import megjelenites.IJatekNezet;
+
+public class JatekVezerlo {
+    private IJatekNezet nezet;
+    private IJatekKezelo modell;
+    private HashMap<Auto,List<Csomopont>> autoUtvonalak;
+    private List<Jatekos<?>> jatekosok;
+    //Az első körben esik a hó, hogy legyen valami a pályán.
+    private int korokHoesesOta = 999;
+    private Jatekos<?> aktivJatekos;
+
+    public JatekVezerlo(IJatekNezet nezet){
+        this.nezet = nezet;
+        autoUtvonalak = new HashMap<>();
+    }
+
+    public void nextJatekos(){
+        //minden 3. körben leesik a hó.
+        if(korokHoesesOta >=2) {modell.havazas();korokHoesesOta = 0;}else{korokHoesesOta++;}
+
+        //Ha ez lesz az első kör a játékban, akkor beállítjuk az első játékost aktívnak és NEM lépnek még az autók
+        if(aktivJatekos == null){aktivJatekos = jatekosok.getFirst();return;}
+
+        //Ha nem ez az első kör, akkor megszerezzük a jelenlegi játékos ID-jét
+        int currentId = jatekosok.indexOf(aktivJatekos);
+
+        //Ha az utolsó játékos volt legutóbb, akkor az első jön
+        if(currentId == jatekosok.size()-1) currentId = -1;
+        
+        //autók lépnek még a kör vége előtt
+        autokKore();
+        //só hatása most érvényesül (első körben úgysem lesz semmi, ami miatt frissíteni kéne, így nem baj, hogy ez az egyik return után van)
+        modell.palyaFrissit();
+
+        //hivatalosan a kör vége, kövi játékos következik.
+        aktivJatekos = jatekosok.get(currentId+1);
+    }
+    private void autokKore(){
+        for (Auto auto : autoUtvonalak.keySet()) {
+            autoKore(auto);
+        }
+    }
+    private void autoKore(Auto auto){
+        List<Csomopont> utvonal = autoUtvonalak.get(auto);
+        int nextIndex = utvonal.indexOf(auto.getAktualisCsomopont())+1;
+        if(nextIndex >= utvonal.size()||nextIndex <= 0){
+            //Nem tudom pontosan mit kéne csinálni, ha célba ért (vagy valamiért olyan csomóponton áll ami nem az útvonal része),
+            //de egyelőre elhárítom ezt a felelősséget annyival hogy nem léphet tovább
+            return;
+        }
+        Csomopont next = utvonal.get(nextIndex);
+        auto.lep(next);
+    }
+    public void vasarol(Arucikk termek, Hokotro gep){
+    }
+    public void addJatekos(Jatekos<?> jatekos){
+        jatekosok.add(jatekos);
+    }
+    public void addAuto(Auto auto){
+        //hozzáadunk egy autót és kiszámolunk egy legrövidebb útvonalat az autó start és cél végpontjai között. 
+        autoUtvonalak.put(auto, (modell.legrovidebbUtvonal(auto.getStart(), auto.getCel())));
+    }
+    private void jatekVege(){
+        nezet.jatekVege("Játék vége!");
+    }
+    
+}
