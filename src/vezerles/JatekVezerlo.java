@@ -1,7 +1,9 @@
 package vezerles;
 
 import gazdasag.Arucikk;
+import gazdasag.IMegvasarolhato;
 import gazdasag.Jatekos;
+import gazdasag.Takarito;
 import halozat.Csomopont;
 import jarmu.Auto;
 import jarmu.Hokotro;
@@ -12,8 +14,10 @@ import megjelenites.IJatekNezet;
 public class JatekVezerlo {
     private IJatekNezet nezet;
     private IJatekKezelo modell;
+    private IMegvasarolhato bolt;
     private HashMap<Auto,List<Csomopont>> autoUtvonalak;
     private List<Jatekos<?>> jatekosok;
+    private boolean jatekVege = false;
     //Az első körben esik a hó, hogy legyen valami a pályán.
     private int korokHoesesOta = 999;
     private Jatekos<?> aktivJatekos;
@@ -24,6 +28,7 @@ public class JatekVezerlo {
     }
 
     public void nextJatekos(){
+        if(jatekVege) return;
         //minden 3. körben leesik a hó.
         if(korokHoesesOta >=2) {modell.havazas();korokHoesesOta = 0;}else{korokHoesesOta++;}
 
@@ -61,6 +66,16 @@ public class JatekVezerlo {
         auto.lep(next);
     }
     public void vasarol(Arucikk termek, Hokotro gep){
+        if(aktivJatekos instanceof Takarito t){
+            if(bolt.vasarol(termek, t, gep)){
+                if(termek == Arucikk.GLOBAL_WARMING){
+                    jatekVege();
+                }
+                nezet.uzenetKijelzese("Sikeres vásárlás!");
+            }else{
+                nezet.uzenetKijelzese("Sikertelen vásárlás!");
+            }
+        }
     }
     public void addJatekos(Jatekos<?> jatekos){
         jatekosok.add(jatekos);
@@ -70,6 +85,7 @@ public class JatekVezerlo {
         autoUtvonalak.put(auto, (modell.legrovidebbUtvonal(auto.getStart(), auto.getCel())));
     }
     private void jatekVege(){
+        jatekVege = true;
         nezet.jatekVege("Játék vége!");
     }
     
