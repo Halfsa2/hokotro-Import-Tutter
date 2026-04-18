@@ -1,4 +1,5 @@
 package felszereles;
+
 import halozat.Sav;
 import vezerles.SkeletonLogger;
 
@@ -9,6 +10,14 @@ import vezerles.SkeletonLogger;
 public class Hanyofej extends Kotrofej {
 
     /**
+     * Konstruktor a Hányófej osztályhoz.
+     */
+    public Hanyofej() {
+        SkeletonLogger.create(this);
+        SkeletonLogger.exit(this);
+    }
+
+    /**
      * Takarítja a havat a hányófejjel.
      * A hó eltűnik a hálózatról, nem kerül a szomszédos sávra.
      * @param s a tisztítandó sáv
@@ -17,7 +26,8 @@ public class Hanyofej extends Kotrofej {
     @Override
     public boolean takarit(Sav s) {
         SkeletonLogger.enter(this, "takarit", s);
-        // A hó eltűnik a hálózatról, nem kerül a szomszédos sávra.
+        
+        // A hó eltűnik a hálózatról, az állapot (pl. SekelyHo) lecserélődik Tisztára.
         boolean ret = s.hoTisztit(); 
         
         SkeletonLogger.exit(ret);

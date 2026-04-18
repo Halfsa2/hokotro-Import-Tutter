@@ -25,7 +25,6 @@ public class SekelyHo extends Savallapot {
      */
     public SekelyHo() {
         SkeletonLogger.create(this);
-        SkeletonLogger.register(this, "sekelyHo");
         SkeletonLogger.exit(this);
     }
 
@@ -108,6 +107,8 @@ public class SekelyHo extends Savallapot {
      */
     @Override
     public boolean lepesTeszt(Jarmu jarmu) {
+        SkeletonLogger.enter(this, "lepesTeszt", jarmu);
+        SkeletonLogger.exit(true);
         return true; 
     }
 
@@ -117,10 +118,14 @@ public class SekelyHo extends Savallapot {
      */
     @Override
     public void sotKap(Sav sav) {
+        SkeletonLogger.enter(this, "sotKap", sav);
+        
         this.horeteg--;
         if (this.horeteg <= 0) {
             sav.setAllapot(new Tiszta());
         }
+        
+        SkeletonLogger.exit("void");
     }
 
     /**
