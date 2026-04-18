@@ -15,7 +15,7 @@ public class Jeges extends Savallapot {
     /**
      * A sáv sózott szintjét jelzi. Ha nagyobb mint 0, a só hatása alatt van.
      */
-    private int sozott = 0;
+    public int sozott = 0;
     /**
      * Jelzi, hogy a sáv zuzalekos-e.
      */
