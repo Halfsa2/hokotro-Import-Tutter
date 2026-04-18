@@ -189,6 +189,7 @@ public class Sav extends Csomopont {
      * Megkísérli a jég eltávolítását a sávon.
      * @return true, ha sikerült a jég eltakarítása
      */
+    @Override
     public boolean jegTisztit() {
         SkeletonLogger.enter(this, "jegTisztit");
         boolean ret = false;
@@ -203,6 +204,7 @@ public class Sav extends Csomopont {
      * Megpróbálja eltakarítani a havat a sávon.
      * @return true, ha a hó eltakarítása sikerült
      */
+    @Override
     public boolean hoTisztit() {
         SkeletonLogger.enter(this, "hoTisztit");
         boolean ret = false;
@@ -216,6 +218,7 @@ public class Sav extends Csomopont {
     /**
      * Só szórása a sáv felületére; csökkenti a jegesedési kockázatot.
      */
+    @Override
     public void soSzoras() {
         SkeletonLogger.enter(this, "soSzoras");
         if (allapot != null) {
