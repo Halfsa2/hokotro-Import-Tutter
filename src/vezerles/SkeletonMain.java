@@ -622,7 +622,7 @@ public class SkeletonMain {
         SkeletonLogger.register(kassza, "kassza");
         Checkpoint vegallomas = new Checkpoint();
         SkeletonLogger.register(vegallomas, "vegallomas");
-        Busz busz = new Busz(vegallomas, vegallomas);
+        Busz busz = new Busz(vegallomas, vegallomas, null);
         SkeletonLogger.register(busz, "busz");
 
         boolean siker = busz.lep(vegallomas);
@@ -829,7 +829,7 @@ public class SkeletonMain {
         Sav aktualis = new Sav();
         Sav cel = new Sav();
         SekelyHo sh = new SekelyHo();
-        Busz busz1 = new Busz(null, null);
+        Busz busz1 = new Busz(null, null, null);
         aktualis.setAllapot(sh);
         aktualis.befogad(busz1);
         busz1.setAktualisCsomopont(aktualis);
