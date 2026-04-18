@@ -167,10 +167,11 @@ public class SekelyHo extends Savallapot {
      * Megpróbálja megtisztítani a jeget a sávból.
      * Sekély hóban nincs jég, így nem sikerül.
      * @param sav a tisztítandó sáv
+     * @param olvad jelzi, hogy a jeget törjük, vagy olvasztjuk
      * @return false, mivel nincs jég
      */
     @Override
-    public boolean jegTisztit(Sav sav) {
+    public boolean jegTisztit(Sav sav,Boolean olvad) {
         SkeletonLogger.enter(this, "jegTisztit", sav);
         SkeletonLogger.exit(false);
         return false;

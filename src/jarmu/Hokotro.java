@@ -86,7 +86,8 @@ public class Hokotro extends IranyitottJarmu {
             // Ez itt nem szép megoldás, de realisztikusan nem fog változni már a követelmény, a flexibilitás biztosítása pedig
             // nagyobb erőfeszítéseket igényelne, mint amennyit érne, így marad ez a megoldás.
             if (aktualisCsomopont instanceof Sav sav) {
-                this.takarit(sav);
+                // Ha sikerült kitakarítani a sávot, akkor a tulajdonos pénzt keres.
+                if(this.takarit(sav)) tulajdonos.keres(5);
             }
             SkeletonLogger.exit(true);
             return true;

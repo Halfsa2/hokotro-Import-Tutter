@@ -11,6 +11,16 @@ import vezerles.SkeletonLogger;
  */
 public class Jeges extends Savallapot {
 
+    
+    /**
+     * A sáv sózott szintjét jelzi. Ha nagyobb mint 0, a só hatása alatt van.
+     */
+    private int sozott = 0;
+    /**
+     * Jelzi, hogy a sáv zuzalekos-e.
+     */
+    private boolean zuzalekos = false;
+    
     /**
      * Konstruktor a Jeges osztályhoz.
      * Inicializálja a jeges állapotot és regisztrálja a SkeletonLogger-ben.
@@ -21,15 +31,7 @@ public class Jeges extends Savallapot {
         SkeletonLogger.exit(this);
     }
 
-    /**
-     * A sáv sózott szintjét jelzi. Ha nagyobb mint 0, a só hatása alatt van.
-     */
-    public int sozott = 0;
 
-    /**
-     * Jelzi, hogy a sárkányfej használata miatt olvad a jég.
-     */
-    public boolean sarkanyfejOlvassza = false;
 
     /**
      * Ellenőrzi, hogy a jármű befogadható-e a jeges sávba.
@@ -43,7 +45,9 @@ public class Jeges extends Savallapot {
         // Lekezeli a jármű rálépését a jeges sávra.
         // A jármű megcsúszik és balesetet szenved a jégen.
         SkeletonLogger.enter(this, "befogad", sav, jarmu);
-        jarmu.balesetetSzenved();
+        if(!zuzalekos){
+            jarmu.balesetetSzenved();
+        }
         SkeletonLogger.exit(true);
         return true; // Ráléphet, de balesetet szenved.
     }
@@ -126,12 +130,13 @@ public class Jeges extends Savallapot {
      * Megpróbálja megtisztítani a jeget a sávból.
      * Ha sárkányfej használja, tiszta lesz; különben sekély hó marad.
      * @param sav a tisztítandó sáv
+     * @param olvad jelzi, hogy a jeget törjük, vagy olvasztjuk
      * @return true, mivel sikerül
      */
     @Override
-    public boolean jegTisztit(Sav sav) {
+    public boolean jegTisztit(Sav sav,Boolean olvad) {
         SkeletonLogger.enter(this, "jegTisztit", sav);
-        if (sarkanyfejOlvassza) {
+        if (olvad) {
             // Ha Sárkányfej (2-es teszt), akkor tisztára olvasztja
             Tiszta tiszta = new Tiszta();
             SkeletonLogger.register(tiszta, "tiszta1");
@@ -145,5 +150,19 @@ public class Jeges extends Savallapot {
 
         SkeletonLogger.exit(true);
         return true;
+    }
+    @Override
+    public boolean zuzalekTisztit(Sav sav) {
+        SkeletonLogger.enter(this, "zuzalekTisztit", sav);
+        this.zuzalekos = false;
+        SkeletonLogger.exit(true);
+        return true;
+
+    }
+    @Override
+    public void zuzalekSzoras() {
+        SkeletonLogger.enter(this, "zuzalekSzoras");
+        this.zuzalekos = true;
+        SkeletonLogger.exit("void");
     }
 }

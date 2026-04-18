@@ -33,7 +33,7 @@ public class Sarkanyfej extends Kotrofej {
         if (kerozin_mennyiseg > 0) {
             // Üzemanyag felhasználásával azonnali olvasztást végez.
             boolean hoEltakaritva = s.hoTisztit();
-            boolean jegEltakaritva = s.jegTisztit();
+            boolean jegEltakaritva = s.jegTisztit(true);
             
             kerozin_mennyiseg--;
             

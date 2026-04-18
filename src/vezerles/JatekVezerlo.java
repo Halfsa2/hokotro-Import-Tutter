@@ -32,16 +32,25 @@ public class JatekVezerlo {
         
     }
     public void initJatek(){
-        //TODO
+        //TODO: autók hozzáadása, játékosok járműveinek beállítása, modell inicializálása, stb.
     }
-
+    public void lep(Csomopont cel){
+        if(jatekVege) return;
+        if(aktivJatekos != null){
+            //Itt nem számít a lépés eredménye, ha sikertelen a lépés, akkor is tovább lépünk a következő játékosra/járműre.
+            aktivJatekos.lep(cel);
+            //Ha a játékos körének vége van, akkor következik a következő játékos, egyébként a következő járműve lép.
+            if(aktivJatekos.isKorVege()) {nextJatekos();}
+            else{aktivJatekos.nextJarmu();}
+        }
+    }
     public void nextJatekos(){
         if(jatekVege) return;
         //minden 3. körben leesik a hó.
         if(korokHoesesOta >=2) {modell.havazas();korokHoesesOta = 0;}else{korokHoesesOta++;}
 
         //Ha ez lesz az első kör a játékban, akkor beállítjuk az első játékost aktívnak és NEM lépnek még az autók
-        if(aktivJatekos == null){aktivJatekos = jatekosok.getFirst();return;}
+        if(aktivJatekos == null){aktivJatekos = jatekosok.getFirst(); aktivJatekos.korKezdodik(); return;}
 
         //Ha nem ez az első kör, akkor megszerezzük a jelenlegi játékos ID-jét
         int currentId = jatekosok.indexOf(aktivJatekos);
@@ -56,6 +65,7 @@ public class JatekVezerlo {
 
         //hivatalosan a kör vége, kövi játékos következik.
         aktivJatekos = jatekosok.get(currentId+1);
+        aktivJatekos.korKezdodik();
     }
     private void autokKore(){
         for (Auto auto : autoUtvonalak.keySet()) {
