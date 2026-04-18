@@ -121,7 +121,7 @@ public class MelyHo extends Savallapot {
      */
     @Override
     public boolean jegTisztit(Sav sav,Boolean olvad) {
-        SkeletonLogger.enter(this, "jegTisztit", sav);
+        SkeletonLogger.enter(this, "jegTisztit", sav, olvad);
         SkeletonLogger.exit(false);
         return false;
     }

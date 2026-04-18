@@ -25,6 +25,14 @@ public class Sav extends Csomopont {
         this.allapot = new Tiszta();
         this.szomszedok = new ArrayList<>();
     }
+    /**
+     * a Sav-nak és Utszakasz-nak támogatnia kell azt, hogy manuálisan megmondjuk nekik, kik a szomszédjaik (connect parancs).
+     * Jelenleg a Sav.java getNext() metódusa egy szomszedok listát ad vissza,
+     * de nincs publikus metódus, amivel elemet lehetne beletenni!
+     */
+    public void addSzomszed(Csomopont szomszed) {
+        this.szomszedok.add(szomszed);
+    }
 
     /**
      * Beállítja az útszakasz referenciáját a sáv számára.
@@ -229,7 +237,7 @@ public class Sav extends Csomopont {
     public void zuzalekSzoras() {
         SkeletonLogger.enter(this, "zuzalekSzoras");
         if (allapot != null) {
-            allapot.zuzalekTisztit(this);
+            allapot.zuzalekSzoras();
         }
         SkeletonLogger.exit("void");
     }

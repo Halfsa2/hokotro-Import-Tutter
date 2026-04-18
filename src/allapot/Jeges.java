@@ -27,7 +27,6 @@ public class Jeges extends Savallapot {
      */
     public Jeges() { /* Konstruktor */
         SkeletonLogger.create(this);
-        SkeletonLogger.register(this, "sekelyHo");
         SkeletonLogger.exit(this);
     }
 
@@ -43,11 +42,14 @@ public class Jeges extends Savallapot {
     @Override
     public boolean befogad(Sav sav, Jarmu jarmu) {
         SkeletonLogger.enter(this, "befogad", sav, jarmu);
-        if(!zuzalekos){
+        if (this.zuzalekos) {
+            SkeletonLogger.exit(true);
+            return true;
+        } else {
             jarmu.balesetetSzenved();
+            SkeletonLogger.exit(true);
+            return true; 
         }
-        SkeletonLogger.exit(true);
-        return true; // Ráléphet, de balesetet szenved.
     }
 
     /**
@@ -129,20 +131,21 @@ public class Jeges extends Savallapot {
      * @return true, mivel sikerül
      */
     @Override
-    public boolean jegTisztit(Sav sav,Boolean olvad) {
-        SkeletonLogger.enter(this, "jegTisztit", sav);
+    public boolean jegTisztit(Sav sav, Boolean olvad) {
+        SkeletonLogger.enter(this, "jegTisztit", sav, olvad);
+        
         if (olvad) {
-            // Ha Sárkányfej (2-es teszt), akkor tisztára olvasztja
-            Tiszta tiszta = new Tiszta();
-            SkeletonLogger.register(tiszta, "tiszta1");
-            sav.setAllapot(tiszta);
+            // Sárkányfej esetén teljesen leolvad
+            sav.setAllapot(new Tiszta());
         } else {
+            // Jégtörő esetén marad 1 réteg hó
             sav.setAllapot(new SekelyHo());
         }
 
         SkeletonLogger.exit(true);
         return true;
     }
+    
     @Override
     public boolean zuzalekTisztit(Sav sav) {
         SkeletonLogger.enter(this, "zuzalekTisztit", sav);

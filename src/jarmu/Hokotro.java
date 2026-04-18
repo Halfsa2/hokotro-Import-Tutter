@@ -47,6 +47,13 @@ public class Hokotro extends IranyitottJarmu {
         this.birtokolja.put(ujFej.getClass().getSimpleName(), ujFej);
         SkeletonLogger.exit("void");
     }
+    /**
+     * Getter, ami név alapján visszaad egy birtokolt fejet
+     * @param tipusnev a fej típusának neve, amit le akar kérni
+     */
+    public Kotrofej getFej(String tipusNev) {
+        return this.birtokolja.get(tipusNev);
+    }
 
     /**
      * Takarítja a megadott sávot a jelenleg aktív takarítófejjel.

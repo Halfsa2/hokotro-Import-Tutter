@@ -63,7 +63,8 @@ public class Sarkanyfej extends Kotrofej {
     /**
      * Kerozin újratöltése vásárlás esetén.
      */
-    public void addKerozin(int mennyiseg) {
+    @Override
+    public void ujratolt(int mennyiseg) {
         this.kerozin_mennyiseg += mennyiseg;
     }
 }

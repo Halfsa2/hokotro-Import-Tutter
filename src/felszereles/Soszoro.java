@@ -13,11 +13,26 @@ public class Soszoro extends Kotrofej {
     protected int so_mennyiseg;
 
     /**
+     * Só újratöltése vásárlás esetén.
+     */
+    @Override
+    public void ujratolt(int mennyiseg) {
+        this.so_mennyiseg += mennyiseg;
+    }
+    /**
      * Konstruktor a Soszoro osztályhoz.
      * @param kezdetiSo a kezdeti só mennyisége
      */
     public Soszoro(int kezdetiSo) {
         this.so_mennyiseg = kezdetiSo;
+    }
+
+    /**
+     * Visszaadja a só aktuális mennyiségét.
+     * (Hasznos lesz a Prototípus 'stat' parancsához, hogy lássuk mennyi só maradt)
+     */
+    public int getSoMennyiseg() {
+        return this.so_mennyiseg;
     }
 
     /**

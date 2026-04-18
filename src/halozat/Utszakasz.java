@@ -4,16 +4,32 @@ import java.util.ArrayList;
 import java.util.List;
 import vezerles.SkeletonLogger;
 
+/**
+ * Útszakaszt reprezentál, amely több párhuzamos sávból áll.
+ * Kezeli a sávok közti szomszédsági viszonyokat és a hóesés továbbítását.
+ */
 public class Utszakasz {
-    /**
-     * Útszakaszt reprezentál, amely több sávból áll és kezeli a hóeső eseményeket.
-     */
     
-    protected List<Sav> savok = new ArrayList<>();
+    protected List<Sav> savok;
 
+    /**
+     * Konstruktor az Utszakasz osztályhoz.
+     */
+    public Utszakasz() {
+        SkeletonLogger.create(this);
+        this.savok = new ArrayList<>();
+        SkeletonLogger.exit(this);
+    }
+
+    /**
+     * Hozzáad egy új sávot az útszakaszhoz, és beállítja a sáv útszakasz referenciáját.
+     * @param s a hozzáadandó sáv
+     */
     public void addSav(Sav s) {
-        savok.add(s);
+        SkeletonLogger.enter(this, "addSav", s);
+        this.savok.add(s);
         s.setUtszakasz(this);
+        SkeletonLogger.exit("void");
     }
 
     /**
@@ -21,7 +37,9 @@ public class Utszakasz {
      * @return az útszakasz sávjai
      */
     public List<Sav> getSavok() {
-        return savok;
+        SkeletonLogger.enter(this, "getSavok");
+        SkeletonLogger.exit("lista");
+        return this.savok;
     }
 
     /**
@@ -30,21 +48,24 @@ public class Utszakasz {
      */
     public void havazikRa(Sav s) {
         SkeletonLogger.enter(this, "havazikRa", s);
-        s.getAllapot().hoesesEseten(s); // Az útszakasz hatása a sávra, ami továbbadja a hatást az állapotnak
+        // Az útszakasz hatása a sávra, ami továbbadja a hatást az állapotnak
+        s.getAllapot().hoesesEseten(s); 
         SkeletonLogger.exit("void");
     }
     
     /**
-     * @param sav
-     * @return paramétertől jobbra lévő sáv referenciája, vagy null érték, ha nincs az adott irányban szomszédja
+     * Visszaadja a vizsgált sávtól jobbra lévő sávot.
+     * @param sav a vizsgált sáv
+     * @return a jobbra lévő sáv referenciája, vagy null érték, ha nincs az adott irányban szomszédja
      */
     public Sav getJobbSzomszed(Sav sav){
-        SkeletonLogger.enter(this, "getJobbSzomszed", sav); // LOGOLÁS
+        SkeletonLogger.enter(this, "getJobbSzomszed", sav); 
         
-        int id = savok.indexOf(sav);
+        int id = this.savok.indexOf(sav);
+        
         // Biztonsági ellenőrzés: ha benne van a listában, és NEM az utolsó elem
-        if (id != -1 && id < savok.size() - 1) {
-            Sav szomszed = savok.get(id + 1);
+        if (id != -1 && id < this.savok.size() - 1) {
+            Sav szomszed = this.savok.get(id + 1);
             SkeletonLogger.exit(szomszed);
             return szomszed;
         }
@@ -54,16 +75,18 @@ public class Utszakasz {
     }
     
     /**
-     * @param sav
-     * @return paramétertől balra lévő sáv referenciája, vagy null érték, ha nincs az adott irányban szomszédja
+     * Visszaadja a vizsgált sávtól balra lévő sávot.
+     * @param sav a vizsgált sáv
+     * @return a balra lévő sáv referenciája, vagy null érték, ha nincs az adott irányban szomszédja
      */
     public Sav getBalSzomszed(Sav sav){
-        SkeletonLogger.enter(this, "getBalSzomszed", sav); // LOGOLÁS
+        SkeletonLogger.enter(this, "getBalSzomszed", sav); 
         
-        int id = savok.indexOf(sav);
+        int id = this.savok.indexOf(sav);
+        
         // Biztonsági ellenőrzés: ha benne van a listában, és NEM a legelső elem
         if (id > 0) {
-            Sav szomszed = savok.get(id - 1);
+            Sav szomszed = this.savok.get(id - 1);
             SkeletonLogger.exit(szomszed);
             return szomszed;
         }
