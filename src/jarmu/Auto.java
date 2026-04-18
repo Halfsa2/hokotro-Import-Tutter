@@ -9,8 +9,8 @@ import vezerles.SkeletonLogger;
  */
 public class Auto extends Jarmu {
 
-    private Checkpoint start; // Az autó kiindulási pozíciója
-    private Checkpoint cel; // Az autó célállomása
+    private final Checkpoint start; // Az autó kiindulási pozíciója (nem változik a játék során)
+    private final Checkpoint cel; // Az autó célállomása (nem változik a játék során)
 
     public Auto(Checkpoint start, Checkpoint cel) {
         this.start = start;

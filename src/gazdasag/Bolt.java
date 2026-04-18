@@ -1,4 +1,7 @@
 package gazdasag;
+import felszereles.Hanyofej;
+import felszereles.Sarkanyfej;
+import felszereles.Soszoro;
 import jarmu.Hokotro;
 import vezerles.SkeletonLogger;
 /**
@@ -12,16 +15,16 @@ public class Bolt implements IMegvasarolhato {
      */
     // Segédmetódus a termékek árainak meghatározására 
     private int getAr(Arucikk termek) {
-        switch (termek) {
-            case HANYOFEJ: return 100;
-            case SOSZORO: return 150;
-            case SARKANYFEJ: return 300;
-            case HOKOTRO: return 500;
-            case SO: return 50;
-            case KEROZIN: return 100;
-            case GLOBAL_WARMING: return 10000;
-            default: return 0;
-        }
+        return switch (termek) {
+            case HANYOFEJ -> 100;
+            case SOSZORO -> 150;
+            case SARKANYFEJ -> 300;
+            case HOKOTRO -> 500;
+            case SO -> 50;
+            case KEROZIN -> 100;
+            case GLOBAL_WARMING -> 10000;
+            default -> 0;
+        };
     }
     /**
      * Megvalósítja a vásárlási logikát a boltban.
@@ -38,69 +41,51 @@ public class Bolt implements IMegvasarolhato {
         boolean fizetesSikeres = vevo.fizet(ar); //takarító fizet metódusa
         
         if (fizetesSikeres) {
-            if (termek == Arucikk.SARKANYFEJ) {
-                System.out.println("\t\t> new ujFej: Sarkanyfej()");
-                System.out.println("\t\t<- ujFej: Sarkanyfej");
-                System.out.println("\t\t> hokotro1:Hokotro.addFej(ujFej: Sarkanyfej)");
-                System.out.println("\t\t<- void");
-            } 
-            else if (termek == Arucikk.SO) {
-                System.out.println("\t\t> takarito1:Takarito.soToltes(hokotro1: Hokotro)");
-                System.out.println("\t\t<- void");
-            }
-            else if (termek == Arucikk.KEROZIN) {
-                System.out.println("\t\t> takarito1:Takarito.kerozinToltes(hokotro1: Hokotro)");
-                System.out.println("\t\t<- void");
-            }
-            else if (termek == Arucikk.HOKOTRO) {
-                System.out.println("\t\t> new ujHokotro:Hokotro()");
-                System.out.println("\t\t<- ujHokotro: Hokotro");
+            if (null != termek) switch (termek) {
+                case SARKANYFEJ -> {
+                    Sarkanyfej ujSarkanyfej = new Sarkanyfej(10);
+                    gep.addFej(ujSarkanyfej);
+                }
+                case SO -> {
+                    //TODO: A sószóró fej újratöltése a megfelelő mennyiségű sóval
+                    vevo.soToltes(gep);
+                }
+                case KEROZIN -> {
+                    //TODO: A sárkányfej újratöltése a megfelelő mennyiségű kerozinnal
+                    vevo.kerozinToltes(gep);
+                }
+                case HOKOTRO -> {
+                    Hokotro ujGep = new Hokotro(vevo);
+                    vevo.addHokotro(ujGep);
+                }
+                case GLOBAL_WARMING -> {
+                    // A havazást megakadályozó eszköz megállítja a havazást [cite: 554-555]
+                    System.out.println("Győzelem! A havazás elállt Zúzmaravárosban!");
+                    // A JatekVezerlo értesül a sikeres vásárlásról, és kezdeményezi a játék végét
+                }
+                case ZUZALEK ->{
+                    //TODO: A zuzalék újratöltése a megfelelő mennyiséggel
+                    vevo.zuzalekToltes(gep);
+                }
+                case HANYOFEJ -> {
+                    Hanyofej ujHanyofej = new Hanyofej();
+                    gep.addFej(ujHanyofej);
+                }
+                case SOSZORO -> {
+                    Soszoro ujSoszoro = new Soszoro(10);
+                    gep.addFej(ujSoszoro);
+                }
+                case ZUZALEKSZORO -> {
+                    //TODO: Zúzalékszóró felszerelés hozzáadása a hókotróhoz (x db kővel)
+                }
             }
             SkeletonLogger.exit(true);
-            return true;
-        } 
+                } 
         else {
             // Nincs elég pénz (Sikertelen vásárlás)
             SkeletonLogger.exit(false);
-            return false;
         }
+        return fizetesSikeres;
     }
-
-        /* ez még nem kell
-        // A bolt ellenőrzi, hogy a Takarító tud-e fizetni
-        if (vevo.fizet(ar)) {
-            // Ha a fizetés sikeres, létrehozza a terméket és odaadja a vevőnek/gépnek [cite: 792]
-            switch (termek) {
-                case HANYOFEJ:
-                    gep.addFej(new Hanyofej());
-                    break;
-                case SOSZORO:
-                    gep.addFej(new Soszoro(5)); // Például 5 egység sóval indul
-                    break;
-                case SARKANYFEJ:
-                    gep.addFej(new Sarkanyfej(5)); // Például 5 egység kerozinnal indul
-                    break;
-                case HOKOTRO:
-                    Hokotro ujGep = new Hokotro(vevo);
-                    vevo.addHokotro(ujGep); // A Takarító listájához adódik [cite: 796]
-                    break;
-                case SO:
-                    vevo.soToltes(gep);
-                    break;
-                case KEROZIN:
-                    vevo.kerozinToltes(gep);
-                    break;
-                case GLOBAL_WARMING:
-                    // A havazást megakadályozó eszköz megállítja a havazást [cite: 554-555]
-                    System.out.println("Győzelem! A havazás elállt Zúzmaravárosban!");
-                    // Itt kellene értesíteni a JátékKezelőt/VárosModellt a játék végéről
-                    break;
-            }
-            return true;
-        }
-        
-        // Nincs elég pénz
-        System.out.println("Nincs elég Zúzmara Tallér a Közös Kasszában!");
-        return false;*/
 } 
 

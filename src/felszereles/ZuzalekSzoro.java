@@ -1,7 +1,6 @@
 package felszereles;
 
 import halozat.Sav;
-import allapot.Jeges;
 import vezerles.SkeletonLogger;
 
 /**
@@ -13,18 +12,9 @@ public class ZuzalekSzoro extends Kotrofej {
     @Override
     public boolean takarit(Sav s) {
         SkeletonLogger.enter(this, "takarit", s);
-        
-        // Csak akkor van értelme szórni, ha a sáv aktuális állapota Jeges
-        if (s.getAllapot() instanceof Jeges) {
-            Jeges jegesAllapot = (Jeges) s.getAllapot();
-            jegesAllapot.zuzalekos = true;
+        s.zuzalekSzoras(); // Zúzalék szórása a sávra
             
             SkeletonLogger.exit(true);
             return true;
-        }
-        
-        // Ha nem jeges a sáv, a zúzalék nem csinál semmit
-        SkeletonLogger.exit(false);
-        return false;
     }
 }

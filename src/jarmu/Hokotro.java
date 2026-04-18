@@ -4,8 +4,7 @@ import felszereles.Kotrofej;
 import gazdasag.Takarito;
 import halozat.Csomopont;
 import halozat.Sav;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import vezerles.SkeletonLogger;
 
 /**
@@ -15,11 +14,11 @@ public class Hokotro extends IranyitottJarmu {
     
     private Takarito tulajdonos; 
     private Kotrofej aktiv; 
-    private List<Kotrofej> birtokolja; 
+    private HashMap<String, Kotrofej> birtokolja; 
 
     public Hokotro(Takarito tulajdonos) {
         this.tulajdonos = tulajdonos;
-        this.birtokolja = new ArrayList<>();
+        this.birtokolja = new HashMap<>();
     }
 
     /**
@@ -28,8 +27,9 @@ public class Hokotro extends IranyitottJarmu {
      */
     public void cserelFej(Kotrofej ujFej) {
         SkeletonLogger.enter(this, "cserelFej", ujFej); // BELÉPÉS LOGOLÁSA
-        if (this.birtokolja.contains(ujFej)) {
-            this.aktiv = ujFej;
+        Kotrofej sameTipus = this.birtokolja.get(ujFej.getClass().getSimpleName());
+        if (sameTipus != null) {
+            this.aktiv = sameTipus;
         }
         SkeletonLogger.exit("void");
     }
@@ -40,7 +40,11 @@ public class Hokotro extends IranyitottJarmu {
      */
     public void addFej(Kotrofej ujFej) {
         SkeletonLogger.enter(this, "addFej", ujFej);
-        this.birtokolja.add(ujFej); 
+        if(this.birtokolja.containsKey(ujFej.getClass().getSimpleName())) {
+            SkeletonLogger.exit("void");
+            return; // Már van ilyen típusú fej, nem adunk hozzá újat
+        }
+        this.birtokolja.put(ujFej.getClass().getSimpleName(), ujFej);
         SkeletonLogger.exit("void");
     }
 
@@ -66,6 +70,7 @@ public class Hokotro extends IranyitottJarmu {
     @Override
     public void balesetetSzenved() {
         SkeletonLogger.enter(this, "balesetetSzenved");
+        // Nem szenved balesetet, így nem történik semmi. Ez a metódus üres marad.
         SkeletonLogger.exit("void");
     }
 
@@ -78,9 +83,11 @@ public class Hokotro extends IranyitottJarmu {
                 this.aktualisCsomopont.elenged(this);
             }
             this.aktualisCsomopont = celCsomopont;
-            
-            if (celCsomopont instanceof Sav) {
-                this.takarit((Sav) celCsomopont);
+            // Ez itt nem szép megoldás, de realisztikusan nem fog változni már a követelmény, a flexibilitás biztosítása pedig
+            // nagyobb erőfeszítéseket igényelne, mint amennyit érne, így marad ez a megoldás.
+            if (aktualisCsomopont instanceof Sav sav) {
+                // Ha sikerült kitakarítani a sávot, akkor a tulajdonos pénzt keres.
+                if(this.takarit(sav)) tulajdonos.keres(5);
             }
             SkeletonLogger.exit(true);
             return true;

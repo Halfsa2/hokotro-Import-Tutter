@@ -25,10 +25,8 @@ public class Jegtoro extends Kotrofej {
     @Override
     public boolean takarit(Sav s) {
         SkeletonLogger.enter(this, "takarit", s);
-        
-        // A Savallapot.jegTisztit() elvégzi az állapotváltást.
-        // A korábban megírt Jeges osztály alapján ez SekelyHo-t csinál az útból.
-        boolean ret = s.jegTisztit(); 
+        // A jégtörő specifikus művelete: a jeget 1 réteg hóra módosítja.
+        boolean ret = s.jegTisztit(false); // A Savallapot.jegTisztit() elvégzi az állapotváltást
         
         SkeletonLogger.exit(ret);
         return ret;

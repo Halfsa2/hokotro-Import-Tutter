@@ -345,9 +345,9 @@ public class SkeletonMain {
         hokotro1.addFej(sarkanyfej1);
         hokotro1.cserelFej(sarkanyfej1);
 
-        Jeges.sarkanyfejOlvassza = true;
+        //Jeges.sarkanfejOlvassza = true;
         boolean siker = hokotro1.takarit(sav1);
-        Jeges.sarkanyfejOlvassza = false;
+        //Jeges.sarkanfejOlvassza = false;
         if (siker)
             kassza.penzHozzaadas(5);
         return siker;

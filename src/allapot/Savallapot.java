@@ -61,7 +61,18 @@ public abstract class Savallapot {
     /**
      * Megpróbálja megtisztítani a jeget a sávból az aktuális állapotban.
      * @param sav a tisztítandó sáv
-     * @return true, ha sikerült (volt jég), különben false
+     * @param olvad jelzi, hogy a jeget törjük, vagy olvasztjuk
+     * @return true, ha sikerült, különben false
      */
-    public abstract boolean jegTisztit(Sav sav);
+    public abstract boolean jegTisztit(Sav sav, Boolean olvad); // [cite: 1163]
+
+    /**
+      * Megpróbálja megtisztítani a zuzalékot a sávból az aktuális állapotban.
+      * @param sav a tisztítandó sáv
+      * @return true, ha sikerült, különben false
+      */
+    public boolean zuzalekTisztit(Sav sav) {
+        return false;
+    }
+    public void zuzalekSzoras() {}
 }

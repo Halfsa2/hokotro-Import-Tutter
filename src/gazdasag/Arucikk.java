@@ -16,7 +16,6 @@ public enum Arucikk {
      */
     SARKANYFEJ,
     
-    ZUZALEKSZORO,
     /**
      * Hókotró jármű.
      */
@@ -29,10 +28,17 @@ public enum Arucikk {
      * Kerozin fogyóeszköz.
      */
     KEROZIN,
-    
-    ZUZALEK,
     /**
      * Globális felmelegedés eszköz a hóesés megállítására.
      */
-    GLOBAL_WARMING
+    GLOBAL_WARMING,
+
+    /**
+     * Zúzalék fogyóeszköz a sávok csúszásmentesítésére.
+     */
+    ZUZALEK,
+    /**
+     * Zúzalékszóró felszerelés a sávok csúszásmentesítésére.
+     */
+    ZUZALEKSZORO
 }

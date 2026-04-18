@@ -11,28 +11,27 @@ import vezerles.SkeletonLogger;
  */
 public class Jeges extends Savallapot {
 
+    
     /**
      * A sáv sózott szintjét jelzi. Ha nagyobb mint 0, a só hatása alatt van.
      */
     public int sozott = 0;
+    /**
+     * Jelzi, hogy a sáv zuzalekos-e.
+     */
+    private boolean zuzalekos = false;
     
     /**
-     * Jelzi, hogy az utat leszórták-e zúzalékkal (megakadályozza a csúszást).
-     */
-    public boolean zuzalekos = false;
-
-    /**
-     * Jelzi, hogy a sárkányfej használata miatt olvad a jég.
-     */
-    public static boolean sarkanyfejOlvassza = false;
-
-    /**
      * Konstruktor a Jeges osztályhoz.
+     * Inicializálja a jeges állapotot és regisztrálja a SkeletonLogger-ben.
      */
-    public Jeges() {
+    public Jeges() { /* Konstruktor */
         SkeletonLogger.create(this);
+        SkeletonLogger.register(this, "sekelyHo");
         SkeletonLogger.exit(this);
     }
+
+
 
     /**
      * Ellenőrzi, hogy a jármű befogadható-e a jeges sávba.
@@ -44,17 +43,11 @@ public class Jeges extends Savallapot {
     @Override
     public boolean befogad(Sav sav, Jarmu jarmu) {
         SkeletonLogger.enter(this, "befogad", sav, jarmu);
-        
-        if (this.zuzalekos) {
-            // Ha van zúzalék, a jármű biztonságosan ráhajthat, NINCS baleset
-            SkeletonLogger.exit(true);
-            return true;
-        } else {
-            // Ha nincs zúzalék, a jármű megcsúszik és balesetet szenved
+        if(!zuzalekos){
             jarmu.balesetetSzenved();
-            SkeletonLogger.exit(true);
-            return true; 
         }
+        SkeletonLogger.exit(true);
+        return true; // Ráléphet, de balesetet szenved.
     }
 
     /**
@@ -131,18 +124,37 @@ public class Jeges extends Savallapot {
     /**
      * Megpróbálja megtisztítani a jeget a sávból.
      * Ha sárkányfej használja, tiszta lesz; különben sekély hó marad.
+     * @param sav a tisztítandó sáv
+     * @param olvad jelzi, hogy a jeget törjük, vagy olvasztjuk
+     * @return true, mivel sikerül
      */
     @Override
-    public boolean jegTisztit(Sav sav) {
+    public boolean jegTisztit(Sav sav,Boolean olvad) {
         SkeletonLogger.enter(this, "jegTisztit", sav);
-        
-        if (sarkanyfejOlvassza) {
-            sav.setAllapot(new Tiszta());
+        if (olvad) {
+            // Ha Sárkányfej (2-es teszt), akkor tisztára olvasztja
+            Tiszta tiszta = new Tiszta();
+            SkeletonLogger.register(tiszta, "tiszta1");
+            sav.setAllapot(tiszta);
         } else {
             sav.setAllapot(new SekelyHo());
         }
 
         SkeletonLogger.exit(true);
         return true;
+    }
+    @Override
+    public boolean zuzalekTisztit(Sav sav) {
+        SkeletonLogger.enter(this, "zuzalekTisztit", sav);
+        this.zuzalekos = false;
+        SkeletonLogger.exit(true);
+        return true;
+
+    }
+    @Override
+    public void zuzalekSzoras() {
+        SkeletonLogger.enter(this, "zuzalekSzoras");
+        this.zuzalekos = true;
+        SkeletonLogger.exit("void");
     }
 }

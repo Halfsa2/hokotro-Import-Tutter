@@ -1,6 +1,5 @@
 package felszereles;
 
-import allapot.Jeges;
 import halozat.Sav;
 import vezerles.SkeletonLogger;
 
@@ -35,15 +34,10 @@ public class Sarkanyfej extends Kotrofej {
         SkeletonLogger.enter(this, "takarit", s);
         
         if (this.kerozin_mennyiseg > 0) {
-            // 1. BEKAPCSOLÁS: Jelezzük a Jeges állapotnak, hogy hőt használunk
-            Jeges.sarkanyfejOlvassza = true;
             
             // 2. TISZTÍTÁS: Üzemanyag felhasználásával azonnali olvasztást végez.
             boolean hoEltakaritva = s.hoTisztit();
-            boolean jegEltakaritva = s.jegTisztit();
-            
-            // 3. KIKAPCSOLÁS: Visszaállítjuk a flag-et az eredeti állapotra
-            Jeges.sarkanyfejOlvassza = false;
+            boolean jegEltakaritva = s.jegTisztit(true);
             
             // Fogyasztjuk a kerozint
             this.kerozin_mennyiseg--;

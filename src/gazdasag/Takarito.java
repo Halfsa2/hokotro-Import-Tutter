@@ -39,6 +39,11 @@ public class Takarito extends Jatekos<Hokotro> {
         // Itt lenne a sárkányfej újratöltése        
         SkeletonLogger.exit("void");
     }
+    public void zuzalekToltes(Hokotro gep) {
+        SkeletonLogger.enter(this, "zuzalekToltes", gep);        
+        // Itt lenne a zuzalék újratöltése        
+        SkeletonLogger.exit("void");
+    }
 
     /**
      * Levonja a kapott pénzösszeget a KozosKassza objektumon keresztül.

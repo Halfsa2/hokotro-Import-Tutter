@@ -8,8 +8,9 @@ import vezerles.SkeletonLogger;
  * A Sofőr által irányított jármű, amely fordulók megtételével pénzt keres.
  */
 public class Busz extends IranyitottJarmu {
-    private Checkpoint start; // A busz kiindulási pozíciója
-    private Checkpoint cel; // A busz célállomása
+    private final Checkpoint start; // A busz kiindulási pozíciója
+    private final Checkpoint cel; // A busz célállomása
+    private boolean oda = true; // Jelzi, hogy a busz éppen a cél felé (oda) vagy vissza (vissza) tart-e
 
     public Busz(Checkpoint start, Checkpoint cel) {
         this.start = start;
@@ -22,39 +23,31 @@ public class Busz extends IranyitottJarmu {
     @Override
     public boolean lep(Csomopont celCsomopont) {
         SkeletonLogger.enter(this, "lep", celCsomopont);
-        
-        // 1. Megpróbálunk belépni a cél csomópontba. 
-        // A befogad() metódus belül magától ellenőrzi a foglaltságot és az állapotokat.
-        if (celCsomopont.befogad(this)) {
-            
-            // 2. Ha sikerült a belépés, elengedjük a korábbi csomópontot (ha volt)
-            if (this.aktualisCsomopont != null) {
-                this.aktualisCsomopont.elenged(this);
+        // A busz csak akkor léphet, ha a célcsomópont befogadja
+        // A busz pénzkeresése nem az ő, hanem a sofőr felelőssége
+        if(celCsomopont.befogad(this)){
+            //Csak a biztonság kedvéért
+            if(aktualisCsomopont != null) {
+                aktualisCsomopont.elenged(this);
             }
-            
-            // 3. Frissítjük a busz saját pozícióját
-            this.aktualisCsomopont = celCsomopont;
-            
-            // Megjegyzés: Ha Checkpoint-ra értünk, a pénz jóváírását a 
-            // játékvezérlő (VarosModell) fogja majd lekezelni azzal, hogy 
-            // ellenőrzi a lépés sikerességét és a cél csomópont típusát.
-
+            aktualisCsomopont = celCsomopont;
             SkeletonLogger.exit(true);
             return true;
-        } 
-        
-        // Ha a befogadás elutasításra került (pl. mert foglalt a csomópont)
-        SkeletonLogger.exit(false);
-        return false;
+        }else{
+            SkeletonLogger.exit(false);
+            return false;
+        }
     }
-    
-    // (Opcionális) Getterek a start és cel pontokhoz, ha a Játékvezérlőnek 
-    // vizsgálnia kell, hogy a busz tényleg a céljába ért-e:
     public Checkpoint getStart() {
         return start;
     }
-
     public Checkpoint getCel() {
         return cel;
+    }
+    public boolean celhozTart() {
+        return oda;
+    }
+    public void iranytValtoztat() {
+        oda = !oda;
     }
 }

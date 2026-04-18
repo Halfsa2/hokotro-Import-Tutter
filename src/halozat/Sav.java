@@ -187,13 +187,14 @@ public class Sav extends Csomopont {
 
     /**
      * Megkísérli a jég eltávolítását a sávon.
+     * @param olvad jelzi, hogy a jeget törjük, vagy olvasztjuk
      * @return true, ha sikerült a jég eltakarítása
      */
-    public boolean jegTisztit() {
+    public boolean jegTisztit(Boolean olvad) {
         SkeletonLogger.enter(this, "jegTisztit");
         boolean ret = false;
         if (allapot != null) {
-            ret = allapot.jegTisztit(this);
+            ret = allapot.jegTisztit(this, olvad);
         }
         SkeletonLogger.exit(ret);
         return ret;
@@ -222,6 +223,14 @@ public class Sav extends Csomopont {
             allapot.sotKap(this);
         }
         sozott = 3;
+        SkeletonLogger.exit("void");
+    }
+
+    public void zuzalekSzoras() {
+        SkeletonLogger.enter(this, "zuzalekSzoras");
+        if (allapot != null) {
+            allapot.zuzalekTisztit(this);
+        }
         SkeletonLogger.exit("void");
     }
 }
