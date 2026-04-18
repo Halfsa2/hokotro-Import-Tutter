@@ -7,6 +7,7 @@ import gazdasag.Takarito;
 import halozat.Csomopont;
 import jarmu.Auto;
 import jarmu.Hokotro;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import megjelenites.IJatekNezet;
@@ -22,9 +23,16 @@ public class JatekVezerlo {
     private int korokHoesesOta = 999;
     private Jatekos<?> aktivJatekos;
 
-    public JatekVezerlo(IJatekNezet nezet){
+    public JatekVezerlo(IJatekNezet nezet, IJatekKezelo modell, IMegvasarolhato bolt) {
         this.nezet = nezet;
+        this.modell = modell;
+        this.bolt = bolt;
+        this.jatekosok = new ArrayList<>();
         autoUtvonalak = new HashMap<>();
+        
+    }
+    public void initJatek(){
+        //TODO
     }
 
     public void nextJatekos(){
@@ -66,6 +74,7 @@ public class JatekVezerlo {
         auto.lep(next);
     }
     public void vasarol(Arucikk termek, Hokotro gep){
+        //Mivel ezt a grafikus interfész is kezelni fogja, így nem gond az instanceof szerintem.
         if(aktivJatekos instanceof Takarito t){
             if(bolt.vasarol(termek, t, gep)){
                 if(termek == Arucikk.GLOBAL_WARMING){

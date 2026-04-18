@@ -2,15 +2,15 @@ package jarmu;
 
 import halozat.Checkpoint;
 import halozat.Csomopont;
-import java.util.Scanner;
 import vezerles.SkeletonLogger;
 
 /**
  * A Sofőr által irányított jármű, amely fordulók megtételével pénzt keres.
  */
 public class Busz extends IranyitottJarmu {
-    private Checkpoint start; // A busz kiindulási pozíciója
-    private Checkpoint cel; // A busz célállomása
+    private final Checkpoint start; // A busz kiindulási pozíciója
+    private final Checkpoint cel; // A busz célállomása
+    private boolean oda = true; // Jelzi, hogy a busz éppen a cél felé (oda) vagy vissza (vissza) tart-e
 
     public Busz(Checkpoint start, Checkpoint cel) {
         this.start = start;
@@ -23,25 +23,31 @@ public class Busz extends IranyitottJarmu {
     @Override
     public boolean lep(Csomopont celCsomopont) {
         SkeletonLogger.enter(this, "lep", celCsomopont);
-        celCsomopont.getNext();
-        System.out.print("\t[?] Foglalt a célállomás? (i/n): ");
-        Scanner sc = new Scanner(System.in);
-        String valasz = sc.nextLine();
-        if (valasz.equalsIgnoreCase("n")) {
-            if (celCsomopont.befogad(this)) {
-                if (this.aktualisCsomopont != null) {
-                    this.aktualisCsomopont.elenged(this);
-                }
-                this.aktualisCsomopont = celCsomopont;
-                SkeletonLogger.exit(true);
-                return true;
-            } else {
-                SkeletonLogger.exit(false);
-                return false;
+        // A busz csak akkor léphet, ha a célcsomópont befogadja
+        // A busz pénzkeresése nem az ő, hanem a sofőr felelőssége
+        if(celCsomopont.befogad(this)){
+            //Csak a biztonság kedvéért
+            if(aktualisCsomopont != null) {
+                aktualisCsomopont.elenged(this);
             }
-        } else {
+            aktualisCsomopont = celCsomopont;
+            SkeletonLogger.exit(true);
+            return true;
+        }else{
             SkeletonLogger.exit(false);
             return false;
         }
+    }
+    public Checkpoint getStart() {
+        return start;
+    }
+    public Checkpoint getCel() {
+        return cel;
+    }
+    public boolean celhozTart() {
+        return oda;
+    }
+    public void iranytValtoztat() {
+        oda = !oda;
     }
 }
