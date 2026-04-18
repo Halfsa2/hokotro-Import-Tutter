@@ -39,5 +39,11 @@ public class Auto extends Jarmu {
         SkeletonLogger.exit(false);
         return false;
     }
+    public Checkpoint getStart(){
+        return start;
+    }
+    public Checkpoint getCel(){
+        return cel;
+    }
    
 }

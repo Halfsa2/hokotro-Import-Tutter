@@ -1,25 +1,24 @@
 package gazdasag;
 import jarmu.Hokotro;
 import java.util.ArrayList;
-import java.util.List;
 import vezerles.SkeletonLogger;
 /**
  * A városi úthálózat karbantartásáért és téli akadálymentesítéséért felelős játékos[cite: 1267].
  */
-public class Takarito extends Jatekos {    
+public class Takarito extends Jatekos<Hokotro> {    
    // A takarító birtokol és irányít egy vagy több hókotró járművet.
-   private List<Hokotro> hokotrok; 
    public Takarito(KozosKassza kassza) {
         super(kassza);
         SkeletonLogger.create(this);
         SkeletonLogger.register(this, "takarito"); // Automatikus regisztráció       
-        this.hokotrok = new ArrayList<>();       
+        this.jarmuvek = new ArrayList<>();     
+        jarmuvek.add(new Hokotro(this));
         SkeletonLogger.exit(this);
     }
 
     public void addHokotro(Hokotro gep) {
         SkeletonLogger.enter(this, "addHokotro", gep);        
-        this.hokotrok.add(gep);        
+        this.jarmuvek.add(gep);        
         SkeletonLogger.exit("void"); // Void metódusnál nincs visszatérési érték
     }
 
