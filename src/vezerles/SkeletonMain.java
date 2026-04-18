@@ -19,7 +19,7 @@ import java.util.Scanner;
 /**
  * A szimuláció indító osztálya, amely menüvezérelt módon teszteseteket futtat.
  */
-public class Main {
+public class SkeletonMain {
 
     /**
      * A program belépési pontja. Felhasználói menüt jelenít meg és teszteseteket futtat.

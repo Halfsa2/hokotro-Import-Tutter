@@ -225,4 +225,12 @@ public class Sav extends Csomopont {
         sozott = 3;
         SkeletonLogger.exit("void");
     }
+
+    public void zuzalekSzoras() {
+        SkeletonLogger.enter(this, "zuzalekSzoras");
+        if (allapot != null) {
+            allapot.zuzalekTisztit(this);
+        }
+        SkeletonLogger.exit("void");
+    }
 }

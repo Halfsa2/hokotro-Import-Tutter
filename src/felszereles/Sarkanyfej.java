@@ -1,4 +1,5 @@
 package felszereles;
+
 import halozat.Sav;
 import vezerles.SkeletonLogger;
 
@@ -17,7 +18,9 @@ public class Sarkanyfej extends Kotrofej {
      * @param kezdetiKerozin a kezdeti kerozin mennyisége
      */
     public Sarkanyfej(int kezdetiKerozin) {
+        SkeletonLogger.create(this);
         this.kerozin_mennyiseg = kezdetiKerozin;
+        SkeletonLogger.exit(this);
     }
 
     /**
@@ -30,18 +33,37 @@ public class Sarkanyfej extends Kotrofej {
     public boolean takarit(Sav s) {
         SkeletonLogger.enter(this, "takarit", s);
         
-        if (kerozin_mennyiseg > 0) {
-            // Üzemanyag felhasználásával azonnali olvasztást végez.
+        if (this.kerozin_mennyiseg > 0) {
+            
+            // 2. TISZTÍTÁS: Üzemanyag felhasználásával azonnali olvasztást végez.
             boolean hoEltakaritva = s.hoTisztit();
             boolean jegEltakaritva = s.jegTisztit(true);
             
-            kerozin_mennyiseg--;
+            // Fogyasztjuk a kerozint
+            this.kerozin_mennyiseg--;
             
             boolean siker = hoEltakaritva || jegEltakaritva;
             SkeletonLogger.exit(siker);
             return siker;
         }
+        
+        // Ha nincs kerozin, nem történik semmi
         SkeletonLogger.exit(false);
         return false;
+    }
+
+    /**
+     * Visszaadja a kerozin aktuális mennyiségét.
+     * (Hasznos lesz a Prototípus 'stat' parancsához, hogy lássuk mennyi üzemanyag maradt)
+     */
+    public int getKerozinMennyiseg() {
+        return this.kerozin_mennyiseg;
+    }
+    
+    /**
+     * Kerozin újratöltése vásárlás esetén.
+     */
+    public void addKerozin(int mennyiseg) {
+        this.kerozin_mennyiseg += mennyiseg;
     }
 }

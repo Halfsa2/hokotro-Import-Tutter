@@ -1,15 +1,24 @@
 package felszereles;
+
 import halozat.Sav;
 import vezerles.SkeletonLogger;
 
 /**
- * A jégtörő fej egy jeges állapotú sávot feltör, megszüntetve a csúszásveszélyt.
+ * A jégtörő fej egy jeges állapotú sávot feltör.
+ * A jeget 1 réteg hóra (SekélyHó) módosítja, megszüntetve a csúszásveszélyt.
  */
 public class Jegtoro extends Kotrofej {
 
     /**
+     * Konstruktor a Jégtörő osztályhoz.
+     */
+    public Jegtoro() {
+        SkeletonLogger.create(this);
+        SkeletonLogger.exit(this);
+    }
+
+    /**
      * Takarítja a jeget a jégtörő fejjel.
-     * A jeget 1 réteg hóra módosítja.
      * @param s a tisztítandó sáv
      * @return true, ha sikerült megtisztítani, különben false
      */

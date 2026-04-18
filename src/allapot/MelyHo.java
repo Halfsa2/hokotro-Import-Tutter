@@ -6,31 +6,31 @@ import vezerles.SkeletonLogger;
 
 /**
  * A legextrémebb téli útviszonyokat reprezentálja, ahol a normál forgalom
- * teljesen megbénul .
+ * teljesen megbénul.
  */
 public class MelyHo extends Savallapot {
 
     /**
      * Konstruktor a MelyHo osztályhoz.
-     * Inicializálja a mély hó állapotot és regisztrálja a SkeletonLogger-ben.
      */
-    public MelyHo() { /* Konstruktor [cite: 1173] */
+    public MelyHo() {
         SkeletonLogger.create(this);
-        SkeletonLogger.register(this, "melyho");
         SkeletonLogger.exit(this);
     }
 
     /**
      * Ellenőrzi, hogy a jármű befogadható-e a mély hó sávba.
-     * Meghívja a lepesTeszt metódust.
+     * Csak az a jármű léphet rá, amelyik alkalmas mély hóban közlekedni (pl. hókotró).
      * @param sav a sáv, amelybe a jármű szeretne befogadódni
      * @param jarmu a jármű, amely befogadódni szeretne
-     * @return true, ha a jármű ráléphet, különben false (hókotró ráléphet, autó nem)
+     * @return true, ha a jármű ráléphet, különben false
      */
     @Override
     public boolean befogad(Sav sav, Jarmu jarmu) {
-        SkeletonLogger.enter(this, "befogad", jarmu);
+        SkeletonLogger.enter(this, "befogad", sav, jarmu);
+        
         boolean lephet = lepesTeszt(jarmu);
+        
         SkeletonLogger.exit(lephet);
         return lephet;
     }
@@ -38,33 +38,36 @@ public class MelyHo extends Savallapot {
     /**
      * Elengedi a járművet a mély hó sávból.
      * Nincs speciális művelet.
-     * @param sav a sáv, amelyből a jármű elengedésre kerül
-     * @param jarmu a jármű, amely elengedésre kerül
      */
     @Override
     public void elenged(Sav sav, Jarmu jarmu) {
+        SkeletonLogger.enter(this, "elenged", sav, jarmu);
+        SkeletonLogger.exit("void");
     }
 
     /**
      * Kezeli a hóesés esetét a mély hó sávon.
      * Marad mély hó állapotban.
-     * @param sav a sáv, amelyen hóesés történik
      */
     @Override
     public void hoesesEseten(Sav sav) {
+        SkeletonLogger.enter(this, "hoesesEseten", sav);
+        SkeletonLogger.exit("void");
     }
 
     /**
-     * Frissíti a mély hó sáv állapotát.
+     * Frissíti a mély hó sáv állapotát (pl. olvadás a kör végén).
      * Csökkenti a hóréteget és sekély hóra vált.
-     * @param sav a frissítendő sáv
      */
     @Override
     public void frissit(Sav sav) {
         SkeletonLogger.enter(this, "frissit", sav);
-        System.out.println("                > melyHo:MelyHo.horeteg--");
+        
+        // Logikai javítás: Mivel a mély hó 3. szintű havat jelent, 
+        // egy kör olvadás után SekélyHóvá válik, de annak a vastagságát 
+        // logikusan 2-re kell állítani, nem az alapértelmezett 1-re!
         SekelyHo sekelyHo = new SekelyHo();
-        SkeletonLogger.register(sekelyHo, "sekelyHo");
+        sekelyHo.setHoreteg(2); 
         sav.setAllapot(sekelyHo);
 
         SkeletonLogger.exit("void");
@@ -73,21 +76,21 @@ public class MelyHo extends Savallapot {
     /**
      * Teszteli, hogy a jármű ráléphet-e a mély hó sávra.
      * Csak hókotró léphet mély hóra.
-     * @param jarmu a jármű, amely tesztelni szeretne
-     * @return true, ha hókotró, különben false
      */
     @Override
     public boolean lepesTeszt(Jarmu jarmu) {
-        // Kulcsfontosságú függvény, amely eldönti, hogy a jármű rá tud-e lépni a sávra.
-        // A mély hó miatt ez egy sima Auto esetén hamis, míg egy Hokotro számára igaz
-        // [cite: 1085-1090].
-        return jarmu.lephetMelyHora();
+        SkeletonLogger.enter(this, "lepesTeszt", jarmu);
+        
+        // Kulcsfontosságú függvény: eldönti, hogy a jármű rá tud-e lépni.
+        boolean lephet = jarmu.lephetMelyHora();
+        
+        SkeletonLogger.exit(lephet);
+        return lephet;
     }
 
     /**
      * Kezeli, ha a sáv sót kap.
-     * Mély hóra nincs hatás.
-     * @param sav a sáv, amely sót kap
+     * Mély hóra a sózásnak nincs azonnali hatása.
      */
     @Override
     public void sotKap(Sav sav) {
@@ -98,16 +101,12 @@ public class MelyHo extends Savallapot {
     /**
      * Megpróbálja megtisztítani a havat a sávból.
      * Sikeresen tiszta állapotba vált.
-     * @param sav a tisztítandó sáv
-     * @return true, mivel sikerül
      */
     @Override
     public boolean hoTisztit(Sav sav) {
         SkeletonLogger.enter(this, "hoTisztit", sav);
 
-        Tiszta tiszta = new Tiszta();
-        SkeletonLogger.register(tiszta, "tiszta1");
-        sav.setAllapot(tiszta);
+        sav.setAllapot(new Tiszta());
 
         SkeletonLogger.exit(true);
         return true;
