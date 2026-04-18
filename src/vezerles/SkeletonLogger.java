@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 //retired (öregecske szegény, bepakoljuk majd valami otthonba)
 public class SkeletonLogger {
+    //Ezzel a változóval lehet globálisan be- és kikapcsolni a logolást
+    public static boolean enabled = false;
     /**
      * Segéd osztály a szimuláció metódushívásainak és állapotváltozásainak naplózásához.
      * Statikus helper, amely depth-alapú behúzást használ a konzolos kimenetben.
@@ -20,6 +22,7 @@ public class SkeletonLogger {
      * @param nev a megjelenítendő név
      */
     public static void register(Object obj, String nev) {
+        if (!enabled) return; // ÚJ SOR: Ha nincs engedélyezve, azonnal visszatér
         nevTarak.put(obj, nev);
     }
 
@@ -52,6 +55,7 @@ public class SkeletonLogger {
      * @param parameterek metódusparaméterek
      */
     public static void enter(Object hivoObjektum, String metodusNev,Object... parameterek) {
+        if (!enabled) return; // ÚJ SOR: Ha nincs engedélyezve, azonnal visszatér
         printIndent();
         
         String peldanyNev = getNev(hivoObjektum);
@@ -68,6 +72,7 @@ public class SkeletonLogger {
     }
 
     public static void exit(Object returnValue) {
+        if (!enabled) return; // ÚJ SOR: Ha nincs engedélyezve, azonnal visszatér
         depth--;
         printIndent();
         
@@ -89,6 +94,7 @@ public class SkeletonLogger {
     }
     // KIFEJEZETTEN KONSTRUKTOROKNAK: A "> new OsztalyNev()" formátumért
     public static void create(Object ujObjektum) {
+        if (!enabled) return; // ÚJ SOR: Ha nincs engedélyezve, azonnal visszatér
         printIndent();
         System.out.println("> new " + ujObjektum.getClass().getSimpleName() + "()");
         depth++;
@@ -97,6 +103,7 @@ public class SkeletonLogger {
      * Kiírja a behúzást az aktuális mélységnek megfelelően.
      */
     private static void printIndent() {
+        if (!enabled) return; // ÚJ SOR: Ha nincs engedélyezve, azonnal visszatér
         for (int i = 0; i < depth; i++) {
             System.out.print("    ");
         }

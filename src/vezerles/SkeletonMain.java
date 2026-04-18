@@ -19,7 +19,7 @@ import java.util.Scanner;
 /**
  * A szimuláció indító osztálya, amely menüvezérelt módon teszteseteket futtat.
  */
-public class Main {
+public class SkeletonMain {
 
     /**
      * A program belépési pontja. Felhasználói menüt jelenít meg és teszteseteket futtat.
@@ -345,9 +345,9 @@ public class Main {
         hokotro1.addFej(sarkanyfej1);
         hokotro1.cserelFej(sarkanyfej1);
 
-        Jeges.sarkanfejOlvassza = true;
+        Jeges.sarkanyfejOlvassza = true;
         boolean siker = hokotro1.takarit(sav1);
-        Jeges.sarkanfejOlvassza = false;
+        Jeges.sarkanyfejOlvassza = false;
         if (siker)
             kassza.penzHozzaadas(5);
         return siker;

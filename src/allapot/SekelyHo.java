@@ -2,7 +2,6 @@ package allapot;
 
 import halozat.Sav;
 import jarmu.Jarmu;
-import java.util.Scanner;
 import vezerles.SkeletonLogger;
 
 /**
@@ -23,7 +22,6 @@ public class SekelyHo extends Savallapot {
 
     /**
      * Konstruktor a SekelyHo osztályhoz.
-     * Inicializálja a sekély hó állapotot és regisztrálja a SkeletonLogger-ben.
      */
     public SekelyHo() {
         SkeletonLogger.create(this);
@@ -41,123 +39,99 @@ public class SekelyHo extends Savallapot {
 
     /**
      * Ellenőrzi, hogy a jármű befogadható-e a sekély hó sávba.
-     * Növeli a nyomvonalat, és ha 3 vagy több, jeges állapotba vált.
-     * @param sav a sáv, amelybe a jármű szeretne befogadódni
-     * @param jarmu a jármű, amely befogadódni szeretne
-     * @return mindig true
+     * Növeli a nyomvonalat, és ha az eléri a 3-at, jeges állapotba vált.
      */
     @Override
     public boolean befogad(Sav sav, Jarmu jarmu) {
-        nyomvonal++;
-        if (nyomvonal >= 3) {
+        SkeletonLogger.enter(this, "befogad", sav, jarmu);
+        
+        this.nyomvonal++;
+        if (this.nyomvonal >= 3) {
             sav.setAllapot(new Jeges());
         }
+        
+        SkeletonLogger.exit(true);
         return true;
     }
 
     /**
      * Elengedi a járművet a sekély hó sávból.
-     * Növeli a nyomvonalat, és ha 3 vagy több, jeges állapotba vált.
-     * @param sav a sáv, amelyből a jármű elengedésre kerül
-     * @param jarmu a jármű, amely elengedésre kerül
+     * Növeli a nyomvonalat, és ha az eléri a 3-at, jeges állapotba vált.
      */
     @Override
     public void elenged(Sav sav, Jarmu jarmu) {
-        SkeletonLogger.enter(this, "elenged", jarmu);
-        System.out.println("                > sekelyho:SekelyHo.nyomvonal++");
+        SkeletonLogger.enter(this, "elenged", sav, jarmu);
+        
         this.nyomvonal++;
-        System.out.print("                [?] nyomvonal >= 3? (I/N): ");
-        Scanner sc = new Scanner(System.in);
-        Jeges ujJeges = null;
-        if (sc.nextLine().equalsIgnoreCase("I")) {
-            ujJeges = new Jeges();
-            SkeletonLogger.register(ujJeges, "jeges");
+        if (this.nyomvonal >= 3) {
+            sav.setAllapot(new Jeges());
         }
+        
         SkeletonLogger.exit("void");
-        if (ujJeges != null) {
-            sav.setAllapot(ujJeges);
-        }
     }
 
     /**
      * Kezeli a hóesés esetét a sekély hó sávon.
-     * Növeli a hóréteget, és ha 3 vagy több, mély hó állapotba vált.
-     * @param sav a sáv, amelyen hóesés történik
+     * Növeli a hóréteget, és ha eléri a 3-at, mély hó állapotba vált.
      */
     @Override
     public void hoesesEseten(Sav sav) {
         SkeletonLogger.enter(this, "hoesesEseten", sav);
-        System.out.println("                > sekelyho:SekelyHo.horeteg++");
+        
         this.horeteg++;
-        System.out.print("            [?] horeteg >= 3?: ");
-        Scanner sc = new Scanner(System.in);
-        MelyHo mh = null;
-        if (sc.nextLine().equalsIgnoreCase("I")) {
-            mh = new MelyHo();
-            SkeletonLogger.register(mh, "melyho");
-        }
-        SkeletonLogger.exit("void");
-        if (mh != null) {
-            sav.setAllapot(mh);
+        if (this.horeteg >= 3) {
+            sav.setAllapot(new MelyHo());
         }
 
+        SkeletonLogger.exit("void");
     }
 
     /**
-     * Frissíti a sekély hó sáv állapotát.
-     * Csökkenti a hóréteget, és ha 0 vagy kevesebb, tiszta állapotba vált.
-     * @param sav a frissítendő sáv
+     * Frissíti a sekély hó sáv állapotát (pl. olvadás).
+     * Csökkenti a hóréteget, és ha elfogy, tiszta állapotba vált.
      */
     @Override
     public void frissit(Sav sav) {
         SkeletonLogger.enter(this, "frissit", sav);
-        System.out.println("                > sekelyHo:SekelyHo.horeteg--");
+        
         this.horeteg--;
-        if (horeteg <= 0) {
-            Tiszta tiszta = new Tiszta();
-            SkeletonLogger.register(tiszta, "tiszta");
-            sav.setAllapot(tiszta);
+        if (this.horeteg <= 0) {
+            sav.setAllapot(new Tiszta());
         }
+        
         SkeletonLogger.exit("void");
     }
 
     /**
      * Teszteli, hogy a jármű ráléphet-e a sekély hó sávra.
-     * Mindig lehetséges.
-     * @param jarmu a jármű, amely tesztelni szeretne
-     * @return mindig true
+     * Sekély hóban még minden jármű tud közlekedni.
      */
     @Override
     public boolean lepesTeszt(Jarmu jarmu) {
-        return true;
-        /* Még járható [cite: 1190] */ }
+        return true; 
+    }
 
     /**
      * Kezeli, ha a sáv sót kap.
-     * Csökkenti a hóréteget.
-     * @param sav a sáv, amely sót kap
+     * A só csökkenti a hóréteget, ha pedig elfogy, tiszta lesz az út.
      */
     @Override
     public void sotKap(Sav sav) {
-        horeteg--;
-        // if (horeteg <= 0) {
-        // sav.setAllapot(new Tiszta()); // Só hatására elolvad [cite: 1192]
-        // }
+        this.horeteg--;
+        if (this.horeteg <= 0) {
+            sav.setAllapot(new Tiszta());
+        }
     }
 
     /**
      * Megpróbálja megtisztítani a havat a sávból.
      * Sikeresen tiszta állapotba vált.
-     * @param sav a tisztítandó sáv
-     * @return true, mivel sikerül
      */
     @Override
     public boolean hoTisztit(Sav sav) {
         SkeletonLogger.enter(this, "hoTisztit", sav);
 
-        Tiszta tiszta = new Tiszta();
-        SkeletonLogger.register(tiszta, "tiszta1");
-        sav.setAllapot(tiszta);
+        sav.setAllapot(new Tiszta());
 
         SkeletonLogger.exit(true);
         return true;
@@ -165,9 +139,7 @@ public class SekelyHo extends Savallapot {
 
     /**
      * Megpróbálja megtisztítani a jeget a sávból.
-     * Sekély hóban nincs jég, így nem sikerül.
-     * @param sav a tisztítandó sáv
-     * @return false, mivel nincs jég
+     * Sekély hóban nincs jég, így a művelet sikertelen.
      */
     @Override
     public boolean jegTisztit(Sav sav) {

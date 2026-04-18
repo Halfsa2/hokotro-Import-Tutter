@@ -12,17 +12,15 @@ public class Tiszta extends Savallapot {
 
     /**
      * Konstruktor a Tiszta osztályhoz.
-     * Inicializálja a tiszta állapotot és regisztrálja a SkeletonLogger-ben.
      */
-    public Tiszta() { /* Konstruktor  */
+    public Tiszta() {
         SkeletonLogger.create(this);
-        SkeletonLogger.register(this, "tiszta");
         SkeletonLogger.exit(this);
     }
 
     /**
      * Ellenőrzi, hogy a jármű befogadható-e a tiszta sávba.
-     * Mivel tiszta, mindig befogadja.
+     * Mivel tiszta, az állapot szempontjából mindig befogadható.
      * @param sav a sáv, amelybe a jármű szeretne befogadódni
      * @param jarmu a jármű, amely befogadódni szeretne
      * @return mindig true, mivel tiszta sáv
@@ -30,17 +28,9 @@ public class Tiszta extends Savallapot {
     @Override
     public boolean befogad(Sav sav, Jarmu jarmu) {
         SkeletonLogger.enter(this, "befogad", sav, jarmu);
-        /*System.out.print("[?] Foglalt a cel sav? (I/N): ");
-        java.util.Scanner sc = new java.util.Scanner(System.in);
-        String valasz = sc.nextLine();
         
-        if (valasz.equalsIgnoreCase("i")) {
-            SkeletonLogger.exit(false);
-            return false;
-        } else {
-            SkeletonLogger.exit(true);
-            return true;
-        }*/
+        // A foglaltság ellenőrzését maga a Sav osztály végzi el, 
+        // az állapot szempontjából a tiszta sáv nem akadályozza a befogadást.
         SkeletonLogger.exit(true);
         return true;
     }
@@ -54,7 +44,6 @@ public class Tiszta extends Savallapot {
     @Override
     public void elenged(Sav sav, Jarmu jarmu) {
         SkeletonLogger.enter(this, "elenged", sav, jarmu);
-        // Csak logoljuk a kilépést, tiszta sávnál nincs más dolgunk
         SkeletonLogger.exit("void");
     }
 
@@ -66,9 +55,9 @@ public class Tiszta extends Savallapot {
     @Override
     public void hoesesEseten(Sav sav) {
         SkeletonLogger.enter(this, "hoesesEseten", sav);
-        SekelyHo sekelyHo = new SekelyHo();
-        SkeletonLogger.register(sekelyHo, "sekelyHo");
-        sav.setAllapot(sekelyHo);
+        
+        sav.setAllapot(new SekelyHo());
+        
         SkeletonLogger.exit("void");
     }
 
@@ -90,7 +79,6 @@ public class Tiszta extends Savallapot {
     @Override
     public boolean lepesTeszt(Jarmu jarmu) {
         SkeletonLogger.enter(this, "lepesTeszt", jarmu);
-        // Tiszta sávra rá lehet lépni
         SkeletonLogger.exit(true);
         return true;
     }

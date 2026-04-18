@@ -1,13 +1,16 @@
 package gazdasag;
+
 import vezerles.SkeletonLogger;
+
 /**
  * A játékosok közös perselye, amely a megszerzett Zúzmara Tallérokat tárolja.
  */
 public class KozosKassza {
+    
     private int penzosszeg; // A Zúzmara Tallérok aktuális egyenlege.
+
     public KozosKassza(int kezdetiOsszeg) {
         SkeletonLogger.create(this);
-        SkeletonLogger.register(this, "kassza");       
         this.penzosszeg = kezdetiOsszeg;       
         SkeletonLogger.exit(this);
     }
@@ -18,33 +21,35 @@ public class KozosKassza {
     public void penzHozzaadas(int osszeg) {
         SkeletonLogger.enter(this, "penzHozzaadas", osszeg);       
         this.penzosszeg += osszeg;        
-        SkeletonLogger.exit("void"); // Void metódus
+        SkeletonLogger.exit("void"); 
     }
 
     /**
      * Levonja a megadott összeget a kasszából egy vásárlás során.
-        * @param osszeg a levonni kívánt Zúzmara Tallérok összege
-        * @return true, ha a vásárlás engedélyezett, különben false
+     * @param osszeg a levonni kívánt Zúzmara Tallérok összege
+     * @return true, ha van elég pénz és a vásárlás sikeres, különben false
      */
     public boolean penzKivonas(int osszeg) {
         SkeletonLogger.enter(this, "penzKivonas", osszeg);        
-        System.out.print("\t\t\t[?] Van elég pénz a közös kasszában a termékre? (i/n): ");         // interakció
-        java.util.Scanner sc = new java.util.Scanner(System.in);
-        String valasz = sc.nextLine();       
-        if (valasz.equalsIgnoreCase("i")) {
-            SkeletonLogger.exit(true);
-            return true;
-        } 
-        else {
-            SkeletonLogger.exit(false);
-            return false;
-        }
-
-        /*
+        
+        boolean sikeres = false;
+        
+        // Valós logika: Ellenőrzi a belső változót, és ha van elég pénz, levonja
         if (this.penzosszeg >= osszeg) {
             this.penzosszeg -= osszeg;
-            return true; // Sikeres tranzakció
+            sikeres = true; 
         }
-        return false; // Nincs elég fedezet*/
+        
+        SkeletonLogger.exit(sikeres);
+        return sikeres; 
+    }
+
+    /**
+     * Visszaadja a jelenleg a kasszában lévő pénzösszeget.
+     * (A prototípus tesztelői nyelvének 'stat' parancsához hasznos lesz!)
+     * @return a Zúzmara Tallérok aktuális egyenlege
+     */
+    public int getPenzosszeg() {
+        return this.penzosszeg;
     }
 }

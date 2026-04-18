@@ -25,11 +25,12 @@ public class Jeges extends Savallapot {
      * A sáv sózott szintjét jelzi. Ha nagyobb mint 0, a só hatása alatt van.
      */
     public int sozott = 0;
+    public boolean zuzalekos = false;
 
     /**
      * Jelzi, hogy a sárkányfej használata miatt olvad a jég.
      */
-    public boolean sarkanyfejOlvassza = false;
+    public static boolean sarkanyfejOlvassza = false;
 
     /**
      * Ellenőrzi, hogy a jármű befogadható-e a jeges sávba.
@@ -40,12 +41,19 @@ public class Jeges extends Savallapot {
      */
     @Override
     public boolean befogad(Sav sav, Jarmu jarmu) {
-        // Lekezeli a jármű rálépését a jeges sávra.
-        // A jármű megcsúszik és balesetet szenved a jégen.
         SkeletonLogger.enter(this, "befogad", sav, jarmu);
-        jarmu.balesetetSzenved();
-        SkeletonLogger.exit(true);
-        return true; // Ráléphet, de balesetet szenved.
+        
+        // Ha van zúzalék, a jármű biztonságosan ráhajthat, NINCS baleset
+        if (this.zuzalekos) {
+            SkeletonLogger.exit(true);
+            return true;
+        } 
+        // Ha nincs zúzalék, a jármű megcsúszik és balesetet szenved
+        else {
+            jarmu.balesetetSzenved();
+            SkeletonLogger.exit(true);
+            return true; // Ráléphet, de karambolozik
+        }
     }
 
     /**
