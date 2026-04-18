@@ -20,24 +20,6 @@ public abstract class Csomopont {
     
     public abstract boolean foglalt();
 
-    //Takarító metódusok. Alap esetben nem tesznek semmit, de a Sav osztály felülírja őket.
-    public boolean jegTisztit(){
-        return false;
-    }
-    public boolean hoTisztit(){
-        return false;
-    }
-    public void soSzoras(){
-
-    }
-    public void zuzalekSzoras(){
-
-    }
-    public boolean zuzalekTisztit(){
-        return false;
-    }
-
-
     /**
      * Kezeli a hóesés eseményét az adott csomóponton.
      * Alapvetően nem tesz semmit, ha nincs felülírás.
