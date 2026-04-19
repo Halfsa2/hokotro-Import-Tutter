@@ -39,7 +39,7 @@ public class Bolt implements IMegvasarolhato {
                 case HANYOFEJ -> gep.addFej(new Hanyofej());
                 case SOSZORO -> gep.addFej(new Soszoro(10));
                 case SARKANYFEJ -> gep.addFej(new Sarkanyfej(10));
-                case ZUZALEKSZORO -> gep.addFej(new ZuzalekSzoro());
+                case ZUZALEKSZORO -> gep.addFej(new ZuzalekSzoro(10));
                 case SO -> vevo.soToltes(gep);
                 case KEROZIN -> vevo.kerozinToltes(gep);
                 case ZUZALEK -> vevo.zuzalekToltes(gep);
