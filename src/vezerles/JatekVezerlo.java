@@ -3,9 +3,11 @@ package vezerles;
 import gazdasag.Arucikk;
 import gazdasag.IMegvasarolhato;
 import gazdasag.Jatekos;
+import gazdasag.Sofor;
 import gazdasag.Takarito;
 import halozat.Csomopont;
 import jarmu.Auto;
+import jarmu.Busz;
 import jarmu.Hokotro;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +19,8 @@ public class JatekVezerlo {
     private IJatekKezelo modell;
     private IMegvasarolhato bolt;
     private HashMap<Auto,List<Csomopont>> autoUtvonalak;
+    private int takaritokSzama = 0;
+    private int soforokSzama = 0;
     private List<Jatekos<?>> jatekosok;
     private boolean jatekVege = false;
     //Az első körben esik a hó, hogy legyen valami a pályán.
@@ -33,6 +37,20 @@ public class JatekVezerlo {
     }
     public void initJatek(){
         //TODO: autók hozzáadása, játékosok járműveinek beállítása, modell inicializálása, stb.
+        modell.epit();
+        for(int i = 0; i < soforokSzama; i++){
+            Sofor s = new Sofor(modell.getKassza());
+            s.setJarmu(new Busz(modell.getSzabadCheckpoint(), modell.getSzabadCheckpoint(),s));
+            jatekosok.add(s);
+        }
+        for( int i = 0; i < takaritokSzama; i++){
+            Takarito t = new Takarito(modell.getKassza());
+            jatekosok.add(t);
+        }
+        // x mennyiségű autó létrehozása, hozzáadása a modellhez (startra léptetés) és útvonaltervezése
+        
+        nextJatekos(); // Beállítja az első játékost aktívnak
+
     }
     public void lep(Csomopont cel){
         if(jatekVege) return;
@@ -93,6 +111,13 @@ public class JatekVezerlo {
             }else{
                 nezet.uzenetKijelzese("Sikertelen vásárlás!");
             }
+        }
+    }
+    public void registerJatekos(String tipus){
+        if(tipus.equals("Sofor")){
+            soforokSzama++;
+        }else if(tipus.equals("Takarito")){
+            takaritokSzama++;
         }
     }
     public void addJatekos(Jatekos<?> jatekos){

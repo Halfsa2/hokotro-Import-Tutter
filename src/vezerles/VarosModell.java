@@ -25,7 +25,13 @@ public class VarosModell implements IJatekKezelo {
         this.varosGraf = new ArrayList<>();
         SkeletonLogger.exit(this);
     }
-
+    /**
+     * Visszaadja a város közös kasszáját, amely a játékosok pénzügyi tranzakcióihoz szükséges.
+     * @return kassza a város közös kasszája
+     */
+    public KozosKassza getKassza() {
+        return kassza;
+    }
     /**
      * Konstruktor meglévő közös kasszával.
      * @param kassza a város közös kasszája
