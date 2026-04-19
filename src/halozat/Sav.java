@@ -17,6 +17,7 @@ public class Sav extends Csomopont {
     private Jarmu jarmu;
     private List<Csomopont> szomszedok = new ArrayList<>();
     protected int sozott = 0;
+    protected boolean zuzalekos = false;
 
     /**
      * Konstruktor, inicializálja a sáv alapértelmezett állapotát és szomszédait.
@@ -234,11 +235,15 @@ public class Sav extends Csomopont {
         SkeletonLogger.exit("void");
     }
 
+    /**
+     * Zúzalék szórása a sáv felületére; csúszásvédelem céljából.
+     */
     public void zuzalekSzoras() {
         SkeletonLogger.enter(this, "zuzalekSzoras");
         if (allapot != null) {
-            allapot.zuzalekSzoras();
+            allapot.zuzalekSzoras(); // Szólunk a State-nek is (pl. a Jeges állapotnak)
         }
+        this.zuzalekos = true; //A sáv is megjegyzi, hogy zúzalékos lett
         SkeletonLogger.exit("void");
     }
 }
