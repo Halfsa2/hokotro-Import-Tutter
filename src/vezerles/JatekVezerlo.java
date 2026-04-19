@@ -76,8 +76,7 @@ public class JatekVezerlo {
         List<Csomopont> utvonal = autoUtvonalak.get(auto);
         int nextIndex = utvonal.indexOf(auto.getAktualisCsomopont())+1;
         if(nextIndex >= utvonal.size()||nextIndex <= 0){
-            //Nem tudom pontosan mit kéne csinálni, ha célba ért (vagy valamiért olyan csomóponton áll ami nem az útvonal része),
-            //de egyelőre elhárítom ezt a felelősséget annyival hogy nem léphet tovább
+            //TODO: visszafordul ha célba ért (újraszámolás)
             return;
         }
         Csomopont next = utvonal.get(nextIndex);
