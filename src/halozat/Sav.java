@@ -163,12 +163,17 @@ public class Sav extends Csomopont {
     }
 
     /**
-     * Kezeli, hogy a sáv baleseti állapotba kerül-e.
+     * Kezeli, ha a sáv baleseti állapotba kerül (pl. külső parancs vagy megcsúszás miatt).
      */
     @Override
     public void balesetEseten() {
+        SkeletonLogger.enter(this, "balesetEseten");
+        
         if (this.jarmu != null) {
+            this.jarmu.balesetetSzenved(); // Szólunk a rajta lévő járműnek, hogy karambolozott
         }
+        
+        SkeletonLogger.exit("void");
     }
 
     /**
