@@ -44,7 +44,7 @@ public class SekelyHo extends Savallapot {
     public boolean befogad(Sav sav, Jarmu jarmu) {
         SkeletonLogger.enter(this, "befogad", sav, jarmu);
         
-        this.nyomvonal++;
+        this.nyomvonal++; // Itt letapossa
         if (this.nyomvonal >= 3) {
             sav.setAllapot(new Jeges());
         }
@@ -55,17 +55,11 @@ public class SekelyHo extends Savallapot {
 
     /**
      * Elengedi a járművet a sekély hó sávból.
-     * Növeli a nyomvonalat, és ha az eléri a 3-at, jeges állapotba vált.
      */
     @Override
     public void elenged(Sav sav, Jarmu jarmu) {
         SkeletonLogger.enter(this, "elenged", sav, jarmu);
-        
-        this.nyomvonal++;
-        if (this.nyomvonal >= 3) {
-            sav.setAllapot(new Jeges());
-        }
-        
+        // Nincs teendő, a letaposás már a befogadáskor megtörtént!
         SkeletonLogger.exit("void");
     }
 
