@@ -16,6 +16,7 @@ public class Hokotro extends IranyitottJarmu {
     private Kotrofej aktiv; 
     private HashMap<String, Kotrofej> birtokolja; 
 
+    //TODO: egyből lehelyezés a konstruktorban.
     public Hokotro(Takarito tulajdonos) {
         this.tulajdonos = tulajdonos;
         this.birtokolja = new HashMap<>();

@@ -49,6 +49,7 @@ public class JatekVezerlo {
         }
         // x mennyiségű autó létrehozása, hozzáadása a modellhez (startra léptetés) és útvonaltervezése
         
+        modell.havazas();
         nextJatekos(); // Beállítja az első játékost aktívnak
 
     }
@@ -57,15 +58,20 @@ public class JatekVezerlo {
         if(aktivJatekos != null){
             //Itt nem számít a lépés eredménye, ha sikertelen a lépés, akkor is tovább lépünk a következő játékosra/járműre.
             aktivJatekos.lep(cel);
+            
+            //minden 3. lépésnél leesik a hó.
+            if(korokHoesesOta >=2) {modell.havazas();korokHoesesOta = 0;}else{korokHoesesOta++;}
             //Ha a játékos körének vége van, akkor következik a következő játékos, egyébként a következő járműve lép.
             if(aktivJatekos.isKorVege()) {nextJatekos();}
             else{aktivJatekos.nextJarmu();}
+            //autók lépnek még a lépés vége előtt
+            autokKore();
+            //só hatása most érvényesül (első lépésben úgysem lesz semmi, ami miatt frissíteni kéne, így nem baj, hogy ez az első lépésnél nem teljesül)
+            modell.palyaFrissit();
         }
     }
     public void nextJatekos(){
         if(jatekVege) return;
-        //minden 3. körben leesik a hó.
-        if(korokHoesesOta >=2) {modell.havazas();korokHoesesOta = 0;}else{korokHoesesOta++;}
 
         //Ha ez lesz az első kör a játékban, akkor beállítjuk az első játékost aktívnak és NEM lépnek még az autók
         if(aktivJatekos == null){aktivJatekos = jatekosok.getFirst(); aktivJatekos.korKezdodik(); return;}
@@ -75,11 +81,6 @@ public class JatekVezerlo {
 
         //Ha az utolsó játékos volt legutóbb, akkor az első jön
         if(currentId == jatekosok.size()-1) currentId = -1;
-        
-        //autók lépnek még a kör vége előtt
-        autokKore();
-        //só hatása most érvényesül (első körben úgysem lesz semmi, ami miatt frissíteni kéne, így nem baj, hogy ez az egyik return után van)
-        modell.palyaFrissit();
 
         //hivatalosan a kör vége, kövi játékos következik.
         aktivJatekos = jatekosok.get(currentId+1);
