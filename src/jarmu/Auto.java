@@ -2,6 +2,7 @@ package jarmu;
 
 import halozat.Checkpoint;
 import halozat.Csomopont;
+import java.util.List;
 import vezerles.SkeletonLogger;
 
 /**
@@ -13,8 +14,10 @@ public class Auto extends Jarmu {
     private final Checkpoint cel; // Az autó célállomása (nem változik a játék során)
 
     public Auto(Checkpoint start, Checkpoint cel) {
+        SkeletonLogger.create(this);
         this.start = start;
         this.cel = cel;
+        SkeletonLogger.exit(this);
     }
 
     /**
@@ -23,11 +26,24 @@ public class Auto extends Jarmu {
     @Override
     public boolean lep(Csomopont celCsomopont) {
         SkeletonLogger.enter(this, "lep", celCsomopont);
-        if (varakozik > 0) {
-            varakozik--;
+        
+        // 1. Várakozás (büntetés) ellenőrzése baleset után (Teszt 53)
+        if (this.varakozik > 0) {
+            this.varakozik--; // A büntetés csökken minden próbálkozásnál/körnél
             SkeletonLogger.exit(false);
             return false;
         }
+        
+        // 2. Szomszédság validációja: Csak topológiailag elérhető szomszédra léphet
+        if (this.aktualisCsomopont != null) {
+            List<Csomopont> szomszedok = this.aktualisCsomopont.getNext();
+            if (szomszedok == null || !szomszedok.contains(celCsomopont)) {
+                SkeletonLogger.exit(false);
+                return false;
+            }
+        }
+
+        // 3. Befogadás megkísérlése az új csomóponton
         if (celCsomopont.befogad(this)) {
             if (this.aktualisCsomopont != null) {
                 this.aktualisCsomopont.elenged(this);
@@ -36,14 +52,17 @@ public class Auto extends Jarmu {
             SkeletonLogger.exit(true);
             return true;
         }
+        
+        // Ha a befogadás elutasítva (pl. foglalt a Checkpoint)
         SkeletonLogger.exit(false);
         return false;
     }
+    
     public Checkpoint getStart(){
         return start;
     }
+    
     public Checkpoint getCel(){
         return cel;
     }
-   
 }

@@ -16,62 +16,63 @@ public class Sav extends Csomopont {
     private Savallapot allapot;
     private Jarmu jarmu;
     private List<Csomopont> szomszedok = new ArrayList<>();
-    protected int sozott = 0;
-    protected boolean zuzalekos = false;
+    
+    // Privátra véve, Getter/Setter használatával a csomagok közti átjárhatóságért
+    private int sozott = 0;
+    private boolean zuzalekos = false;
 
     /**
      * Konstruktor, inicializálja a sáv alapértelmezett állapotát és szomszédait.
      */
     public Sav() {
+        SkeletonLogger.create(this);
         this.allapot = new Tiszta();
         this.szomszedok = new ArrayList<>();
-    }
-    /**
-     * a Sav-nak és Utszakasz-nak támogatnia kell azt, hogy manuálisan megmondjuk nekik, kik a szomszédjaik (connect parancs).
-     * Jelenleg a Sav.java getNext() metódusa egy szomszedok listát ad vissza,
-     * de nincs publikus metódus, amivel elemet lehetne beletenni!
-     */
-    public void addSzomszed(Csomopont szomszed) {
-        this.szomszedok.add(szomszed);
+        SkeletonLogger.exit(this);
     }
 
-    /**
-     * Beállítja az útszakasz referenciáját a sáv számára.
-     * @param utszakasz a hozzákapcsolt útszakasz
-     */
+    public void addSzomszed(Csomopont szomszed) {
+        SkeletonLogger.enter(this, "addSzomszed", szomszed);
+        this.szomszedok.add(szomszed);
+        SkeletonLogger.exit("void");
+    }
+
     public void setUtszakasz(Utszakasz utszakasz) {
         this.utszakasz = utszakasz;
     }
 
-    /**
-     * Visszaadja az útszakaszt, amelyhez ez a sáv tartozik.
-     * @return a sávhoz tartozó útszakasz
-     */
     public Utszakasz getUtszakasz() {
         return this.utszakasz;
     }
 
-    /**
-     * Beállítja az aktuális sáv állapotát.
-     * @param allapot az új állapot
-     */
     public void setAllapot(Savallapot allapot) {
         SkeletonLogger.enter(this, "setAllapot", allapot);
         this.allapot = allapot;
         SkeletonLogger.exit("void");
     }
 
-    /**
-     * Visszaadja a sáv jelenlegi állapotát.
-     * @return a sáv állapota
-     */
     public Savallapot getAllapot() {
         return this.allapot;
     }
 
-    /**
-     * Frissíti a sávot minden szimulációs lépésben.
-     */
+    // --- ÚJ GETTER/SETTER METÓDUSOK AZ ÁLLAPOTOK SZÁMÁRA ---
+    public boolean isZuzalekos() {
+        return this.zuzalekos;
+    }
+
+    public void setZuzalekos(boolean zuzalekos) {
+        this.zuzalekos = zuzalekos;
+    }
+
+    public int getSozott() {
+        return this.sozott;
+    }
+
+    public void setSozott(int sozott) {
+        this.sozott = sozott;
+    }
+    // --------------------------------------------------------
+
     @Override
     public void frissit() {
         SkeletonLogger.enter(this, "frissit");
@@ -84,11 +85,6 @@ public class Sav extends Csomopont {
         SkeletonLogger.exit("void");
     }
 
-    /**
-     * Megpróbálja befogadni a járművet a sávba.
-     * @param jarmu a befogadni kívánt jármű
-     * @return true, ha sikerült, különben false
-     */
     @Override
     public boolean befogad(Jarmu jarmu) {
         SkeletonLogger.enter(this, "befogad", jarmu);
@@ -98,6 +94,7 @@ public class Sav extends Csomopont {
         }
         boolean siker = false;
         if (this.allapot != null) {
+            // Itt dől el (a State-ben), hogy jégre lép, letapossa a havat, stb.
             siker = this.allapot.befogad(this, jarmu);
         }
         if (siker) {
@@ -107,10 +104,6 @@ public class Sav extends Csomopont {
         return siker;
     }
 
-    /**
-     * Elengedi a járművet a sávból.
-     * @param jarmu az elengedendő jármű
-     */
     @Override
     public void elenged(Jarmu jarmu) {
         SkeletonLogger.enter(this, "elenged", jarmu);
@@ -123,20 +116,11 @@ public class Sav extends Csomopont {
         SkeletonLogger.exit("void");
     }
 
-    /**
-     * Visszaadja a következő csomópontok listáját.
-     * @return a szomszédos csomópontok
-     */
     @Override
     public List<Csomopont> getNext() {
         return szomszedok;
     }
 
-    /**
-     * Visszaadja a jobboldali szomszédos sávot a jelenlegi sávhoz képest.
-     * @param sav a jelenlegi sáv
-     * @return a jobboldali szomszédos sáv vagy null
-     */
     public Sav getJobbSzomszed(Sav sav) {
         SkeletonLogger.enter(this, "getJobbSzomszed", sav);
         Sav szomszed = null;
@@ -147,11 +131,6 @@ public class Sav extends Csomopont {
         return szomszed;
     }
 
-    /**
-     * Teszteli, hogy a jármű ráléphet-e a sávra az aktuális állapot alapján.
-     * @param jarmu a tesztelendő jármű
-     * @return true, ha a jármű ráléphet
-     */
     public boolean lepesTeszt(Jarmu jarmu) {
         SkeletonLogger.enter(this, "lepesTeszt", jarmu);
         boolean teszt = false;
@@ -162,50 +141,40 @@ public class Sav extends Csomopont {
         return teszt;
     }
 
-    /**
-     * Kezeli, ha a sáv baleseti állapotba kerül (pl. külső parancs vagy megcsúszás miatt).
-     */
     @Override
     public void balesetEseten() {
         SkeletonLogger.enter(this, "balesetEseten");
-        
         if (this.jarmu != null) {
-            this.jarmu.balesetetSzenved(); // Szólunk a rajta lévő járműnek, hogy karambolozott
+            this.jarmu.balesetetSzenved(); // A baleset manuális előidézése (Teszt 50)
         }
-        
         SkeletonLogger.exit("void");
     }
 
-    /**
-     * Ellenőrzi, hogy a sáv foglalt-e aktuálisan járművel.
-     * @return true, ha jármű van a sávon
-     */
     @Override
     public boolean foglalt() {
-        return (this.jarmu != null);
+        return (this.jarmu != null); // Kapacitáskorlát biztosítása (Teszt 41)
     }
 
-    /**
-     * A hóesés hatásainak kezelése a sávon.
-     */
     @Override
     public void hoesesEseten() {
         SkeletonLogger.enter(this, "hoesesEseten");
-        if (sozott == 0) {
-            utszakasz.havazikRa(this);
+        if (this.sozott == 0) {
+            // NullPointerException védelem: ha nincs útszakaszban, egyből az állapotnak szólunk
+            if (this.utszakasz != null) {
+                this.utszakasz.havazikRa(this);
+            } else {
+                if (this.allapot != null) {
+                    this.allapot.hoesesEseten(this);
+                }
+            }
         } else {
-            sozott--;
+            this.sozott--; // Teszt 47: A só védi a sávot a havazástól!
         }
         SkeletonLogger.exit("void");
     }
 
-    /**
-     * Megkísérli a jég eltávolítását a sávon.
-     * @param olvad jelzi, hogy a jeget törjük, vagy olvasztjuk
-     * @return true, ha sikerült a jég eltakarítása
-     */
     public boolean jegTisztit(Boolean olvad) {
-        SkeletonLogger.enter(this, "jegTisztit");
+        SkeletonLogger.enter(this, "jegTisztit", olvad);
         boolean ret = false;
         if (allapot != null) {
             ret = allapot.jegTisztit(this, olvad);
@@ -214,10 +183,6 @@ public class Sav extends Csomopont {
         return ret;
     }
 
-    /**
-     * Megpróbálja eltakarítani a havat a sávon.
-     * @return true, ha a hó eltakarítása sikerült
-     */
     public boolean hoTisztit() {
         SkeletonLogger.enter(this, "hoTisztit");
         boolean ret = false;
@@ -228,27 +193,21 @@ public class Sav extends Csomopont {
         return ret;
     }
 
-    /**
-     * Só szórása a sáv felületére; csökkenti a jegesedési kockázatot.
-     */
     public void soSzoras() {
         SkeletonLogger.enter(this, "soSzoras");
         if (allapot != null) {
             allapot.sotKap(this);
         }
-        sozott = 3;
+        this.sozott = 3;
         SkeletonLogger.exit("void");
     }
 
-    /**
-     * Zúzalék szórása a sáv felületére; csúszásvédelem céljából.
-     */
     public void zuzalekSzoras() {
         SkeletonLogger.enter(this, "zuzalekSzoras");
         if (allapot != null) {
-            allapot.zuzalekSzoras(); // Szólunk a State-nek is (pl. a Jeges állapotnak)
+            allapot.zuzalekSzoras(); 
         }
-        this.zuzalekos = true; //A sáv is megjegyzi, hogy zúzalékos lett
+        this.zuzalekos = true;
         SkeletonLogger.exit("void");
     }
 }

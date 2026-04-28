@@ -20,52 +20,42 @@ public class SekelyHo extends Savallapot {
      */
     protected int nyomvonal = 0;
 
-    /**
-     * Konstruktor a SekelyHo osztályhoz.
-     */
     public SekelyHo() {
         SkeletonLogger.create(this);
         SkeletonLogger.exit(this);
     }
 
-    /**
-     * Beállítja a hórétegek számát.
-     * @param horeteg az új hórétegek száma
-     */
     public void setHoreteg(int horeteg) {
         this.horeteg = horeteg;
     }
 
     /**
      * Ellenőrzi, hogy a jármű befogadható-e a sekély hó sávba.
-     * Növeli a nyomvonalat, és ha az eléri a 3-at, jeges állapotba vált.
+     * Növeli a nyomvonalat (letaposás), és ha az eléri a 3-at, jeges állapotba vált (Teszt 39).
      */
     @Override
     public boolean befogad(Sav sav, Jarmu jarmu) {
         SkeletonLogger.enter(this, "befogad", sav, jarmu);
         
-        this.nyomvonal++; // Itt letapossa
+        this.nyomvonal++; // A jármű kerekei letapossák a havat
         if (this.nyomvonal >= 3) {
-            sav.setAllapot(new Jeges());
+            sav.setAllapot(new Jeges()); // Jéggé tömörödik
         }
         
         SkeletonLogger.exit(true);
         return true;
     }
 
-    /**
-     * Elengedi a járművet a sekély hó sávból.
-     */
     @Override
     public void elenged(Sav sav, Jarmu jarmu) {
         SkeletonLogger.enter(this, "elenged", sav, jarmu);
-        // Nincs teendő, a letaposás már a befogadáskor megtörtént!
+        // Nincs teendő, a letaposás már a befogadáskor megtörtént
         SkeletonLogger.exit("void");
     }
 
     /**
      * Kezeli a hóesés esetét a sekély hó sávon.
-     * Növeli a hóréteget, és ha eléri a 3-at, mély hó állapotba vált.
+     * Növeli a hóréteget, és ha eléri a 3-at, mély hó állapotba vált (Teszt 37).
      */
     @Override
     public void hoesesEseten(Sav sav) {
@@ -79,14 +69,10 @@ public class SekelyHo extends Savallapot {
         SkeletonLogger.exit("void");
     }
 
-    /**
-     * Frissíti a sekély hó sáv állapotát (pl. olvadás).
-     * Csökkenti a hóréteget, és ha elfogy, tiszta állapotba vált.
-     */
     @Override
     public void frissit(Sav sav) {
         SkeletonLogger.enter(this, "frissit", sav);
-        
+        // A napos idő szimulálása
         this.horeteg--;
         if (this.horeteg <= 0) {
             sav.setAllapot(new Tiszta());
@@ -95,10 +81,6 @@ public class SekelyHo extends Savallapot {
         SkeletonLogger.exit("void");
     }
 
-    /**
-     * Teszteli, hogy a jármű ráléphet-e a sekély hó sávra.
-     * Sekély hóban még minden jármű tud közlekedni.
-     */
     @Override
     public boolean lepesTeszt(Jarmu jarmu) {
         SkeletonLogger.enter(this, "lepesTeszt", jarmu);
@@ -106,45 +88,24 @@ public class SekelyHo extends Savallapot {
         return true; 
     }
 
-    /**
-     * Kezeli, ha a sáv sót kap.
-     * A só csökkenti a hóréteget, ha pedig elfogy, tiszta lesz az út.
-     */
     @Override
     public void sotKap(Sav sav) {
         SkeletonLogger.enter(this, "sotKap", sav);
-        
-        this.horeteg--;
-        if (this.horeteg <= 0) {
-            sav.setAllapot(new Tiszta());
-        }
-        
+        // A só a sekély havat azonnal felolvasztja
+        sav.setAllapot(new Tiszta());
         SkeletonLogger.exit("void");
     }
 
-    /**
-     * Megpróbálja megtisztítani a havat a sávból.
-     * Sikeresen tiszta állapotba vált.
-     */
     @Override
     public boolean hoTisztit(Sav sav) {
         SkeletonLogger.enter(this, "hoTisztit", sav);
-
         sav.setAllapot(new Tiszta());
-
         SkeletonLogger.exit(true);
         return true;
     }
 
-    /**
-     * Megpróbálja megtisztítani a jeget a sávból.
-     * Sekély hóban nincs jég, így nem sikerül.
-     * @param sav a tisztítandó sáv
-     * @param olvad jelzi, hogy a jeget törjük, vagy olvasztjuk
-     * @return false, mivel nincs jég
-     */
     @Override
-    public boolean jegTisztit(Sav sav,Boolean olvad) {
+    public boolean jegTisztit(Sav sav, Boolean olvad) {
         SkeletonLogger.enter(this, "jegTisztit", sav, olvad);
         SkeletonLogger.exit(false);
         return false;
