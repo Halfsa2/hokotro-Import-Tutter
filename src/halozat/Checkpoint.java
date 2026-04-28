@@ -56,7 +56,7 @@ public class Checkpoint extends Csomopont {
      */
     @Override
     public void frissit() {
-        // Checkpoint állapotának aktualizálása
+        // Checkpoint állapotának aktualizálása (jelenleg nem csinál semmit)
     }
 
     /**
@@ -79,7 +79,7 @@ public class Checkpoint extends Csomopont {
      */
     @Override
     public void balesetEseten() {
-        // Baleset esetén a Checkpointon
+        // Baleset esetén a Checkpointon... nem történik semmi különös, mivel ez egy végpont. Ez a metódus üres marad.
     }
 
     /**
@@ -88,13 +88,7 @@ public class Checkpoint extends Csomopont {
      */
     @Override
     public boolean foglalt() {
+        // A checkpoint foglalt, ha van legalább egy jármű a várakozó listában
         return !varakozoJarmuvek.isEmpty();
-    }
-
-    /**
-     * Hőesés esetén végrehajtandó logika a checkpointon.
-     */
-    @Override
-    public void hoesesEseten() {
     }
 }

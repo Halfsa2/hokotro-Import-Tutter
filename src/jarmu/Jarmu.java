@@ -34,7 +34,6 @@ public abstract class Jarmu implements IJarmuMozgas {
         return false;
     }
 
-    // Az IJarmuMozgas interfész megvalósítása, amit a leszármazottak definiálnak
-    @Override
-    public abstract boolean lep(Csomopont cel); 
+    // A lep metódust itt nem kell felüldefiniálni, mert a Jarmu osztály már implementálja az IJarmuMozgas interfészt,
+    // és a konkrét járműtípusok (Auto, Hokotro) fogják megvalósítani a saját mozgási logikájukat.
 }

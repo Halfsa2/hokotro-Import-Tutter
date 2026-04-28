@@ -4,7 +4,7 @@ import felszereles.Kotrofej;
 import gazdasag.Takarito;
 import halozat.Csomopont;
 import halozat.Sav;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import vezerles.SkeletonLogger;
 
@@ -15,11 +15,11 @@ public class Hokotro extends IranyitottJarmu {
     
     private Takarito tulajdonos; 
     private Kotrofej aktiv; 
-    private List<Kotrofej> birtokolja; 
+    private HashMap<String, Kotrofej> birtokolja; 
 
     public Hokotro(Takarito tulajdonos) {
         this.tulajdonos = tulajdonos;
-        this.birtokolja = new ArrayList<>();
+        this.birtokolja = new HashMap<>();
     }
 
     /**
@@ -28,8 +28,9 @@ public class Hokotro extends IranyitottJarmu {
      */
     public void cserelFej(Kotrofej ujFej) {
         SkeletonLogger.enter(this, "cserelFej", ujFej); // BELÉPÉS LOGOLÁSA
-        if (this.birtokolja.contains(ujFej)) {
-            this.aktiv = ujFej;
+        Kotrofej sameTipus = this.birtokolja.get(ujFej.getClass().getSimpleName());
+        if (sameTipus != null) {
+            this.aktiv = sameTipus;
         }
         SkeletonLogger.exit("void");
     }
@@ -40,8 +41,20 @@ public class Hokotro extends IranyitottJarmu {
      */
     public void addFej(Kotrofej ujFej) {
         SkeletonLogger.enter(this, "addFej", ujFej);
-        this.birtokolja.add(ujFej); 
+        if(this.birtokolja.containsKey(ujFej.getClass().getSimpleName())) {
+            SkeletonLogger.exit("void");
+            return; // Már van ilyen típusú fej, nem adunk hozzá újat
+        }
+        this.birtokolja.put(ujFej.getClass().getSimpleName(), ujFej);
         SkeletonLogger.exit("void");
+    }
+    
+    /**
+     * Getter, ami név alapján visszaad egy birtokolt fejet
+     * @param tipusNev a fej típusának neve, amit le akar kérni
+     */
+    public Kotrofej getFej(String tipusNev) {
+        return this.birtokolja.get(tipusNev);
     }
 
     /**
@@ -66,6 +79,7 @@ public class Hokotro extends IranyitottJarmu {
     @Override
     public void balesetetSzenved() {
         SkeletonLogger.enter(this, "balesetetSzenved");
+        // A hókotró nem szenved balesetet a jégen sem, így ez üres marad! (Teszt 46)
         SkeletonLogger.exit("void");
     }
 
@@ -73,19 +87,45 @@ public class Hokotro extends IranyitottJarmu {
     public boolean lep(Csomopont celCsomopont) {
         SkeletonLogger.enter(this, "lep", celCsomopont);
         
+        // 1. Várakozás (büntetés) ellenőrzése
+        if (this.varakozik > 0) {
+            this.varakozik--; // Eltelt egy próbálkozás / kör
+            // Ideális esetben a hibaüzenetet a JatekVezerlo írja ki, de itt adjuk vissza a false-t
+            SkeletonLogger.exit(false);
+            return false;
+        }
+
+        // 2. Topológiai validáció: szomszédos-e a célcsomópont? (Kivéve az első lehelyezést)
+        if (this.aktualisCsomopont != null) {
+            List<Csomopont> szomszedok = this.aktualisCsomopont.getNext();
+            if (szomszedok == null || !szomszedok.contains(celCsomopont)) {
+                // Nincs kapcsolat!
+                SkeletonLogger.exit(false);
+                return false;
+            }
+        }
+
+        // 3. Befogadás megkísérlése a célcsomóponton
         if (celCsomopont.befogad(this)) {
+            // Ha volt korábbi sávunk, onnan kilépünk
             if (this.aktualisCsomopont != null) {
                 this.aktualisCsomopont.elenged(this);
             }
+            // Frissítjük a pozíciót
             this.aktualisCsomopont = celCsomopont;
             
-            if (celCsomopont instanceof Sav) {
-                this.takarit((Sav) celCsomopont);
+            // 4. Takarítás, ha sávra léptünk
+            if (aktualisCsomopont instanceof Sav sav) {
+                // Ha sikerült kitakarítani a sávot, akkor a tulajdonos pénzt keres.
+                if(this.takarit(sav)) {
+                    tulajdonos.keres(5);
+                }
             }
             SkeletonLogger.exit(true);
             return true;
         }
         
+        // Ha a befogad() false-t adott (pl. foglalt, vagy mély hó busznál), ide futunk ki
         SkeletonLogger.exit(false);
         return false;
     }

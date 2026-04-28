@@ -1,14 +1,15 @@
 package felszereles;
 import halozat.Sav;
-/**
- * Általános, hókotróra szerelhető tisztítóeszköz absztrakt ősosztálya.
- */
+
 public abstract class Kotrofej {
     
-    /**
-     * Előírja a leszármazottak számára a sávra ható működési logikát.
-     * @param s A sáv, amit takarítani kell.
-     * @return Igaz, ha a takarítás sikeres volt.
-     */
     public abstract boolean takarit(Sav s); 
+
+    /**
+     * Újratölti a fejet a szükséges fogyóeszközzel.
+     * Alapértelmezésben üres, a leszármazottak felülírják, ha van fogyóeszközük.
+     */
+    public void ujratolt(int mennyiseg) {
+        // Alapértelmezetten nem csinál semmit
+    }
 }

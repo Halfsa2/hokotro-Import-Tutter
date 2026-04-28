@@ -19,7 +19,7 @@ import java.util.Scanner;
 /**
  * A szimuláció indító osztálya, amely menüvezérelt módon teszteseteket futtat.
  */
-public class Main {
+public class SkeletonMain {
 
     /**
      * A program belépési pontja. Felhasználói menüt jelenít meg és teszteseteket futtat.
@@ -345,9 +345,9 @@ public class Main {
         hokotro1.addFej(sarkanyfej1);
         hokotro1.cserelFej(sarkanyfej1);
 
-        Jeges.sarkanfejOlvassza = true;
+        //Jeges.sarkanfejOlvassza = true;
         boolean siker = hokotro1.takarit(sav1);
-        Jeges.sarkanfejOlvassza = false;
+        //Jeges.sarkanfejOlvassza = false;
         if (siker)
             kassza.penzHozzaadas(5);
         return siker;
@@ -622,7 +622,7 @@ public class Main {
         SkeletonLogger.register(kassza, "kassza");
         Checkpoint vegallomas = new Checkpoint();
         SkeletonLogger.register(vegallomas, "vegallomas");
-        Busz busz = new Busz(vegallomas, vegallomas);
+        Busz busz = new Busz(vegallomas, vegallomas, null);
         SkeletonLogger.register(busz, "busz");
 
         boolean siker = busz.lep(vegallomas);
@@ -829,7 +829,7 @@ public class Main {
         Sav aktualis = new Sav();
         Sav cel = new Sav();
         SekelyHo sh = new SekelyHo();
-        Busz busz1 = new Busz(null, null);
+        Busz busz1 = new Busz(null, null, null);
         aktualis.setAllapot(sh);
         aktualis.befogad(busz1);
         busz1.setAktualisCsomopont(aktualis);
@@ -946,7 +946,7 @@ public class Main {
         VarosModell vM = new VarosModell();
         Sav s1 = new Sav();
         Jeges jeges = new Jeges();
-        jeges.sozott = 3;
+        s1.setSozott(3);
         SkeletonLogger.register(vM, "vM");
         SkeletonLogger.register(s1, "s1");
         SkeletonLogger.register(jeges, "jeges");
@@ -962,7 +962,7 @@ public class Main {
         VarosModell vM = new VarosModell();
         Sav s1 = new Sav();
         Jeges jeges = new Jeges();
-        jeges.sozott = 1;
+        s1.setSozott(1);
         SkeletonLogger.register(vM, "vM");
         SkeletonLogger.register(s1, "s1");
         SkeletonLogger.register(jeges, "jeges");

@@ -4,16 +4,34 @@ import java.util.ArrayList;
 import java.util.List;
 import vezerles.SkeletonLogger;
 
+/**
+ * Útszakaszt reprezentál, amely több párhuzamos sávból áll.
+ * Kezeli a sávok közti szomszédsági viszonyokat és a hóesés továbbítását.
+ */
 public class Utszakasz {
-    /**
-     * Útszakaszt reprezentál, amely több sávból áll és kezeli a hóeső eseményeket.
-     */
     
-    protected List<Sav> savok = new ArrayList<>();
+    protected List<Sav> savok;
 
+    /**
+     * Konstruktor az Utszakasz osztályhoz.
+     */
+    public Utszakasz() {
+        SkeletonLogger.create(this);
+        this.savok = new ArrayList<>();
+        SkeletonLogger.exit(this);
+    }
+
+    /**
+     * Hozzáad egy új sávot az útszakaszhoz, és beállítja a sáv útszakasz referenciáját.
+     * @param s a hozzáadandó sáv
+     */
     public void addSav(Sav s) {
-        savok.add(s);
-        s.setUtszakasz(this);
+        SkeletonLogger.enter(this, "addSav", s);
+        if (!this.savok.contains(s)) {
+            this.savok.add(s);
+            s.setUtszakasz(this);
+        }
+        SkeletonLogger.exit("void");
     }
 
     /**
@@ -21,54 +39,65 @@ public class Utszakasz {
      * @return az útszakasz sávjai
      */
     public List<Sav> getSavok() {
-        return savok;
+        SkeletonLogger.enter(this, "getSavok");
+        SkeletonLogger.exit("lista");
+        return this.savok;
     }
 
     /**
      * Hóesés hatását alkalmazza a megadott sávon.
+     * Ezt a metódust az Alagút osztály felül fogja definiálni (Teszt 38).
      * @param s a hóesés hatása alá kerülő sáv
      */
     public void havazikRa(Sav s) {
         SkeletonLogger.enter(this, "havazikRa", s);
-        s.getAllapot().hoesesEseten(s); // Az útszakasz hatása a sávra, ami továbbadja a hatást az állapotnak
+        // Delegáljuk a hatást a sáv aktuális állapotának
+        if (s.getAllapot() != null) {
+            s.getAllapot().hoesesEseten(s); 
+        }
         SkeletonLogger.exit("void");
     }
     
     /**
-     * @param sav
-     * @return paramétertől jobbra lévő sáv referenciája, vagy null érték, ha nincs az adott irányban szomszédja
+     * Visszaadja a vizsgált sávtól jobbra lévő sávot.
+     * Elengedhetetlen a Söprő fej működéséhez (Teszt 52).
+     * @param sav a vizsgált sáv
+     * @return a jobbra lévő sáv referenciája, vagy null
      */
     public Sav getJobbSzomszed(Sav sav){
-        SkeletonLogger.enter(this, "getJobbSzomszed", sav); // LOGOLÁS
+        SkeletonLogger.enter(this, "getJobbSzomszed", sav); 
         
-        int id = savok.indexOf(sav);
-        // Biztonsági ellenőrzés: ha benne van a listában, és NEM az utolsó elem
-        if (id != -1 && id < savok.size() - 1) {
-            Sav szomszed = savok.get(id + 1);
+        int id = this.savok.indexOf(sav);
+        
+        // Ha benne van a listában és nem a szélső jobb oldali sáv
+        if (id != -1 && id < this.savok.size() - 1) {
+            Sav szomszed = this.savok.get(id + 1);
             SkeletonLogger.exit(szomszed);
             return szomszed;
         }
         
-        SkeletonLogger.exit(null); // Ha nincs jobb szomszéd, null-al térünk vissza
+        SkeletonLogger.exit(null);
         return null;
     }
     
     /**
-     * @param sav
-     * @return paramétertől balra lévő sáv referenciája, vagy null érték, ha nincs az adott irányban szomszédja
+     * Visszaadja a vizsgált sávtól balra lévő sávot.
+     * @param sav a vizsgált sáv
+     * @return a balra lévő sáv referenciája, vagy null
      */
     public Sav getBalSzomszed(Sav sav){
-        SkeletonLogger.enter(this, "getBalSzomszed", sav); // LOGOLÁS
+        SkeletonLogger.enter(this, "getBalSzomszed", sav); 
         
-        int id = savok.indexOf(sav);
-        // Biztonsági ellenőrzés: ha benne van a listában, és NEM a legelső elem
+        int id = this.savok.indexOf(sav);
+        
+        // Ha nem a szélső bal oldali sáv (0. index)
         if (id > 0) {
-            Sav szomszed = savok.get(id - 1);
+            Sav szomszed = this.savok.get(id - 1);
             SkeletonLogger.exit(szomszed);
             return szomszed;
         }
         
-        SkeletonLogger.exit(null); // Ha nincs bal szomszéd, null-al térünk vissza
+        SkeletonLogger.exit(null);
         return null;
     }
 }

@@ -14,7 +14,8 @@ public enum Arucikk {
     /**
      * Sárkányfej felszerelés.
      */
-    SARKANYFEJ, 
+    SARKANYFEJ,
+    
     /**
      * Hókotró jármű.
      */
@@ -26,9 +27,18 @@ public enum Arucikk {
     /**
      * Kerozin fogyóeszköz.
      */
-    KEROZIN, 
+    KEROZIN,
     /**
      * Globális felmelegedés eszköz a hóesés megállítására.
      */
-    GLOBAL_WARMING
+    GLOBAL_WARMING,
+
+    /**
+     * Zúzalék fogyóeszköz a sávok csúszásmentesítésére.
+     */
+    ZUZALEK,
+    /**
+     * Zúzalékszóró felszerelés a sávok csúszásmentesítésére.
+     */
+    ZUZALEKSZORO
 }

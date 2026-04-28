@@ -1,4 +1,5 @@
 package vezerles;
+import gazdasag.KozosKassza;
 import halozat.Checkpoint;
 import halozat.Csomopont;
 import java.util.List;
@@ -33,10 +34,16 @@ public interface IJatekKezelo {
     void havazas();
     
     /**
+     * A város közös kasszájának elérését biztosító getter metódus, amely a játékosok pénzügyi tranzakcióihoz szükséges.
+     * @return kassza a város közös kasszája
+     */
+    KozosKassza getKassza();
+
+    /**
      * Előírja egy útvonaltervező szolgáltatás biztosítását, amely két megadott paraméter 
      * (start és cél csomópont) között megkeresi, és csomópontok listájaként visszaadja 
      * az optimális útvonalat[cite: 923].
-     * * @param start A kiindulási csomópont.
+     * @param start A kiindulási csomópont.
      * @param cel A cél csomópont.
      * @return Az optimális útvonalat alkotó csomópontok listája.
      */

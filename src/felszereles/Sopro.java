@@ -1,12 +1,21 @@
 package felszereles;
+
 import halozat.Sav;
-import vezerles.SkeletonLogger; 
+import vezerles.SkeletonLogger;
 
 /**
  * A söprő fej a havat az aktuális sávról jobbra tolja.
  * Jeget nem képes eltávolítani.
  */
 public class Sopro extends Kotrofej {
+
+    /**
+     * Konstruktor a Söprő osztályhoz.
+     */
+    public Sopro() {
+        SkeletonLogger.create(this);
+        SkeletonLogger.exit(this);
+    }
 
     /**
      * Takarítja a havat a söprő fejjel.
@@ -18,17 +27,31 @@ public class Sopro extends Kotrofej {
     public boolean takarit(Sav s) {
         SkeletonLogger.enter(this, "takarit", s);
         
-        // Megpróbáljuk eltakarítani a havat a jelenlegi sávról
+        // 1. Megpróbáljuk eltakarítani a havat a jelenlegi sávról (csak hóra működik)
         boolean sikeres = s.hoTisztit();
         
+        // 2. Ha volt mit eltakarítani (tehát nem tiszta jégen vagy tiszta aszfalton toltuk)
         if (sikeres) {
+            // Lekérjük a jobb oldali szomszédot
             Sav szomszedos = s.getJobbSzomszed(s); 
+            
+            // Ha van jobb oldali sáv, áttoljuk rá a havat
             if (szomszedos != null) {
-                szomszedos.hoesesEseten(); // Áttoljuk rá a havat
+                // A hóesés szimulálásával "növeljük" a szomszédos sáv hórétegét (Teszt 52)
+                szomszedos.hoesesEseten(); 
             }
         }
         
         SkeletonLogger.exit(sikeres);
         return sikeres;
+    }
+
+    /**
+     * Söprő fejnek nincsenek fogyóeszközei, így az újratöltés nem csinál semmit.
+     */
+    @Override
+    public void ujratolt(int mennyiseg) {
+        SkeletonLogger.enter(this, "ujratolt", mennyiseg);
+        SkeletonLogger.exit("void");
     }
 }

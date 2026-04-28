@@ -3,10 +3,13 @@ package vezerles;
 import gazdasag.Arucikk;
 import gazdasag.IMegvasarolhato;
 import gazdasag.Jatekos;
+import gazdasag.Sofor;
 import gazdasag.Takarito;
 import halozat.Csomopont;
 import jarmu.Auto;
+import jarmu.Busz;
 import jarmu.Hokotro;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import megjelenites.IJatekNezet;
@@ -16,38 +19,72 @@ public class JatekVezerlo {
     private IJatekKezelo modell;
     private IMegvasarolhato bolt;
     private HashMap<Auto,List<Csomopont>> autoUtvonalak;
+    private int takaritokSzama = 0;
+    private int soforokSzama = 0;
     private List<Jatekos<?>> jatekosok;
     private boolean jatekVege = false;
     //Az első körben esik a hó, hogy legyen valami a pályán.
     private int korokHoesesOta = 999;
     private Jatekos<?> aktivJatekos;
 
-    public JatekVezerlo(IJatekNezet nezet){
+    public JatekVezerlo(IJatekNezet nezet, IJatekKezelo modell, IMegvasarolhato bolt) {
         this.nezet = nezet;
+        this.modell = modell;
+        this.bolt = bolt;
+        this.jatekosok = new ArrayList<>();
         autoUtvonalak = new HashMap<>();
+        
     }
+    public void initJatek(){
+        //TODO: autók hozzáadása, játékosok járműveinek beállítása, modell inicializálása, stb.
+        modell.epit();
+        for(int i = 0; i < soforokSzama; i++){
+            Sofor s = new Sofor(modell.getKassza());
+            s.setJarmu(new Busz(modell.getSzabadCheckpoint(), modell.getSzabadCheckpoint(),s));
+            jatekosok.add(s);
+        }
+        for( int i = 0; i < takaritokSzama; i++){
+            Takarito t = new Takarito(modell.getKassza());
+            jatekosok.add(t);
+        }
+        // x mennyiségű autó létrehozása, hozzáadása a modellhez (startra léptetés) és útvonaltervezése
+        
+        modell.havazas();
+        nextJatekos(); // Beállítja az első játékost aktívnak
 
+    }
+    public void lep(Csomopont cel){
+        if(jatekVege) return;
+        if(aktivJatekos != null){
+            //Itt nem számít a lépés eredménye, ha sikertelen a lépés, akkor is tovább lépünk a következő játékosra/járműre.
+            aktivJatekos.lep(cel);
+            
+            //minden 3. lépésnél leesik a hó.
+            if(korokHoesesOta >=2) {modell.havazas();korokHoesesOta = 0;}else{korokHoesesOta++;}
+            //Ha a játékos körének vége van, akkor következik a következő játékos, egyébként a következő járműve lép.
+            if(aktivJatekos.isKorVege()) {nextJatekos();}
+            else{aktivJatekos.nextJarmu();}
+            //autók lépnek még a lépés vége előtt
+            autokKore();
+            //só hatása most érvényesül (első lépésben úgysem lesz semmi, ami miatt frissíteni kéne, így nem baj, hogy ez az első lépésnél nem teljesül)
+            modell.palyaFrissit();
+        }
+    }
     public void nextJatekos(){
         if(jatekVege) return;
-        //minden 3. körben leesik a hó.
-        if(korokHoesesOta >=2) {modell.havazas();korokHoesesOta = 0;}else{korokHoesesOta++;}
 
         //Ha ez lesz az első kör a játékban, akkor beállítjuk az első játékost aktívnak és NEM lépnek még az autók
-        if(aktivJatekos == null){aktivJatekos = jatekosok.getFirst();return;}
+        if(aktivJatekos == null){aktivJatekos = jatekosok.getFirst(); aktivJatekos.korKezdodik(); return;}
 
         //Ha nem ez az első kör, akkor megszerezzük a jelenlegi játékos ID-jét
         int currentId = jatekosok.indexOf(aktivJatekos);
 
         //Ha az utolsó játékos volt legutóbb, akkor az első jön
         if(currentId == jatekosok.size()-1) currentId = -1;
-        
-        //autók lépnek még a kör vége előtt
-        autokKore();
-        //só hatása most érvényesül (első körben úgysem lesz semmi, ami miatt frissíteni kéne, így nem baj, hogy ez az egyik return után van)
-        modell.palyaFrissit();
 
         //hivatalosan a kör vége, kövi játékos következik.
         aktivJatekos = jatekosok.get(currentId+1);
+        aktivJatekos.korKezdodik();
     }
     private void autokKore(){
         for (Auto auto : autoUtvonalak.keySet()) {
@@ -58,14 +95,14 @@ public class JatekVezerlo {
         List<Csomopont> utvonal = autoUtvonalak.get(auto);
         int nextIndex = utvonal.indexOf(auto.getAktualisCsomopont())+1;
         if(nextIndex >= utvonal.size()||nextIndex <= 0){
-            //Nem tudom pontosan mit kéne csinálni, ha célba ért (vagy valamiért olyan csomóponton áll ami nem az útvonal része),
-            //de egyelőre elhárítom ezt a felelősséget annyival hogy nem léphet tovább
+            //TODO: visszafordul ha célba ért (újraszámolás)
             return;
         }
         Csomopont next = utvonal.get(nextIndex);
         auto.lep(next);
     }
     public void vasarol(Arucikk termek, Hokotro gep){
+        //Mivel ezt a grafikus interfész is kezelni fogja, így nem gond az instanceof szerintem.
         if(aktivJatekos instanceof Takarito t){
             if(bolt.vasarol(termek, t, gep)){
                 if(termek == Arucikk.GLOBAL_WARMING){
@@ -75,6 +112,13 @@ public class JatekVezerlo {
             }else{
                 nezet.uzenetKijelzese("Sikertelen vásárlás!");
             }
+        }
+    }
+    public void registerJatekos(String tipus){
+        if(tipus.equals("Sofor")){
+            soforokSzama++;
+        }else if(tipus.equals("Takarito")){
+            takaritokSzama++;
         }
     }
     public void addJatekos(Jatekos<?> jatekos){
