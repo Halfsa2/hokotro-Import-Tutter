@@ -1,0 +1,4 @@
+[OK] Sikeres vásárlás: p1 megvette a soszoro eszközt.
+[OK] Sikeres vásárlás: p1 megvette a soszoro eszközt.
+Hokotro h1: Hely=s1, AktivFej=Soszoro, Birtokolt_fejek_szama=2 
+# (Csak az Alap Kotrofej és a Soszoro van benne, nincs két Soszoro!)

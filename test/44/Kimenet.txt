@@ -1,0 +1,3 @@
+[ERROR] Érvénytelen paraméter. A körök számának pozitív egésznek kell lennie. 
+[ERROR] Ismeretlen parancs vagy érvénytelen paraméter. 
+Sav s1: Allapot=SekelyHo, sozott=0, zuzalekos=0

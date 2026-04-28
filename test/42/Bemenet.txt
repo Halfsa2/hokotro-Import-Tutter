@@ -1,0 +1,17 @@
+# Kezdeti állapot: üres kassza, egy sáv és egy célállomás 
+create kassza k1 0 
+create buszsofor p1 
+create sav s1 
+create checkpoint cp1 
+connect s1 cp1 
+# Egy autó elfoglalja a checkpointot 
+create auto a1 cp1 
+# Busz létrehozása az s1 sávon és a sofőrhöz rendelése 
+create busz b1 s1 
+addjarmu p1 b1 
+# Busz célállomásának beállítása 
+setendpoint b1 cp1 
+# A busz megpróbál rálépni a foglalt célállomásra 
+step b1 cp1 
+stat b1 
+stat k1

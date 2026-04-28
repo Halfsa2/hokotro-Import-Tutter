@@ -1,0 +1,4 @@
+[OK] Sáv s1 sikeresen besózva. 
+Sav s1: Allapot=SekelyHo, sozott=3, zuzalekos=0 
+[OK] Az idő 3 körrel előrehaladt. 
+Sav s1: Allapot=Tiszta, sozott=0, zuzalekos=0

@@ -1,0 +1,3 @@
+[OK] h1 besózta az s1 sávot a sószóró fejjel.
+[OK] Havazás történt a városban.
+Sav s1: Allapot=Tiszta, sozott=2, zuzalekos=0

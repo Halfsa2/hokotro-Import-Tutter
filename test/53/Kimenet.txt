@@ -1,0 +1,3 @@
+[OK] A b1 jármű sikeresen átlépett a k1 kereszteződésre.
+[OK] A h1 jármű sikeresen átlépett a k1 kereszteződésre.
+Keresztezodes k1: bentLevoJarmuvek=[b1, h1]

@@ -1,0 +1,2 @@
+[ERROR] A fájl nem található vagy nem olvasható: nem_letezo_palya_404.txt 
+[ERROR] Ismeretlen azonosító: k1

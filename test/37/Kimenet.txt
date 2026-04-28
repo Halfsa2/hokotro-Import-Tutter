@@ -1,0 +1,2 @@
+[OK] A b1 jármű sikeresen átlépett az s2 sávra. 
+Busz b1: Hely=s2, varakozik=0  

@@ -1,0 +1,17 @@
+create checkpoint start
+create checkpoint cel
+create sav s1
+create sav s2
+create sav s3
+# Hosszú út: start -> s1 -> s2 -> cel
+connect start s1
+connect s1 s2
+connect s2 cel
+# Rövid út: start -> s3 -> cel
+connect start s3
+connect s3 cel
+# Autó létrehozása
+create auto a1 start cel
+# Ellenőrizzük, hogy merre akar menni az első lépésben
+step a1
+stat a1

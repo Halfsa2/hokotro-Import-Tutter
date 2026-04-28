@@ -1,0 +1,2 @@
+[OK] Havazás történt a városban.
+Sav s1: Allapot=MelyHo, sozott=0, zuzalekos=0

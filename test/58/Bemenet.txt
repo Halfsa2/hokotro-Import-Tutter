@@ -1,0 +1,12 @@
+create takarito p1
+create sav s1
+setstate s1 tiszta
+create hokotro h1 s1
+addjarmu p1 h1
+buy p1 SOSZORO
+fejcsere h1 soszoro
+# Sáv sózása
+step h1 s1
+# Globális havazás kiváltása
+havazas
+stat s1

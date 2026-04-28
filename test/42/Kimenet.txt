@@ -1,0 +1,3 @@
+[FAILED] A lépés sikertelen: A cp1 célállomás foglalt. 
+Busz b1: Hely=s1, oda=true, varakozik=0 
+KozosKassza k1: penzmennyiseg=0

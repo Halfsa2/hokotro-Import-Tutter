@@ -1,0 +1,9 @@
+# Pálya inicializálása 
+create sav s1 
+setstate s1 sekelyho 
+# Érvénytelen időugrás megkísérlése (negatív kör) 
+tick -5 
+# Érvénytelen időugrás megkísérlése (szöveg) 
+tick alma 
+# Az állapot nem változhatott 
+stat s1
