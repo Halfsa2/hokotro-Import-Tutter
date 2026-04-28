@@ -56,4 +56,8 @@ public class Soszoro extends Kotrofej {
         SkeletonLogger.exit(false);
         return false;
     }
+    @Override
+    public void printStat(String name) {
+        System.out.println("Soszoro "+ name + ": so_mennyiseg=" + this.so_mennyiseg);
+    }
 }

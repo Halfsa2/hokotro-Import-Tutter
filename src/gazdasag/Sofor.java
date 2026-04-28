@@ -2,6 +2,7 @@ package gazdasag;
 
 import jarmu.Busz;
 import java.util.ArrayList;
+import static prototipus.CommandInterpreter.reverseNevTar;
 import vezerles.SkeletonLogger;
 
 /**
@@ -37,5 +38,9 @@ public class Sofor extends Jatekos<Busz> {
     public Busz getBusz() {
         // A naplózást egy egyszerű getternél elhagyhatjuk a tiszta konzol érdekében
         return this.jarmuvek.get(0);
+    }
+    @Override
+    public void printStat(String name) {
+        System.out.println("Sofor "+ name + ": busz=" + (jarmuvek.isEmpty() ? "nincs" : reverseNevTar.get(jarmuvek.get(0))));
     }
 }

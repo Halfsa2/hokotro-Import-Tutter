@@ -2,6 +2,7 @@ package jarmu;
 
 import halozat.Checkpoint;
 import halozat.Csomopont;
+import static prototipus.CommandInterpreter.reverseNevTar;
 import vezerles.SkeletonLogger;
 
 /**
@@ -45,5 +46,14 @@ public class Auto extends Jarmu {
     public Checkpoint getCel(){
         return cel;
     }
-   
+   @Override
+    public void printStat(String name) {
+        System.out.print("Auto " + name + ": aktualisCsomopont=");
+        if (this.aktualisCsomopont != null) {
+            System.out.print(aktualisCsomopont != null? reverseNevTar.get(this.aktualisCsomopont) : "null");
+        }
+        System.out.print(", start="+ reverseNevTar.get(this.start));
+        System.out.print(", cel="+ reverseNevTar.get(this.cel));
+        System.out.println();
+    }
 }

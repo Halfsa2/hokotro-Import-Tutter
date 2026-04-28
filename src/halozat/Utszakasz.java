@@ -2,13 +2,15 @@ package halozat;
 
 import java.util.ArrayList;
 import java.util.List;
+import static prototipus.CommandInterpreter.reverseNevTar;
+import prototipus.IStatable;
 import vezerles.SkeletonLogger;
 
 /**
  * Útszakaszt reprezentál, amely több párhuzamos sávból áll.
  * Kezeli a sávok közti szomszédsági viszonyokat és a hóesés továbbítását.
  */
-public class Utszakasz {
+public class Utszakasz implements IStatable {
     
     protected List<Sav> savok;
 
@@ -93,5 +95,16 @@ public class Utszakasz {
         
         SkeletonLogger.exit(null); // Ha nincs bal szomszéd, null-al térünk vissza
         return null;
+    }
+    @Override
+    public void printStat(String name) {
+        System.out.print("Utszakasz " + name + ": savok=");
+        for (Sav s : this.savok) {
+            System.out.print(reverseNevTar.get(s));
+            if(s != this.savok.getLast()) {
+                System.out.print(", ");
+            }
+        }
+        System.out.println();
     }
 }

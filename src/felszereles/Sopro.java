@@ -43,4 +43,8 @@ public class Sopro extends Kotrofej {
         SkeletonLogger.exit(sikeres);
         return sikeres;
     }
+    @Override
+    public void printStat(String name) {
+        System.out.println("Sopro "+ name);
+    }
 }

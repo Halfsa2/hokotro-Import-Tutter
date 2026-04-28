@@ -1,11 +1,12 @@
 package gazdasag;
 
+import prototipus.IStatable;
 import vezerles.SkeletonLogger;
 
 /**
  * A játékosok közös perselye, amely a megszerzett Zúzmara Tallérokat tárolja.
  */
-public class KozosKassza {
+public class KozosKassza implements IStatable {
     
     private int penzosszeg; // A Zúzmara Tallérok aktuális egyenlege.
 
@@ -51,5 +52,9 @@ public class KozosKassza {
      */
     public int getPenzosszeg() {
         return this.penzosszeg;
+    }
+    @Override
+    public void printStat(String name) {
+        System.out.println("KozosKassza "+ name + ": penzmennyiseg=" + this.penzosszeg);
     }
 }

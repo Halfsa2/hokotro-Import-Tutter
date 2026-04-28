@@ -2,8 +2,9 @@ package halozat;
 
 import jarmu.Jarmu;
 import java.util.List;
+import prototipus.IStatable;
 
-public abstract class Csomopont {
+public abstract class Csomopont implements IStatable {
 
     /**
      * Általános csomópont absztrakt osztály a városi hálózaton.

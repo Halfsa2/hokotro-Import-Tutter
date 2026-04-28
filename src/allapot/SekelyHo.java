@@ -149,4 +149,8 @@ public class SekelyHo extends Savallapot {
         SkeletonLogger.exit(false);
         return false;
     }
+    @Override
+    public void printStat(String name) {
+        System.out.println("SekelyHo "+ name + ": horeteg=" + this.horeteg + ", nyomvonal=" + this.nyomvonal);
+    }
 }

@@ -9,7 +9,7 @@ import vezerles.SkeletonLogger;
  * Ez az állapot azt jelzi, hogy a sáv jeges, és a járművek megcsúszhatnak rajta,
  * ami balesetet okoz (kivéve, ha zúzalékos).
  */
-public class Jeges extends Savallapot {
+public class Jeges extends Savallapot{
 
     
     /**
@@ -159,5 +159,9 @@ public class Jeges extends Savallapot {
         SkeletonLogger.enter(this, "zuzalekSzoras");
         this.zuzalekos = true;
         SkeletonLogger.exit("void");
+    }
+    @Override
+    public void printStat(String name) {
+        System.out.println("Jeges "+ name + ": sozott=" + this.sozott + ", zuzalekos=" + this.zuzalekos);
     }
 }

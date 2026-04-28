@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import megjelenites.IJatekNezet;
 
-public class JatekVezerlo {
+public class JatekVezerlo implements IJatekVezerlo {
     private IJatekNezet nezet;
     private IJatekKezelo modell;
     private IMegvasarolhato bolt;
@@ -132,5 +132,12 @@ public class JatekVezerlo {
         jatekVege = true;
         nezet.jatekVege("Játék vége!");
     }
-    
+    @Override
+    public void tick(int korokSzama) {
+        for (int i = 0; i < korokSzama; i++) {
+            modell.havazas();
+            autokKore(); 
+            modell.palyaFrissit();
+        }
+    }
 }

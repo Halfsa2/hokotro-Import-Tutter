@@ -5,6 +5,7 @@ import allapot.Tiszta;
 import jarmu.Jarmu;
 import java.util.ArrayList;
 import java.util.List;
+import static prototipus.CommandInterpreter.reverseNevTar;
 import vezerles.SkeletonLogger;
 
 /**
@@ -250,5 +251,13 @@ public class Sav extends Csomopont {
         }
         this.zuzalekos = true; //A sáv is megjegyzi, hogy zúzalékos lett
         SkeletonLogger.exit("void");
+    }
+    @Override
+    public void printStat(String name) {
+        System.out.print("Sav " + name + ": jarmu=");
+        if (this.jarmu != null) {
+            System.out.print(reverseNevTar.get(this.jarmu));
+        }
+        System.out.println();
     }
 }
