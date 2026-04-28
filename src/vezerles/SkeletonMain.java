@@ -946,7 +946,7 @@ public class SkeletonMain {
         VarosModell vM = new VarosModell();
         Sav s1 = new Sav();
         Jeges jeges = new Jeges();
-        jeges.sozott = 3;
+        s1.setSozott(3);
         SkeletonLogger.register(vM, "vM");
         SkeletonLogger.register(s1, "s1");
         SkeletonLogger.register(jeges, "jeges");
@@ -962,7 +962,7 @@ public class SkeletonMain {
         VarosModell vM = new VarosModell();
         Sav s1 = new Sav();
         Jeges jeges = new Jeges();
-        jeges.sozott = 1;
+        s1.setSozott(1);
         SkeletonLogger.register(vM, "vM");
         SkeletonLogger.register(s1, "s1");
         SkeletonLogger.register(jeges, "jeges");
