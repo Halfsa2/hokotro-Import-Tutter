@@ -9,6 +9,7 @@ import halozat.Csomopont;
 import jarmu.Auto;
 import jarmu.Busz;
 import jarmu.Hokotro;
+import jarmu.Jarmu;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,6 +70,11 @@ public class JatekVezerlo implements IJatekVezerlo {
             //só hatása most érvényesül (első lépésben úgysem lesz semmi, ami miatt frissíteni kéne, így nem baj, hogy ez az első lépésnél nem teljesül)
             modell.palyaFrissit();
         }
+    }
+    public void lep(Jarmu jarmu, Csomopont cel){
+        if(jatekVege) return;
+        //Megkerüljük a játék logikáját, az adott járművet direktben léptetjük.
+        jarmu.lep(cel);
     }
     public void nextJatekos(){
         if(jatekVege) return;

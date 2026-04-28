@@ -22,8 +22,11 @@ import halozat.Sav;
 import halozat.Utszakasz;
 import jarmu.Auto;
 import jarmu.Hokotro;
+import jarmu.Jarmu;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import vezerles.IJatekVezerlo;
@@ -32,6 +35,7 @@ public class CommandInterpreter {
     IJatekVezerlo jatekVezerlo;
     public static final Map<String, IStatable> nevTar = new HashMap<>();
     public static final Map<IStatable, String> reverseNevTar = new HashMap<>();
+    private static List<String> commandLog = new ArrayList<>();
 
 
     public static void main(String[] args) {
@@ -57,6 +61,7 @@ public class CommandInterpreter {
             }
 
             processCommand(line);
+            commandLog.add(line); // Parancs naplózása
         }
     }
 
@@ -174,61 +179,73 @@ public class CommandInterpreter {
                 Jeges jeges = new Jeges();
                 nevTar.put(args[1], jeges);
                 reverseNevTar.put(jeges, args[1]);
+                printOk("Jeges létrehozva: " + args[1]);
                 break;
             case "melyho":
                 MelyHo melyho = new MelyHo();
                 nevTar.put(args[1], melyho);
                 reverseNevTar.put(melyho, args[1]);
+                printOk("MelyHo létrehozva: " + args[1]);
                 break;
             case "sekelyho":
                 SekelyHo sekelyHo = new SekelyHo();
                 nevTar.put(args[1], sekelyHo);
-                reverseNevTar.put(sekelyHo, args[1]);   
+                reverseNevTar.put(sekelyHo, args[1]);
+                printOk("SekelyHo létrehozva: " + args[1]);
                 break;
             case "tiszta":
                 Tiszta tiszta = new Tiszta();
                 nevTar.put(args[1], tiszta);
                 reverseNevTar.put(tiszta, args[1]);
+                printOk("Tiszta létrehozva: " + args[1]);
                 break;
             case "hanyofej":
                 Hanyofej hanyofej = new Hanyofej();
                 nevTar.put(args[1], hanyofej);
                 reverseNevTar.put(hanyofej, args[1]);
+                printOk("Hanyofej létrehozva: " + args[1]);
                 break;
             case "jegtoro":
                 Jegtoro jegtoro = new Jegtoro();
                 nevTar.put(args[1], jegtoro);
                 reverseNevTar.put(jegtoro, args[1]);
+                printOk("Jegtoro létrehozva: " + args[1]);
                 break;
             case "sarkanyfej":
                 Sarkanyfej sarkanyfej = new Sarkanyfej(Integer.parseInt(args[2]));
                 nevTar.put(args[1], sarkanyfej);
                 reverseNevTar.put(sarkanyfej, args[1]);
+                printOk("Sarkanyfej létrehozva: " + args[1]);
                 break;
             case "sopro":
                 Sopro sopro = new Sopro();
                 nevTar.put(args[1], sopro);
                 reverseNevTar.put(sopro, args[1]);
+                printOk("Sopro létrehozva: " + args[1]);
                 break;
             case "soszoro":
                 Soszoro soszoro = new Soszoro(Integer.parseInt(args[2]));
                 nevTar.put(args[1], soszoro);
                 reverseNevTar.put(soszoro, args[1]);
+                printOk("Soszoro létrehozva: " + args[1]);
                 break;
             case "zuzalekszoro":
                 ZuzalekSzoro zuzalekszoro = new ZuzalekSzoro(Integer.parseInt(args[2]));
                 nevTar.put(args[1], zuzalekszoro);
                 reverseNevTar.put(zuzalekszoro, args[1]);
+                printOk("ZuzalekSzoro létrehozva: " + args[1]);
                 break;
             case "bolt":
                 Bolt bolt = new Bolt();
                 nevTar.put(args[1], bolt);
                 reverseNevTar.put(bolt, args[1]);
+                printOk("Bolt létrehozva: " + args[1]);
                 break;
             case "kassza":
                 KozosKassza kassza = new KozosKassza(Integer.parseInt(args[2]));
                 nevTar.put(args[1], kassza);
                 reverseNevTar.put(kassza, args[1]);
+                printOk("KozosKassza létrehozva: " + args[1]);
                 break;
             case "sofor":
                 KozosKassza kSofor = nevTar.get(args[2]) instanceof KozosKassza ? (KozosKassza) nevTar.get(args[2]) : null;
@@ -238,6 +255,7 @@ public class CommandInterpreter {
                 Sofor sofor = new Sofor(kSofor);
                 nevTar.put(args[1], sofor);
                 reverseNevTar.put(sofor, args[1]);
+                printOk("Sofor létrehozva: " + args[1]);
                 break;
             case "takarito":
                 KozosKassza kTakarito = nevTar.get(args[2]) instanceof KozosKassza ? (KozosKassza) nevTar.get(args[2]) : null;
@@ -247,31 +265,37 @@ public class CommandInterpreter {
                 Takarito takarito = new Takarito(kTakarito);
                 nevTar.put(args[1], takarito);
                 reverseNevTar.put(takarito, args[1]);
+                printOk("Takarito létrehozva: " + args[1]);
                 break;
             case "alagut":
                 Alagut alagut = new Alagut();
                 nevTar.put(args[1], alagut);
                 reverseNevTar.put(alagut, args[1]);
+                printOk("Alagut létrehozva: " + args[1]);
                 break;
             case "checkpoint":
                 Checkpoint checkpoint = new Checkpoint();
                 nevTar.put(args[1], checkpoint);
                 reverseNevTar.put(checkpoint, args[1]);
+                printOk("Checkpoint létrehozva: " + args[1]);
                 break;
             case "keresztezodes":
                 Keresztezodes keresztezodes = new Keresztezodes();
                 nevTar.put(args[1], keresztezodes);
                 reverseNevTar.put(keresztezodes, args[1]);
+                printOk("Keresztezodes létrehozva: " + args[1]);
                 break;
             case "sav":
                 Sav sav = new Sav();
                 nevTar.put(args[1], sav);
                 reverseNevTar.put(sav, args[1]);
+                printOk("Sav létrehozva: " + args[1]);
                 break;
             case "utszakasz":
                 Utszakasz utszakasz = new Utszakasz();
                 nevTar.put(args[1], utszakasz);
                 reverseNevTar.put(utszakasz, args[1]);
+                printOk("Utszakasz létrehozva: " + args[1]);
                 break;
             case "auto":
                 Checkpoint autoStart = nevTar.get(args[2]) instanceof Checkpoint ? (Checkpoint) nevTar.get(args[2]) : null;
@@ -282,6 +306,7 @@ public class CommandInterpreter {
                 Auto auto = new Auto(autoStart, autoCel);
                 nevTar.put(args[1], auto);
                 reverseNevTar.put(auto, args[1]);
+                printOk("Auto létrehozva: " + args[1]);
                 break;
             case "busz":
                 Checkpoint buszStart = nevTar.get(args[2]) instanceof Checkpoint ? (Checkpoint) nevTar.get(args[2]) : null;
@@ -293,6 +318,7 @@ public class CommandInterpreter {
                 jarmu.Busz busz = new jarmu.Busz(buszStart, buszCel, buszSofor);
                 nevTar.put(args[1], busz);
                 reverseNevTar.put(busz, args[1]);
+                printOk("Busz létrehozva: " + args[1]);
                 break;
             case "hokotro":
                 Takarito vezeto = nevTar.get(args[2]) instanceof Takarito ? (Takarito) nevTar.get(args[2]) : null;
@@ -302,6 +328,7 @@ public class CommandInterpreter {
                 Hokotro hokotro = new Hokotro(vezeto);
                 nevTar.put(args[1], hokotro);
                 reverseNevTar.put(hokotro, args[1]);
+                printOk("Hokotro létrehozva: " + args[1]);
                 break;
             default:
                 throw new IllegalArgumentException("Ismeretlen típus a 'create' parancsban: " + args[0]);
@@ -309,11 +336,22 @@ public class CommandInterpreter {
     }
 
     private void handleStep(String[] args) {
-        Csomopont cel = nevTar.get(args[0]) instanceof Csomopont ? (Csomopont) nevTar.get(args[0]) : null;
-        if(cel == null){
-            throw new IllegalArgumentException("A 'step' parancs első paraméterének egy érvényes csomópontnak kell lennie.");
-        }
+        //opcionális paraméter. Ha megadjuk, akkor megkerüljük a játék logikáját, és direktben léptetjük a megadott járművet a megadott célpontra.
+        Jarmu jarmu = nevTar.get(args[0]) instanceof Jarmu ? (Jarmu) nevTar.get(args[0]) : null;
+        if(jarmu == null){        
+            Csomopont cel = nevTar.get(args[0]) instanceof Csomopont ? (Csomopont) nevTar.get(args[0]) : null;
+            if(cel == null){
+                throw new IllegalArgumentException("A 'step' parancs első paraméterének egy érvényes csomópontnak kell lennie.");
+            }
         jatekVezerlo.lep(cel);
+        } else{
+            Csomopont cel = nevTar.get(args[1]) instanceof Csomopont ? (Csomopont) nevTar.get(args[1]) : null;
+            if(cel == null){
+                throw new IllegalArgumentException("A 'step' parancs második paraméterének egy érvényes csomópontnak kell lennie.");
+            }
+            jatekVezerlo.lep(jarmu, cel);
+        }
+        printOk("Sikeres lépés a "+jarmu != null?( args[0]+" járművel a"+ args[1]): (args[0]) +" csomópontra.");
     }
 
     private void handleStat(String[] args) {

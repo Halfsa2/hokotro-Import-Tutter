@@ -5,11 +5,13 @@ import gazdasag.Jatekos;
 import halozat.Csomopont;
 import jarmu.Auto;
 import jarmu.Hokotro;
+import jarmu.Jarmu;
 
 public interface IJatekVezerlo {
     void initJatek();
     
     void lep(Csomopont cel);
+    void lep(Jarmu jarmu, Csomopont cel);
     
     void nextJatekos();
     
