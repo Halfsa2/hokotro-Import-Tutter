@@ -2,14 +2,17 @@ package prototipus;
 
 import allapot.Jeges;
 import allapot.MelyHo;
+import allapot.Savallapot;
 import allapot.SekelyHo;
 import allapot.Tiszta;
 import felszereles.Hanyofej;
 import felszereles.Jegtoro;
+import felszereles.Kotrofej;
 import felszereles.Sarkanyfej;
 import felszereles.Sopro;
 import felszereles.Soszoro;
 import felszereles.ZuzalekSzoro;
+import gazdasag.Arucikk;
 import gazdasag.Bolt;
 import gazdasag.KozosKassza;
 import gazdasag.Sofor;
@@ -21,6 +24,7 @@ import halozat.Keresztezodes;
 import halozat.Sav;
 import halozat.Utszakasz;
 import jarmu.Auto;
+import jarmu.Busz;
 import jarmu.Hokotro;
 import jarmu.Jarmu;
 import java.util.ArrayList;
@@ -30,6 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import vezerles.IJatekVezerlo;
+import vezerles.JatekVezerlo;
+import vezerles.VarosModell;
 
 public class CommandInterpreter {
     IJatekVezerlo jatekVezerlo;
@@ -37,7 +43,9 @@ public class CommandInterpreter {
     public static final Map<IStatable, String> reverseNevTar = new HashMap<>();
     private static List<String> commandLog = new ArrayList<>();
 
-
+    CommandInterpreter() {
+        this.jatekVezerlo = new JatekVezerlo(null, new VarosModell(), new Bolt());
+    }
     public static void main(String[] args) {
         CommandInterpreter interpreter = new CommandInterpreter();
         interpreter.start(new Scanner(System.in));
@@ -137,6 +145,9 @@ public class CommandInterpreter {
                     break;
                 case "setzuzalekmennyiseg":
                     handleSetZuzalekmennyiseg(args);
+                    break;
+                case "baleset":
+                    handleBaleset(args);
                     break;
                 default:
                     printError("Ismeretlen parancs: " + command);
@@ -351,34 +362,268 @@ public class CommandInterpreter {
             }
             jatekVezerlo.lep(jarmu, cel);
         }
-        printOk("Sikeres lépés a "+jarmu != null?( args[0]+" járművel a"+ args[1]): (args[0]) +" csomópontra.");
+        if(jarmu != null){
+             printOk("Sikeres lépés a "+args[0]+" járművel a "+ args[1]+" csomópontra.");
+        } else{
+             printOk("Sikeres lépés a "+ args[0] +" csomópontra.");
+        }
     }
 
     private void handleStat(String[] args) {
        nevTar.get(args[0]).printStat(args[0]);
     }
+    private void handleAddMoney(String[] args) { 
+        KozosKassza kassza = nevTar.get(args[0]) instanceof KozosKassza ? (KozosKassza) nevTar.get(args[0]) : null;
+        if(kassza == null){
+            throw new IllegalArgumentException("A 'addmoney' parancs első paraméterének egy érvényes közös kasszának kell lennie.");
+        }
+        kassza.penzHozzaadas(Integer.parseInt(args[1]));
+         printOk("Pénz hozzáadva."); 
+    }
+    private void handleAddJarmu(String[] args) { 
+        Takarito jatekos = nevTar.get(args[0]) instanceof Takarito ? (Takarito) nevTar.get(args[0]) : null;
+        if(jatekos == null){
+            if(nevTar.get(args[0]) instanceof Sofor){
+                Sofor sofor = (Sofor) nevTar.get(args[0]);
+                Busz busz = nevTar.get(args[1]) instanceof jarmu.Busz ? (jarmu.Busz) nevTar.get(args[1]) : null;
+                if(busz == null){
+                    throw new IllegalArgumentException("A 'addjarmu' parancs második paraméterének egy érvényes busznak kell lennie.");
+                }
+                if(sofor.getBusz() != null){
+                    throw new IllegalArgumentException("A sofőr már irányít egy buszt, nem adható hozzá újabb.");
+                }
+                sofor.setJarmu(busz);
+                printOk("Jármű hozzáadva.");
+            } else{
+            throw new IllegalArgumentException("A 'addjarmu' parancs első paraméterének egy érvényes játékosnak kell lennie.");
+            }
+        }else{
+        Hokotro gep = nevTar.get(args[1]) instanceof Hokotro ? (Hokotro) nevTar.get(args[1]) : null;
+        if(gep == null){
+            throw new IllegalArgumentException("A 'addjarmu' parancs második paraméterének egy érvényes hókotrónak kell lennie.");
+        }
+        jatekos.addHokotro(gep);
+        printOk("Jármű hozzáadva."); 
+        }
+    }
+    private void handleSetState(String[] args) { 
+        if(args.length != 2){
+            throw new IllegalArgumentException("A 'setstate' parancs két paramétert vár: a sáv nevét és az új állapotot.");
+        }
+        Sav sav = nevTar.get(args[0]) instanceof Sav ? (Sav) nevTar.get(args[0]) : null;
+        if(sav == null){
+            throw new IllegalArgumentException("A 'setstate' parancs első paraméterének egy érvényes sávnak kell lennie.");
+        }
+        Savallapot ujAllapot = nevTar.get(args[1]) instanceof Savallapot ? (Savallapot) nevTar.get(args[1]) : null;
+        if(ujAllapot == null){
+            switch(args[1].toLowerCase()){
+                case "jeges" -> sav.setAllapot(new Jeges());
+                case "melyho" -> sav.setAllapot(new MelyHo());
+                case "sekelyho" -> sav.setAllapot(new SekelyHo());
+                case "tiszta" -> sav.setAllapot(new Tiszta());
+                default -> throw new IllegalArgumentException("Ismeretlen állapot a 'setstate' parancsban: " + args[1]);
+            }
+        } else{
+            sav.setAllapot(ujAllapot);
+        }
+        printOk("Állapot beállítva."); 
+    }
+    private void handleSetNyomvonal(String[] args) {
+        if(args.length != 2){
+            throw new IllegalArgumentException("A 'setnyomvonal' parancs két paramétert vár: a sáv nevét és a nyomvonalak számát.");
+        }
+        Sav sav = nevTar.get(args[0]) instanceof Sav ? (Sav) nevTar.get(args[0]) : null;
+        if(sav == null){
+            throw new IllegalArgumentException("A 'setnyomvonal' parancs első paraméterének egy érvényes sávnak kell lennie.");
+        }
+        int nyomvonalakSzama = Integer.parseInt(args[1]);
+        if(sav.getAllapot() instanceof SekelyHo sekelyHo){
+            sekelyHo.setNyomvonal(nyomvonalakSzama);
+        }
+        printOk("Nyomvonal beállítva.");
+    }
+    private void handleSetSomennyiseg(String[] args) { 
+        if(args.length != 2){
+            throw new IllegalArgumentException("A 'setsomennyiseg' parancs két paramétert vár: a hókotró nevét és a só mennyiségét.");
+        }
+        Hokotro hokotro = nevTar.get(args[0]) instanceof Hokotro ? (Hokotro) nevTar.get(args[0]) : null;
+        if(hokotro == null){
+            throw new IllegalArgumentException("A 'setsomennyiseg' parancs első paraméterének egy érvényes hókotrónak kell lennie.");
+        }
+        int somennyiseg = Integer.parseInt(args[1]);
+        Soszoro soszoro = (Soszoro) hokotro.getFej("Soszoro");
+        if(soszoro == null){
+            throw new IllegalArgumentException("A megadott hókotrón nincs sószóró feje, így nem állítható be a só mennyisége.");
+        }
+        soszoro.setSoMennyiseg(somennyiseg);
+        printOk("Sómennyiség beállítva."); 
+    }
+    private void handleSetKerozinmennyiseg(String[] args) {
+        if(args.length != 2){
+            throw new IllegalArgumentException("A 'setkerozinmennyiseg' parancs két paramétert vár: a hókotró nevét és a kerozin mennyiségét.");
+        }
+        Hokotro hokotro = nevTar.get(args[0]) instanceof Hokotro ? (Hokotro) nevTar.get(args[0]) : null;
+        if(hokotro == null){
+            throw new IllegalArgumentException("A 'setkerozinmennyiseg' parancs első paraméterének egy érvényes hókotrónak kell lennie.");
+        }
+        int kerozinmennyiseg = Integer.parseInt(args[1]);
+        Sarkanyfej sarkanyfej = (Sarkanyfej) hokotro.getFej("Sarkanyfej");
+        if(sarkanyfej == null){
+            throw new IllegalArgumentException("A megadott hókotrón nincs sárkányfejje, így nem állítható be a kerozin mennyisége.");
+        }
+        sarkanyfej.setKerozinMennyiseg(kerozinmennyiseg);
+        printOk("Kerozin beállítva."); 
+    }
 
-    // (A többi handleX függvény hasonló felépítéssel rendelkezne...)
-    private void handleAddMoney(String[] args) { /* ... */ printOk("Pénz hozzáadva."); }
-    private void handleAddJarmu(String[] args) { /* ... */ printOk("Jármű hozzáadva."); }
-    private void handleSetState(String[] args) { /* ... */ printOk("Állapot beállítva."); }
-    private void handleSetNyomvonal(String[] args) { /* ... */ printOk("Nyomvonal beállítva."); }
-    private void handleSetSomennyiseg(String[] args) { /* ... */ printOk("Sómennyiség beállítva."); }
-    private void handleSetKerozinmennyiseg(String[] args) { /* ... */ printOk("Kerozin beállítva."); }
+
+    /* még nem tudom mi lesz ezekkel de tippre nem kellenek */
     private void handleSetStartPoint(String[] args) { /* ... */ printOk("Kezdőpont beállítva."); }
     private void handleSetEndPoint(String[] args) { /* ... */ printOk("Végpont beállítva."); }
-    private void handleSozas(String[] args) { /* ... */ printOk("Sózás sikeres."); }
-    private void handleZuzalekszoras(String[] args) { /* ... */ printOk("Zúzalékszórás sikeres."); }
-    private void handleConnect(String[] args) { /* ... */ printOk("Kapcsolat létrehozva."); }
-    private void handleBuy(String[] args) { /* ... */ printOk("Vásárlás sikeres."); }
-    private void handleFejcsere(String[] args) { /* ... */ printOk("Fejcsere sikeres."); }
-    private void handleAddSav(String[] args) { /* ... */ printOk("Sáv hozzáadva."); }
-    private void handleSetZuzalekmennyiseg(String[] args) { /* ... */ printOk("Zúzalék beállítva."); }
 
 
-    // ==========================================
-    // KIMENETI FORMÁZÓ FÜGGVÉNYEK (SPECIFIKÁCIÓ ALAPJÁN)
-    // ==========================================
+    private void handleSozas(String[] args) {
+        if(args.length != 1){
+            throw new IllegalArgumentException("A 'sozas' parancs egyetlen paramétert vár: a sáv nevét.");
+        }
+        Sav sav = nevTar.get(args[0]) instanceof Sav ? (Sav) nevTar.get(args[0]) : null;
+        if(sav == null){
+            throw new IllegalArgumentException("A 'sozas' parancs első paraméterének egy érvényes sávnak kell lennie.");
+        }
+        sav.soSzoras();
+        printOk("Sózás sikeres."); 
+    }
+    private void handleZuzalekszoras(String[] args) { 
+        if(args.length != 1){
+            throw new IllegalArgumentException("A 'zuzalekszoras' parancs egyetlen paramétert vár: a sáv nevét.");
+        }
+        Sav sav = nevTar.get(args[0]) instanceof Sav ? (Sav) nevTar.get(args[0]) : null;
+        if(sav == null){
+            throw new IllegalArgumentException("A 'zuzalekszoras' parancs első paraméterének egy érvényes sávnak kell lennie.");
+        }
+        sav.zuzalekSzoras();
+        printOk("Zúzalékszórás sikeres."); 
+    }
+    private void handleConnect(String[] args) { 
+        if(args.length != 2){
+            throw new IllegalArgumentException("A 'connect' parancs két paramétert vár: a két csomópont (Sav, Keresztezodes, Checkpoint) nevét.");
+        }
+        Csomopont csomopont1 = nevTar.get(args[0]) instanceof Csomopont ? (Csomopont) nevTar.get(args[0]) : null;
+        Csomopont csomopont2 = nevTar.get(args[1]) instanceof Csomopont ? (Csomopont) nevTar.get(args[1]) : null;
+        if(csomopont1 == null || csomopont2 == null){
+            throw new IllegalArgumentException("A 'connect' parancs mindkét paraméterének érvényes csomópontnak kell lennie.");
+        }
+        switch (csomopont1) {
+            case Sav sav -> sav.addSzomszed(csomopont2);
+            case Keresztezodes keresztezodes -> keresztezodes.addKimenet(csomopont2);
+            case Checkpoint checkpoint -> checkpoint.setKimenet(csomopont2);
+            default -> throw new IllegalArgumentException("A 'connect' parancs mindkét paraméterének érvényes csomópontnak kell lennie.");
+        }
+        printOk("Kapcsolat létrehozva."); 
+    }
+    private void handleBuy(String[] args) { 
+        Takarito takarito = nevTar.get(args[0]) instanceof Takarito ? (Takarito) nevTar.get(args[0]) : null;
+        if(takarito == null){
+            Hokotro hokotro = nevTar.get(args[0]) instanceof Hokotro ? (Hokotro) nevTar.get(args[0]) : null;
+            Arucikk arucikk = switch(args[1].toLowerCase()){
+                case "hanyofej" -> Arucikk.HANYOFEJ;
+                case "sarkanyfej" -> Arucikk.SARKANYFEJ;
+                case "soszoro" -> Arucikk.SOSZORO;
+                case "zuzalekszoro" -> Arucikk.ZUZALEKSZORO;
+                case "so" -> Arucikk.SO;
+                case "kerozin" -> Arucikk.KEROZIN;
+                case "zuzalek" -> Arucikk.ZUZALEK;
+                case "globalwarming" -> Arucikk.GLOBAL_WARMING;
+                default -> throw new IllegalArgumentException("Ismeretlen árucikk a 'buy' parancsban: " + args[1]);
+            };
+            jatekVezerlo.vasarol(arucikk, hokotro);
+        }else{
+            Arucikk arucikk = switch(args[2].toLowerCase()){
+                case "hanyofej" -> Arucikk.HANYOFEJ;
+                case "sarkanyfej" -> Arucikk.SARKANYFEJ;
+                case "soszoro" -> Arucikk.SOSZORO;
+                case "zuzalekszoro" -> Arucikk.ZUZALEKSZORO;
+                case "so" -> Arucikk.SO;
+                case "kerozin" -> Arucikk.KEROZIN;
+                case "zuzalek" -> Arucikk.ZUZALEK;
+                case "globalwarming" -> Arucikk.GLOBAL_WARMING;
+                default -> throw new IllegalArgumentException("Ismeretlen árucikk a 'buy' parancsban: " + args[2]);
+            };
+            Hokotro hokotro = nevTar.get(args[1]) instanceof Hokotro ? (Hokotro) nevTar.get(args[1]) : null;
+            if(jatekVezerlo.getBolt().vasarol(arucikk, takarito, hokotro)){
+                printOk("Vásárlás sikeres.");
+            } else {
+                printFailed("Vásárlás sikertelen. Ellenőrizd a kassza egyenlegét és a hókotród kapacitását.");
+            }
+        }
+    }
+    private void handleFejcsere(String[] args) { 
+        if(args.length != 2){
+            throw new IllegalArgumentException("A 'fejcsere' parancs kettő paramétert vár: a hókotró nevét és az új fej típusát.");
+        }
+        Hokotro hokotro = nevTar.get(args[0]) instanceof Hokotro ? (Hokotro) nevTar.get(args[0]) : null;
+        if(hokotro == null){
+            throw new IllegalArgumentException("A 'fejcsere' parancs első paraméterének egy érvényes hókotrónak kell lennie.");
+        }
+        String fejtipus = "";
+        switch (args[1].toLowerCase()){
+            case "hanyofej" -> fejtipus = "Hanyofej";
+            case "jegtoro" -> fejtipus = "Jegtoro";
+            case "sarkanyfej" -> fejtipus = "Sarkanyfej";
+            case "sopro" -> fejtipus = "Sopro";
+            case "soszoro" -> fejtipus = "Soszoro";
+            case "zuzalekszoro" -> fejtipus = "ZuzalekSzoro";
+            default -> throw new IllegalArgumentException("Ismeretlen fej típus a 'fejcsere' parancsban: " + args[1]);
+        }
+        Kotrofej ujFej = hokotro.getFej(fejtipus);
+        if(ujFej == null){
+            throw new IllegalArgumentException("A megadott fej típus nem létezik, vagy nincs feloldva a megadott hókotróban.");
+        }
+        hokotro.cserelFej(ujFej);
+        printOk("Fejcsere sikeres."); 
+    }
+    private void handleAddSav(String[] args) { 
+        if(args.length != 2){
+            throw new IllegalArgumentException("Az 'addsav' parancs két paramétert vár: az útszakasz és a sáv nevét.");
+        }
+        Utszakasz utszakasz = nevTar.get(args[0]) instanceof Utszakasz ? (Utszakasz) nevTar.get(args[0]) : null;
+        if(utszakasz == null){
+            throw new IllegalArgumentException("Az 'addsav' parancs első paraméterének egy érvényes útszakasznak kell lennie.");
+        }
+        Sav sav = nevTar.get(args[1]) instanceof Sav ? (Sav) nevTar.get(args[1]) : null;
+        if(sav == null){
+            throw new IllegalArgumentException("Az 'addsav' parancs második paraméterének egy érvényes sávnak kell lennie.");
+        }
+        utszakasz.addSav(sav);
+        printOk("Sáv hozzáadva."); }
+    private void handleSetZuzalekmennyiseg(String[] args) { 
+        if(args.length != 2){
+            throw new IllegalArgumentException("A 'setzuzalekmennyiseg' parancs két paramétert vár: a hókotró nevét és az új zúzalék mennyiséget.");
+        }
+        Hokotro hokotro = nevTar.get(args[0]) instanceof Hokotro ? (Hokotro) nevTar.get(args[0]) : null;
+        if(hokotro == null){
+            throw new IllegalArgumentException("A 'setzuzalekmennyiseg' parancs első paraméterének egy érvényes hókotrónak kell lennie.");
+        }
+        int zuzalekmennyiseg = Integer.parseInt(args[1]);
+        ZuzalekSzoro zuzalekszoro = (ZuzalekSzoro) hokotro.getFej("Zuzalekszoro");
+        if(zuzalekszoro == null){
+            throw new IllegalArgumentException("A megadott hókotrón nincs zúzalékszóró feje, így nem állítható be a zúzalék mennyisége.");
+        }
+        zuzalekszoro.setZuzalekMennyiseg(zuzalekmennyiseg);
+        printOk("Zúzalék beállítva."); }
+    private void handleBaleset(String[] args) { 
+        if(args.length != 1){
+            throw new IllegalArgumentException("A 'baleset' parancs egyetlen paramétert vár: a jármű nevét.");
+        }
+        Jarmu jarmu = nevTar.get(args[0]) instanceof Jarmu ? (Jarmu) nevTar.get(args[0]) : null;
+        if(jarmu == null){
+            throw new IllegalArgumentException("A 'baleset' parancs első paraméterének egy érvényes járműnek kell lennie.");
+        }
+        jarmu.balesetetSzenved();
+        printOk("Baleset kezelve.");
+    }
+
+
+
 
     private void printOk(String message) {
         System.out.println("[OK] " + message);

@@ -75,4 +75,9 @@ public class ZuzalekSzoro extends Kotrofej {
     public void printStat(String name) {
         System.out.println("ZuzalekSzoro "+ name + ": zuzalek_mennyiseg=" + this.zuzalek_mennyiseg);
     }
+
+    //EZ A METÓDUS CSAK A PROTOTÍPUS CSALÓ PARANCSÁNAK HASZNÁLATÁHOZ VAN, HOGY KÖNNYEN ÁLLÍTHASSUK A ZÚZALÉK MENNYISÉGÉT A TESZTEKHEZ!
+    public void setZuzalekMennyiseg(int mennyiseg) {
+        this.zuzalek_mennyiseg = mennyiseg; 
+    }
 }

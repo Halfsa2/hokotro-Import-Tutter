@@ -1,6 +1,7 @@
 package vezerles;
 
 import gazdasag.Arucikk;
+import gazdasag.IMegvasarolhato;
 import gazdasag.Jatekos;
 import halozat.Csomopont;
 import jarmu.Auto;
@@ -24,4 +25,5 @@ public interface IJatekVezerlo {
     void addAuto(Auto auto);
     
     public void tick(int korokSzama);
+    public IMegvasarolhato getBolt();
 }

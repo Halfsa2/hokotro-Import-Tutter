@@ -71,4 +71,9 @@ public class Sarkanyfej extends Kotrofej {
     public void printStat(String name) {
         System.out.println("Sarkanyfej "+ name + ": kerozin_mennyiseg=" + this.kerozin_mennyiseg);
     }
+
+    //CSAK A PROTOTÍPUS CSALÓ PARANCSÁNAK HASZNÁLATÁHOZ!
+    public void setKerozinMennyiseg(int kerozin_mennyiseg) {
+        this.kerozin_mennyiseg = kerozin_mennyiseg;
+    }
 }

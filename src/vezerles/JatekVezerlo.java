@@ -107,6 +107,7 @@ public class JatekVezerlo implements IJatekVezerlo {
         Csomopont next = utvonal.get(nextIndex);
         auto.lep(next);
     }
+    @Override
     public void vasarol(Arucikk termek, Hokotro gep){
         //Mivel ezt a grafikus interfész is kezelni fogja, így nem gond az instanceof szerintem.
         if(aktivJatekos instanceof Takarito t){
@@ -120,6 +121,7 @@ public class JatekVezerlo implements IJatekVezerlo {
             }
         }
     }
+    @Override
     public void registerJatekos(String tipus){
         if(tipus.equals("Sofor")){
             soforokSzama++;
@@ -127,9 +129,11 @@ public class JatekVezerlo implements IJatekVezerlo {
             takaritokSzama++;
         }
     }
+    @Override
     public void addJatekos(Jatekos<?> jatekos){
         jatekosok.add(jatekos);
     }
+    @Override
     public void addAuto(Auto auto){
         //hozzáadunk egy autót és kiszámolunk egy legrövidebb útvonalat az autó start és cél végpontjai között. 
         autoUtvonalak.put(auto, (modell.legrovidebbUtvonal(auto.getStart(), auto.getCel())));
@@ -145,5 +149,12 @@ public class JatekVezerlo implements IJatekVezerlo {
             autokKore(); 
             modell.palyaFrissit();
         }
+    }
+
+    @Override
+    public IMegvasarolhato getBolt() {
+        //Ez a getter csak a prototípus csaló parancsának használatához van, hogy elérjük a boltot a CommandInterpreterből.
+        //Nem szabadna egyébként használni, mert így kikerüljük a játék logikáját.
+        return this.bolt;
     }
 }

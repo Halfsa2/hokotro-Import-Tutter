@@ -153,4 +153,11 @@ public class SekelyHo extends Savallapot {
     public void printStat(String name) {
         System.out.println("SekelyHo "+ name + ": horeteg=" + this.horeteg + ", nyomvonal=" + this.nyomvonal);
     }
+
+
+
+    //CSAK A PROTOTÍPUS CSALÓ PARANCSÁNAK HASZNÁLATÁHOZ!
+    public void setNyomvonal(int nyomvonal) {
+        this.nyomvonal = nyomvonal;
+    }
 }
