@@ -1,0 +1,4 @@
+create buszsofor p1
+create kassza k1 200
+buy p1 HOKOTRO
+stat k1

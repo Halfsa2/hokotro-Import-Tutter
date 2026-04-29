@@ -1,0 +1,1 @@
+[FAILED] A művelet sikertelen: A Buszsofőr nem jogosult vásárlásra.

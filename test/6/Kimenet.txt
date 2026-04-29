@@ -1,0 +1,2 @@
+[FAILED] Vásárlás sikertelen: Nincs elég pénz a közös kasszában.
+KozosKassza k1: penzmennyiseg=50

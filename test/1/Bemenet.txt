@@ -1,0 +1,47 @@
+create alagut alagut1
+create sav a
+addsav alagut1 a
+connect a b
+create sav b
+create sav c
+create sav d
+create sav e
+create sav f
+create keresztezodes1
+connect a keresztezodes1
+connect keresztezodes1 b
+connect keresztezodes1 d
+connect b c
+create keresztezodes2
+connect c keresztezodes2
+connect d keresztezodes2
+connect keresztezodes2 e
+connect keresztezodes2 f
+# Állapotok létrehozása és sávhoz rendelése az új logika szerint!
+create sekelyho all_b
+setstate b all_b
+create sekelyho all_c
+setstate c all_c
+create jeges all_d
+setstate d all_d
+create jeges all_e
+setstate e all_e
+zuzalekszoras e
+create sekelyho all_f
+setstate f all_f
+zuzalekszoras f
+# Játékos és gép
+create kassza k1 400
+create takarito p1
+create hokotro h1
+addjarmu p1 h1
+fejcsere h1 sopro
+# Takarítások és a statok hívása az ÁLLAPOTOKRA
+step h1 b
+stat all_b
+step h1 c
+stat all_c
+buy p1 SARKANYFEJ
+fejcsere h1 sarkanyfej
+step h1 e
+stat all_e

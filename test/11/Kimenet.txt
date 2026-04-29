@@ -1,0 +1,2 @@
+[OK] Sikeres vásárlás: Új Hokotro létrehozva.
+KozosKassza k1: penzmennyiseg=100
