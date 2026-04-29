@@ -1,0 +1,4 @@
+create buszsofor p1
+create kassza k1 5000
+buy p1 GLOBAL_WARMING
+stat k1

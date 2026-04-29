@@ -1,0 +1,2 @@
+[FAILED] Vásárlás sikertelen: Nincs elég Zúzmara Tallér a fogyóeszközre.
+KozosKassza k1: penzmennyiseg=10

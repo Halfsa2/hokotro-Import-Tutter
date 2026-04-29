@@ -1,0 +1,2 @@
+[ERROR] Ismeretlen árucikk azonosító: TESZT_CUCC
+KozosKassza k1: penzmennyiseg=500

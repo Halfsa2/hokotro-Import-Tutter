@@ -1,0 +1,4 @@
+create takarito p1
+create kassza k1 149
+buy p1 SARKANYFEJ
+stat k1

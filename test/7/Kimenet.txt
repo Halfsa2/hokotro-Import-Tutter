@@ -1,0 +1,3 @@
+[OK] Sikeres vásárlás: p1 megvette a soszoro eszközt.
+KozosKassza k1: penzmennyiseg=400
+Hokotro h1: AktivFej=Soszoro

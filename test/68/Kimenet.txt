@@ -1,0 +1,3 @@
+[OK] Jármű sikeresen hozzárendelve.
+[FAILED] A művelet sikertelen: A sofőr már rendelkezik járművel.
+Sofor p1: Jarmuvek=[b1]

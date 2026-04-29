@@ -1,0 +1,2 @@
+[FAILED] A művelet sikertelen: A Buszsofőr nem jogosult vásárlásra.
+KozosKassza k1: penzmennyiseg=200

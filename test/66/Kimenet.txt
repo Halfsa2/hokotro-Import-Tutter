@@ -1,0 +1,2 @@
+[FAILED] A művelet sikertelen: A jármű nem rendelkezik megfelelő kotrófejjel a töltéshez.
+KozosKassza k1: penzmennyiseg=500

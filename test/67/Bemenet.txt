@@ -1,0 +1,4 @@
+create takarito p1
+create kassza k1 500
+buy p1 TESZT_CUCC
+stat k1

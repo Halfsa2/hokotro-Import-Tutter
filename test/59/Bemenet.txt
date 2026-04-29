@@ -1,12 +1,10 @@
 create takarito p1
 create sav s1
 create kassza k1 500
-create hokotro h1 s1
+create hokotro h1
 addjarmu p1 h1
 buy p1 ZUZALEKSZORO
 fejcsere h1 zuzalekszoro
-# Kiszór 1 egységet, így 9 marad
 zuzalekszoras s1
-# Vásárol egy teljes újratöltést (+10 egység)
 buy p1 ZUZALEK
 stat h1
