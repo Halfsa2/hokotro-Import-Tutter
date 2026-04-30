@@ -3,8 +3,8 @@ package jarmu;
 import gazdasag.Sofor;
 import halozat.Checkpoint;
 import halozat.Csomopont;
-import static prototipus.CommandInterpreter.reverseNevTar;
 import java.util.List;
+import static prototipus.CommandInterpreter.reverseNevTar;
 import vezerles.SkeletonLogger;
 
 /**
@@ -68,7 +68,10 @@ public class Busz extends IranyitottJarmu {
             }
             // Ha visszaért a kezdőállomásra (start) és visszafelé tartott (oda == false) [cite: 98]
             else if (aktualisCsomopont.equals(start) && !oda) {
-                iranytValtoztat(); // Ismét irányt vált ("oda"), hogy új fordulót kezdjen [cite: 98]
+                if (vezeto != null) {
+                    vezeto.keres(100); // A sofőr a visszaútért is megkapja a 100 ZT jutalmat!
+                }
+                iranytValtoztat(); // Ismét irányt vált ("oda"), hogy új fordulót kezdjen
             }
             
             SkeletonLogger.exit(true);

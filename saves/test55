@@ -1,0 +1,17 @@
+# Mentés: test55
+create kassza k1 0
+create sofor p1 k1
+create checkpoint cp_start
+create checkpoint cp_end
+create sav s1
+connect cp_start s1
+connect s1 cp_end
+connect cp_end s1
+connect s1 cp_start
+create busz b1 cp_start cp_end p1
+step b1 s1
+step b1 cp_end
+step b1 s1
+step b1 cp_start
+stat b1
+stat k1
