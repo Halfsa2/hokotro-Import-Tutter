@@ -27,6 +27,10 @@ import jarmu.Auto;
 import jarmu.Busz;
 import jarmu.Hokotro;
 import jarmu.Jarmu;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -68,7 +72,9 @@ public class CommandInterpreter {
                 break;
             }
 
-            processCommand(line);
+            if (!processCommand(line)) {
+                break;
+            }
             commandLog.add(line); // Parancs naplózása
         }
     }
@@ -76,7 +82,7 @@ public class CommandInterpreter {
     /**
      * Egyetlen parancssor feldolgozása.
      */
-    private void processCommand(String line) {
+    private boolean processCommand(String line) {
         String[] parts = line.split("\\s+");
         String command = parts[0].toLowerCase();
         String[] args = Arrays.copyOfRange(parts, 1, parts.length);
@@ -154,18 +160,22 @@ public class CommandInterpreter {
                     break;
                 default:
                     printError("Ismeretlen parancs: " + command);
+                    return false;
             }
         } catch (IllegalArgumentException e) {
             printError("Hibás paraméterezés: " + e.getMessage());
+            return false;
         } catch (Exception e) {
             printFailed("Váratlan hiba történt a parancs végrehajtása közben.");
+            return false;
         }
+        return true;
     }
 
     // ==========================================
-    // PARANCS KEZELŐ FÜGGVÉNYEK (VÁZLATOK)
+    // PARANCS KEZELŐ FÜGGVÉNYEK 
     // ==========================================
-
+    
     private void handleTick(String[] args) {
         if (args.length != 1) {
             throw new IllegalArgumentException("A 'tick' parancs egyetlen paramétert vár: a körök számát");
@@ -173,13 +183,53 @@ public class CommandInterpreter {
         jatekVezerlo.tick(Integer.parseInt(args[0]));
         printOk("Játék előre léptetve " + args[0] + " körrel.");
     }
-
+    
+    private final File mappa = new File("saves");
     private void handleLoad(String[] args) {
-        //TODO
+        File fajl = new File(mappa,args[0]);
+        if (!fajl.exists()) {
+            throw new IllegalArgumentException("A megadott fájl nem létezik: " + args[0]);
+        }
+        try (Scanner fileScanner = new Scanner(fajl)) {
+            while (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine().trim();
+                if (line.isEmpty() || line.startsWith("#")) {
+                    continue;
+                }
+                if (!processCommand(line)) {
+                    printError("Hiba történt a fájl parancsainak feldolgozása közben.");
+                    return;
+                }
+            }
+            printOk("Fájl sikeresen betöltve: " + args[0]);
+        } catch (IOException e) {
+            printError("Hiba történt a fájl olvasása közben: " + e.getMessage());
+        }
     }
 
     private void handleSave(String[] args) {
-       //TODO
+            if (!mappa.exists()) {
+                mappa.mkdir();
+            }
+
+            int sorszam = 1;
+            File mentesFajl = new File(mappa, "save" + sorszam + ".txt");
+            while (mentesFajl.exists()) {
+                sorszam++;
+                mentesFajl = new File(mappa, "save" + sorszam + ".txt");
+            }
+            try (PrintWriter out = new PrintWriter(new FileWriter(mentesFajl))) {
+            
+            // Ide jön a játékállapot kiíratása
+            out.println("# Automatikus mentés: " + mentesFajl.getName());
+            for(String parancs : commandLog){
+                out.println(parancs);
+            }
+            System.out.println("Sikeres mentés ide: " + mentesFajl.getPath());
+            
+            } catch (IOException e) {
+                System.out.println("Hiba történt a fájlba íráskor: " + e.getMessage());
+            }
     }
 
     private void handleCreate(String[] args) {
