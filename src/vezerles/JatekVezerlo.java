@@ -54,11 +54,12 @@ public class JatekVezerlo implements IJatekVezerlo {
         nextJatekos(); // Beállítja az első játékost aktívnak
 
     }
-    public void lep(Csomopont cel){
-        if(jatekVege) return;
+    public boolean lep(Csomopont cel){
+        if(jatekVege) return false;
+        boolean sikeres = false;
         if(aktivJatekos != null){
             //Itt nem számít a lépés eredménye, ha sikertelen a lépés, akkor is tovább lépünk a következő játékosra/járműre.
-            aktivJatekos.lep(cel);
+            sikeres = aktivJatekos.lep(cel);
             
             //minden 3. lépésnél leesik a hó.
             if(korokHoesesOta >=2) {modell.havazas();korokHoesesOta = 0;}else{korokHoesesOta++;}
@@ -70,11 +71,12 @@ public class JatekVezerlo implements IJatekVezerlo {
             //só hatása most érvényesül (első lépésben úgysem lesz semmi, ami miatt frissíteni kéne, így nem baj, hogy ez az első lépésnél nem teljesül)
             modell.palyaFrissit();
         }
+        return sikeres;
     }
-    public void lep(Jarmu jarmu, Csomopont cel){
-        if(jatekVege) return;
+    public boolean lep(Jarmu jarmu, Csomopont cel){
+        if(jatekVege) return false;
         //Megkerüljük a játék logikáját, az adott járművet direktben léptetjük.
-        jarmu.lep(cel);
+        return jarmu.lep(cel);
     }
     public void nextJatekos(){
         if(jatekVege) return;
@@ -145,7 +147,7 @@ public class JatekVezerlo implements IJatekVezerlo {
     @Override
     public void tick(int korokSzama) {
         for (int i = 0; i < korokSzama; i++) {
-            modell.havazas();
+            if(korokHoesesOta >=2) {modell.havazas();korokHoesesOta = 0;}else{korokHoesesOta++;}
             autokKore(); 
             modell.palyaFrissit();
         }
@@ -156,5 +158,11 @@ public class JatekVezerlo implements IJatekVezerlo {
         //Ez a getter csak a prototípus csaló parancsának használatához van, hogy elérjük a boltot a CommandInterpreterből.
         //Nem szabadna egyébként használni, mert így kikerüljük a játék logikáját.
         return this.bolt;
+    }
+    @Override
+    public IJatekKezelo getVarosModell() {
+        //Ez a getter csak a prototípus csaló parancsának használatához van, hogy elérjük a város modellt a CommandInterpreterből.
+        //Nem szabadna egyébként használni, mert így kikerüljük a játék logikáját.
+        return this.modell;
     }
 }

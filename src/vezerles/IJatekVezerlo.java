@@ -11,8 +11,8 @@ import jarmu.Jarmu;
 public interface IJatekVezerlo {
     void initJatek();
     
-    void lep(Csomopont cel);
-    void lep(Jarmu jarmu, Csomopont cel);
+    boolean lep(Csomopont cel);
+    boolean lep(Jarmu jarmu, Csomopont cel);
     
     void nextJatekos();
     
@@ -26,4 +26,6 @@ public interface IJatekVezerlo {
     
     public void tick(int korokSzama);
     public IMegvasarolhato getBolt();
+
+    public IJatekKezelo getVarosModell();
 }

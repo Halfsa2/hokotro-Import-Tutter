@@ -76,12 +76,10 @@ public class Sav extends Csomopont {
     @Override
     public void frissit() {
         SkeletonLogger.enter(this, "frissit");
-        if (this.sozott > 0) {
-            this.sozott--;
-        }
-        if (allapot != null) {
+        if (this.sozott > 0 && allapot != null) {
             allapot.frissit(this);
         }
+        
         SkeletonLogger.exit("void");
     }
 
@@ -193,8 +191,14 @@ public class Sav extends Csomopont {
     public void hoesesEseten() {
         SkeletonLogger.enter(this, "hoesesEseten");
         if (sozott == 0) {
-            utszakasz.havazikRa(this);
-        } else {
+            if(utszakasz != null){
+                utszakasz.havazikRa(this);
+            } else{
+                //Ha nincs útszakaszon (ami picit baj, de tesztelés során előfordulhat) akkor biztosan fedetlen, így esik rá a hó.
+                allapot.hoesesEseten(this);
+            }
+        } else if(allapot instanceof Tiszta){
+            //Ha sózott, akkor a hóesés hatására csak a só mennyisége csökken, de nem lesz új hó.
             sozott--;
         }
         SkeletonLogger.exit("void");
@@ -254,7 +258,7 @@ public class Sav extends Csomopont {
     }
     @Override
     public void printStat(String name) {
-        System.out.print("Sav " + name + ": jarmu=");
+        System.out.print("Sav " + name + ": allapot="+ this.allapot.getClass().getSimpleName() + ", sozott=" + this.sozott + ", zuzalekos=" + this.zuzalekos + ", jarmu=");
         if (this.jarmu != null) {
             System.out.print(reverseNevTar.get(this.jarmu));
         }

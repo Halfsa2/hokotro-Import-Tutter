@@ -149,6 +149,9 @@ public class CommandInterpreter {
                 case "baleset":
                     handleBaleset(args);
                     break;
+                case "havazas":
+                    handleHavazas(args);
+                    break;
                 default:
                     printError("Ismeretlen parancs: " + command);
             }
@@ -168,6 +171,7 @@ public class CommandInterpreter {
             throw new IllegalArgumentException("A 'tick' parancs egyetlen paramétert vár: a körök számát");
         }
         jatekVezerlo.tick(Integer.parseInt(args[0]));
+        printOk("Játék előre léptetve " + args[0] + " körrel.");
     }
 
     private void handleLoad(String[] args) {
@@ -288,6 +292,7 @@ public class CommandInterpreter {
                 Checkpoint checkpoint = new Checkpoint();
                 nevTar.put(args[1], checkpoint);
                 reverseNevTar.put(checkpoint, args[1]);
+                jatekVezerlo.getVarosModell().addCsomopont(checkpoint); // A checkpointokat hozzá kell adni a város modellhez is
                 printOk("Checkpoint létrehozva: " + args[1]);
                 break;
             case "keresztezodes":
@@ -295,12 +300,14 @@ public class CommandInterpreter {
                 nevTar.put(args[1], keresztezodes);
                 reverseNevTar.put(keresztezodes, args[1]);
                 printOk("Keresztezodes létrehozva: " + args[1]);
+                jatekVezerlo.getVarosModell().addCsomopont(keresztezodes); // A keresztezodeseket hozzá kell adni a város modellhez is
                 break;
             case "sav":
                 Sav sav = new Sav();
                 nevTar.put(args[1], sav);
                 reverseNevTar.put(sav, args[1]);
                 printOk("Sav létrehozva: " + args[1]);
+                jatekVezerlo.getVarosModell().addCsomopont(sav); // A savokat hozzá kell adni a város modellhez is
                 break;
             case "utszakasz":
                 Utszakasz utszakasz = new Utszakasz();
@@ -354,13 +361,19 @@ public class CommandInterpreter {
             if(cel == null){
                 throw new IllegalArgumentException("A 'step' parancs első paraméterének egy érvényes csomópontnak kell lennie.");
             }
-        jatekVezerlo.lep(cel);
+            if(!jatekVezerlo.lep(cel)){
+                printFailed("Sikertelen lépés a " + args[0] + " csomópontra.");
+                return;
+            }
         } else{
             Csomopont cel = nevTar.get(args[1]) instanceof Csomopont ? (Csomopont) nevTar.get(args[1]) : null;
             if(cel == null){
                 throw new IllegalArgumentException("A 'step' parancs második paraméterének egy érvényes csomópontnak kell lennie.");
             }
-            jatekVezerlo.lep(jarmu, cel);
+            if(!jatekVezerlo.lep(jarmu, cel)){
+                printFailed("Sikertelen lépés a " + args[0] + " járművel a " + args[1] + " csomópontra.");
+                return;
+            }
         }
         if(jarmu != null){
              printOk("Sikeres lépés a "+args[0]+" járművel a "+ args[1]+" csomópontra.");
@@ -620,6 +633,14 @@ public class CommandInterpreter {
         }
         jarmu.balesetetSzenved();
         printOk("Baleset kezelve.");
+    }
+    private void handleHavazas(String[] args) { 
+        if(args.length != 0){
+            throw new IllegalArgumentException("A 'havazas' parancs nem vár paramétert.");
+        }
+        //teljesen megkerüljük a logikát
+        jatekVezerlo.getVarosModell().havazas();
+        printOk("Havazás végrehajtva."); 
     }
 
 

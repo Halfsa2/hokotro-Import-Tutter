@@ -54,6 +54,7 @@ public class Auto extends Jarmu {
         }
         System.out.print(", start="+ reverseNevTar.get(this.start));
         System.out.print(", cel="+ reverseNevTar.get(this.cel));
+        System.out.print(", varakozik=" + varakozik);
         System.out.println();
     }
 }

@@ -70,6 +70,7 @@ public class Busz extends IranyitottJarmu {
         System.out.print(", cel="+ reverseNevTar.get(this.cel));
         System.out.print(", vezeto=" + (vezeto != null ? reverseNevTar.get(vezeto) : "null"));
         System.out.print(", celhozTart=" + celhozTart());
+        System.out.print(", varakozik=" + varakozik);
         System.out.println();
     }
 }
