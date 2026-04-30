@@ -1,0 +1,6 @@
+# Mentés: test47
+create sav s1
+setstate s1 tiszta
+stat s1
+havazas
+stat s1
