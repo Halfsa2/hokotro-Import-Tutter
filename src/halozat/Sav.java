@@ -5,6 +5,7 @@ import allapot.Tiszta;
 import jarmu.Jarmu;
 import java.util.ArrayList;
 import java.util.List;
+import static prototipus.CommandInterpreter.reverseNevTar;
 import vezerles.SkeletonLogger;
 
 /**
@@ -76,12 +77,10 @@ public class Sav extends Csomopont {
     @Override
     public void frissit() {
         SkeletonLogger.enter(this, "frissit");
-        if (this.sozott > 0) {
-            this.sozott--;
-        }
-        if (allapot != null) {
+        if (this.sozott > 0 && allapot != null) {
             allapot.frissit(this);
         }
+        
         SkeletonLogger.exit("void");
     }
 
@@ -209,5 +208,13 @@ public class Sav extends Csomopont {
         }
         this.zuzalekos = true;
         SkeletonLogger.exit("void");
+    }
+    @Override
+    public void printStat(String name) {
+        System.out.print("Sav " + name + ": allapot="+ this.allapot.getClass().getSimpleName() + ", sozott=" + this.sozott + ", zuzalekos=" + this.zuzalekos + ", jarmu=");
+        if (this.jarmu != null) {
+            System.out.print(reverseNevTar.get(this.jarmu));
+        }
+        System.out.println();
     }
 }

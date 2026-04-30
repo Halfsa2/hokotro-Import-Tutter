@@ -1,7 +1,8 @@
 package felszereles;
 import halozat.Sav;
+import prototipus.IStatable;
 
-public abstract class Kotrofej {
+public abstract class Kotrofej implements IStatable{
     
     public abstract boolean takarit(Sav s); 
 

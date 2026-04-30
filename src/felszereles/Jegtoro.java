@@ -31,4 +31,8 @@ public class Jegtoro extends Kotrofej {
         SkeletonLogger.exit(ret);
         return ret;
     }
+    @Override
+    public void printStat(String name) {
+        System.out.println("Jegtoro "+ name);
+    }
 }

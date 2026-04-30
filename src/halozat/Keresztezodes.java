@@ -3,6 +3,7 @@ package halozat;
 import jarmu.Jarmu;
 import java.util.ArrayList;
 import java.util.List;
+import static prototipus.CommandInterpreter.reverseNevTar;
 import vezerles.SkeletonLogger;
 
 /**
@@ -121,5 +122,16 @@ public class Keresztezodes extends Csomopont {
         // Nyitott kereszteződés esetén itt is történhet havazás, 
         // de jelenleg nincs az állapotokhoz hasonló bonyolult logikája.
         SkeletonLogger.exit("void");
+    }
+    @Override
+    public void printStat(String name) {
+        System.out.print("Keresztezodes " + name + ": jarmuvek=");
+        for (Jarmu j : bentLevoJarmuvek) {
+            System.out.print(reverseNevTar.get(j));
+            if(j != bentLevoJarmuvek.getLast()) {
+                System.out.print(", ");
+            }
+        }
+        System.out.println();
     }
 }

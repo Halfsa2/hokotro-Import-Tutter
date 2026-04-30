@@ -5,6 +5,7 @@ import gazdasag.Takarito;
 import halozat.Csomopont;
 import halozat.Sav;
 import java.util.HashMap;
+import static prototipus.CommandInterpreter.reverseNevTar;
 import java.util.List;
 import vezerles.SkeletonLogger;
 
@@ -133,5 +134,14 @@ public class Hokotro extends IranyitottJarmu {
     @Override
     public boolean lephetMelyHora() {
         return true; // A hókotró képes mély hóban is közlekedni
+    }
+    @Override
+    public void printStat(String name) {
+        System.out.print("Hokotro " + name + ": aktualisCsomopont=");
+        if (this.aktualisCsomopont != null) {
+            System.out.print(aktualisCsomopont != null? reverseNevTar.get(this.aktualisCsomopont) : "null");
+        }
+        System.out.print(", aktivFej=" + (aktiv != null ? aktiv.getClass().getSimpleName() : "null"));
+        System.out.println();
     }
 }

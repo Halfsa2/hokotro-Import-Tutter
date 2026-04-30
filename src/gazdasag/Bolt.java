@@ -2,12 +2,13 @@ package gazdasag;
 
 import felszereles.*;
 import jarmu.Hokotro;
+import prototipus.IStatable;
 import vezerles.SkeletonLogger;
 
 /**
  * A hely, ahol a közös kasszába megszerzett Zúzmara Tallérokat el lehet költeni.
  */
-public class Bolt implements IMegvasarolhato {
+public class Bolt implements IMegvasarolhato, IStatable {
 
     /**
      * Meghatározza a termékek árait a prototípus specifikáció alapján.
@@ -55,5 +56,9 @@ public class Bolt implements IMegvasarolhato {
             SkeletonLogger.exit(false);
             return false;
         }
+    }
+    @Override
+    public void printStat(String name) {
+        System.out.println("Bolt "+ name);
     }
 }
