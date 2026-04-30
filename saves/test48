@@ -1,0 +1,7 @@
+# Mentés: test48
+create sav s1
+setstate s1 sekelyho
+stat s1
+havazas
+havazas
+stat s1

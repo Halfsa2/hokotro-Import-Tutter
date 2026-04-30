@@ -1,0 +1,15 @@
+# Mentés: test60
+create checkpoint start
+create checkpoint cel
+create sav s1
+create sav s2
+create sav s3
+connect start s1
+connect s1 s2
+connect s2 cel
+connect start s3
+connect s3 cel
+create auto a1 start cel
+step a1 start
+step a1
+stat a1

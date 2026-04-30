@@ -72,10 +72,9 @@ public class CommandInterpreter {
                 break;
             }
 
-            if (!processCommand(line)) {
-                break;
+            if (processCommand(line)) {
+                commandLog.add(line); // Parancs naplózása
             }
-            commandLog.add(line); // Parancs naplózása
         }
     }
 
@@ -208,28 +207,41 @@ public class CommandInterpreter {
     }
 
     private void handleSave(String[] args) {
-            if (!mappa.exists()) {
-                mappa.mkdir();
-            }
+        if (!mappa.exists()) {
+            mappa.mkdir();
+        }
 
+        File mentesFajl;
+
+        if (args.length > 0) {
+            // Ha a játékos adott meg nevet
+            mentesFajl = new File(mappa, args[0]);
+            
+            // EGYEDISÉG ELLENŐRZÉSE: Ha már létezik ilyen nevű fájl, nem engedjük felülírni!
+            if (mentesFajl.exists()) {
+                printError("A '" + args[0] + "' nevű mentés már létezik! Kérlek, válassz egy másik nevet.");
+                return; // Megszakítjuk a mentést
+            }
+        } else {
+            // Ha nem adott meg nevet, jön a biztonságos automatikus sorszámozás
             int sorszam = 1;
-            File mentesFajl = new File(mappa, "save" + sorszam + ".txt");
+            mentesFajl = new File(mappa, "save" + sorszam + ".txt");
             while (mentesFajl.exists()) {
                 sorszam++;
                 mentesFajl = new File(mappa, "save" + sorszam + ".txt");
             }
-            try (PrintWriter out = new PrintWriter(new FileWriter(mentesFajl))) {
-            
-            // Ide jön a játékállapot kiíratása
-            out.println("# Automatikus mentés: " + mentesFajl.getName());
+        }
+
+        try (PrintWriter out = new PrintWriter(new FileWriter(mentesFajl))) {
+            out.println("# Mentés: " + mentesFajl.getName());
             for(String parancs : commandLog){
                 out.println(parancs);
             }
-            System.out.println("Sikeres mentés ide: " + mentesFajl.getPath());
+            printOk("Sikeres mentés ide: " + mentesFajl.getPath()); 
             
-            } catch (IOException e) {
-                System.out.println("Hiba történt a fájlba íráskor: " + e.getMessage());
-            }
+        } catch (IOException e) {
+            printError("Hiba történt a fájlba íráskor: " + e.getMessage());
+        }
     }
 
     private void handleCreate(String[] args) {
@@ -407,39 +419,48 @@ public class CommandInterpreter {
     }
 
     private void handleStep(String[] args) {
-        //opcionális paraméter. Ha megadjuk, akkor megkerüljük a játék logikáját, és direktben léptetjük a megadott járművet a megadott célpontra.
-        Jarmu jarmu = nevTar.get(args[0]) instanceof Jarmu ? (Jarmu) nevTar.get(args[0]) : null;
-        if(jarmu == null){        
-            Csomopont cel = nevTar.get(args[0]) instanceof Csomopont ? (Csomopont) nevTar.get(args[0]) : null;
-            if(cel == null){
-                throw new IllegalArgumentException("A 'step' parancs első paraméterének egy érvényes járműnek, vagy csomópontnak kell lennie.");
-            }
-            if(jatekVezerlo.getAktivJatekos() == null){
-                jatekVezerlo.nextJatekos(); // Ha még nincs aktív játékos, akkor beállítjuk az elsőt 
-                if(jatekVezerlo.getAktivJatekos() == null){
-                    throw new IllegalStateException("Nincs aktív játékos a 'step' parancs végrehajtásához.");
-                }
-            }
-            if(!jatekVezerlo.lep(cel)){
-                printFailed("Sikertelen lépés a " + args[0] + " csomópontra.");
-                return;
-            }
-        } else{
-            Csomopont cel = nevTar.get(args[1]) instanceof Csomopont ? (Csomopont) nevTar.get(args[1]) : null;
-            if(cel == null){
-                throw new IllegalArgumentException("A 'step' parancs második paraméterének egy érvényes csomópontnak kell lennie.");
-            }
-            if(!jatekVezerlo.lep(jarmu, cel)){
-                printFailed("Sikertelen lépés a " + args[0] + " járművel a " + args[1] + " csomópontra.");
-                return;
+    Jarmu jarmu = nevTar.get(args[0]) instanceof Jarmu ? (Jarmu) nevTar.get(args[0]) : null;
+    
+    if(jarmu == null){        
+        // --- Játékos léptetése (Változatlan) ---
+        Csomopont cel = nevTar.get(args[0]) instanceof Csomopont ? (Csomopont) nevTar.get(args[0]) : null;
+        if(cel == null) throw new IllegalArgumentException("Érvénytelen jármű vagy csomópont.");
+        if(jatekVezerlo.getAktivJatekos() == null) jatekVezerlo.nextJatekos();
+        if(!jatekVezerlo.lep(cel)) {
+            printFailed("Sikertelen lépés a " + args[0] + " csomópontra.");
+            return;
+        }
+        printOk("Sikeres lépés a " + args[0] + " csomópontra.");
+    } else {
+        // --- Jármű léptetése ---
+        Csomopont cel = null;
+        
+        // Ha van második paraméter, az a manuális célpont
+        if (args.length > 1) {
+            cel = nevTar.get(args[1]) instanceof Csomopont ? (Csomopont) nevTar.get(args[1]) : null;
+        } 
+        // Ha nincs második paraméter, de AUTO, akkor beindul az önvezetés!
+        else if (jarmu instanceof Auto) {
+            Auto auto = (Auto) jarmu;
+            // Megkeressük a BFS szerinti következő lépést[cite: 2]
+            java.util.List<Csomopont> ut = jatekVezerlo.getVarosModell().legrovidebbUtvonal(auto.getAktualisCsomopont(), auto.getCel());
+            if (ut.size() >= 2) {
+                cel = ut.get(1);
+                System.out.println("[OK] Az " + args[0] + " autó a rövidebb utat választotta (" + reverseNevTar.get(cel) + " felé).");
             }
         }
-        if(jarmu != null){
-             printOk("Sikeres lépés a "+args[0]+" járművel a "+ args[1]+" csomópontra.");
-        } else{
-             printOk("Sikeres lépés a "+ args[0] +" csomópontra.");
+
+        if(cel == null){
+            throw new IllegalArgumentException("A 'step' parancshoz célpont megadása szükséges.");
         }
+
+        if(!jatekVezerlo.lep(jarmu, cel)){
+            printFailed("Sikertelen lépés a " + args[0] + " járművel.");
+            return;
+        }
+        printOk("Az " + args[0] + " jármű sikeresen átlépett az " + reverseNevTar.get(cel) + " sávra.");
     }
+}
 
     private void handleStat(String[] args) {
        nevTar.get(args[0]).printStat(args[0]);

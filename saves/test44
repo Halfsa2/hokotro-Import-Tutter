@@ -1,0 +1,4 @@
+# Mentés: test44
+create sav s1
+setstate s1 sekelyho
+stat s1
