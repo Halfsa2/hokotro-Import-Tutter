@@ -1,11 +1,12 @@
 package jarmu;
 import halozat.Csomopont;
+import prototipus.IStatable;
 import vezerles.SkeletonLogger;
 
 /**
  * A város úthálózatán mozgó összes entitás közös absztrakt ősosztálya.
  */
-public abstract class Jarmu implements IJarmuMozgas {
+public abstract class Jarmu implements IJarmuMozgas, IStatable {
     
     // Azt tárolja, hogy a járműnek baleset esetén hány szimulációs körből kell kimaradnia
     protected int varakozik = 0; 

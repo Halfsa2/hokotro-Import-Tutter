@@ -1,5 +1,6 @@
 package halozat;
 
+import static prototipus.CommandInterpreter.reverseNevTar;
 import vezerles.SkeletonLogger;
 
 public class Alagut extends Utszakasz {
@@ -13,5 +14,16 @@ public class Alagut extends Utszakasz {
         SkeletonLogger.enter(this, "havazikRa",s);
         // Alagúton nem esik a hó, így nem hívjuk meg a sáv állapotát, csak simán visszatérünk
         SkeletonLogger.exit("void");
+    }
+    @Override
+    public void printStat(String name) {
+        System.out.print("Alagut " + name + ": savok=");
+        for (Sav s : this.savok) {
+            System.out.print(reverseNevTar.get(s));
+            if(s != this.savok.getLast()) {
+                System.out.print(", ");
+            }
+        }
+        System.out.println();
     }
 }

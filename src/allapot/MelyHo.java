@@ -125,4 +125,8 @@ public class MelyHo extends Savallapot {
         SkeletonLogger.exit(false);
         return false;
     }
+    @Override
+    public void printStat(String name) {
+        System.out.println("MelyHo "+ name );
+    }
 }

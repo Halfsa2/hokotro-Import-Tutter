@@ -2,12 +2,13 @@ package allapot;
 
 import halozat.Sav;
 import jarmu.Jarmu;
+import prototipus.IStatable;
 
 /**
  * A State (Állapot) tervezési minta központi eleme.
  * Előírja, hogyan kell az egyes állapotoknak reagálniuk az eseményekre.
  */
-public abstract class Savallapot {
+public abstract class Savallapot implements IStatable {
 
     /**
      * Ellenőrzi, hogy a jármű befogadható-e a sávba az aktuális állapotban.
@@ -75,4 +76,5 @@ public abstract class Savallapot {
         return false;
     }
     public void zuzalekSzoras() {}
+   
 }

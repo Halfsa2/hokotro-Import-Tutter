@@ -3,6 +3,7 @@ package halozat;
 import jarmu.Jarmu;
 import java.util.ArrayList;
 import java.util.List;
+import static prototipus.CommandInterpreter.reverseNevTar;
 import vezerles.SkeletonLogger;
 
 /**
@@ -90,5 +91,16 @@ public class Checkpoint extends Csomopont {
     public boolean foglalt() {
         // A checkpoint foglalt, ha van legalább egy jármű a várakozó listában
         return !varakozoJarmuvek.isEmpty();
+    }
+    @Override
+    public void printStat(String name) {
+        System.out.print("Checkpoint " + name + ": jarmuvek=");
+        for (Jarmu j : varakozoJarmuvek) {
+            System.out.print(reverseNevTar.get(j));
+            if(j != varakozoJarmuvek.getLast()) {
+                System.out.print(", ");
+            }
+        }
+        System.out.println();
     }
 }

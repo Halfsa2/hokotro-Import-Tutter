@@ -3,6 +3,7 @@ package gazdasag;
 import felszereles.Kotrofej;
 import jarmu.Hokotro;
 import java.util.ArrayList;
+import static prototipus.CommandInterpreter.reverseNevTar;
 import vezerles.SkeletonLogger;
 
 /**
@@ -85,5 +86,16 @@ public class Takarito extends Jatekos<Hokotro> {
         boolean siker = this.kassza.penzKivonas(osszeg);       
         SkeletonLogger.exit(siker);
         return siker;
+    }
+    @Override
+    public void printStat(String name) {
+        System.out.print("Takarito "+ name + ": jarmuvek=");
+        for (Hokotro h : jarmuvek) {
+            System.out.print( reverseNevTar.get(h));
+            if(h != jarmuvek.getLast()) {
+                System.out.print(", ");
+            }
+        }
+        System.out.println();
     }
 }

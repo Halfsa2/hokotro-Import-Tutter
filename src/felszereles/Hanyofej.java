@@ -33,4 +33,8 @@ public class Hanyofej extends Kotrofej {
         SkeletonLogger.exit(ret);
         return ret;
     }
+    @Override
+    public void printStat(String name) {
+        System.out.println("Hanyofej "+ name);
+    }
 }

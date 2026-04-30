@@ -3,6 +3,7 @@ package jarmu;
 import gazdasag.Sofor;
 import halozat.Checkpoint;
 import halozat.Csomopont;
+import static prototipus.CommandInterpreter.reverseNevTar;
 import vezerles.SkeletonLogger;
 
 /**
@@ -58,5 +59,18 @@ public class Busz extends IranyitottJarmu {
     }
     public void iranytValtoztat() {
         oda = !oda;
+    }
+    @Override
+    public void printStat(String name) {
+        System.out.print("Busz " + name + ": aktualisCsomopont=");
+        if (this.aktualisCsomopont != null) {
+            System.out.print(aktualisCsomopont != null ? reverseNevTar.get(this.aktualisCsomopont) : "null");
+        }
+        System.out.print(", start="+ reverseNevTar.get(this.start));
+        System.out.print(", cel="+ reverseNevTar.get(this.cel));
+        System.out.print(", vezeto=" + (vezeto != null ? reverseNevTar.get(vezeto) : "null"));
+        System.out.print(", celhozTart=" + celhozTart());
+        System.out.print(", varakozik=" + varakozik);
+        System.out.println();
     }
 }

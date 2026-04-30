@@ -3,11 +3,12 @@ package gazdasag;
 import halozat.Csomopont;
 import jarmu.IranyitottJarmu;
 import java.util.List;
+import prototipus.IStatable;
 
 /**
  * A rendszerben lévő aktív szereplők általános reprezentációja [cite: 974-975].
  */
-public abstract class Jatekos <T extends IranyitottJarmu> {
+public abstract class Jatekos <T extends IranyitottJarmu> implements IStatable {
     protected List<T> jarmuvek;
     // Lehetővé teszi, hogy a játékos interakcióba lépjen a játék közös pénzalapjával [cite: 979-980].
     protected KozosKassza kassza; 

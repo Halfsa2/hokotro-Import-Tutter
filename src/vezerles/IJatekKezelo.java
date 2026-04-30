@@ -48,4 +48,8 @@ public interface IJatekKezelo {
      * @return Az optimális útvonalat alkotó csomópontok listája.
      */
     List<Csomopont> legrovidebbUtvonal(Csomopont start, Csomopont cel);
+
+    // Ez a getter csak a prototípus csaló parancsának használatához van, hogy elérjük a város modellt a CommandInterpreterből.
+    // Nem szabadna egyébként használni, mert így kikerüljük a játék logikáját.
+    void addCsomopont(Csomopont csp);
 }
