@@ -129,6 +129,6 @@ public class Jeges extends Savallapot{
     }
     @Override
     public void printStat(String name) {
-        System.out.println("Jeges "+ name + ": sozott=" + this.sozott + ", zuzalekos=" + this.zuzalekos);
+        System.out.println("Jeges " + name);
     }
 }
