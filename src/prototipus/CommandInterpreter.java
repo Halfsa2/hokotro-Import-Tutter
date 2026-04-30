@@ -332,6 +332,7 @@ public class CommandInterpreter {
                 Sofor sofor = new Sofor(kSofor);
                 nevTar.put(args[1], sofor);
                 reverseNevTar.put(sofor, args[1]);
+                jatekVezerlo.addJatekos(sofor);
                 printOk("Sofor létrehozva: " + args[1]);
                 break;
             case "takarito":
@@ -342,6 +343,7 @@ public class CommandInterpreter {
                 Takarito takarito = new Takarito(kTakarito);
                 nevTar.put(args[1], takarito);
                 reverseNevTar.put(takarito, args[1]);
+                jatekVezerlo.addJatekos(takarito);
                 printOk("Takarito létrehozva: " + args[1]);
                 break;
             case "alagut":
@@ -386,6 +388,7 @@ public class CommandInterpreter {
                 Auto auto = new Auto(autoStart, autoCel);
                 nevTar.put(args[1], auto);
                 reverseNevTar.put(auto, args[1]);
+                jatekVezerlo.addAuto(auto);
                 printOk("Auto létrehozva: " + args[1]);
                 break;
             case "busz":
@@ -416,39 +419,48 @@ public class CommandInterpreter {
     }
 
     private void handleStep(String[] args) {
-        //opcionális paraméter. Ha megadjuk, akkor megkerüljük a játék logikáját, és direktben léptetjük a megadott járművet a megadott célpontra.
-        Jarmu jarmu = nevTar.get(args[0]) instanceof Jarmu ? (Jarmu) nevTar.get(args[0]) : null;
-        if(jarmu == null){        
-            Csomopont cel = nevTar.get(args[0]) instanceof Csomopont ? (Csomopont) nevTar.get(args[0]) : null;
-            if(cel == null){
-                throw new IllegalArgumentException("A 'step' parancs első paraméterének egy érvényes járműnek, vagy csomópontnak kell lennie.");
-            }
-            if(jatekVezerlo.getAktivJatekos() == null){
-                jatekVezerlo.nextJatekos(); // Ha még nincs aktív játékos, akkor beállítjuk az elsőt 
-                if(jatekVezerlo.getAktivJatekos() == null){
-                    throw new IllegalStateException("Nincs aktív játékos a 'step' parancs végrehajtásához.");
-                }
-            }
-            if(!jatekVezerlo.lep(cel)){
-                printFailed("Sikertelen lépés a " + args[0] + " csomópontra.");
-                return;
-            }
-        } else{
-            Csomopont cel = nevTar.get(args[1]) instanceof Csomopont ? (Csomopont) nevTar.get(args[1]) : null;
-            if(cel == null){
-                throw new IllegalArgumentException("A 'step' parancs második paraméterének egy érvényes csomópontnak kell lennie.");
-            }
-            if(!jatekVezerlo.lep(jarmu, cel)){
-                printFailed("Sikertelen lépés a " + args[0] + " járművel a " + args[1] + " csomópontra.");
-                return;
+    Jarmu jarmu = nevTar.get(args[0]) instanceof Jarmu ? (Jarmu) nevTar.get(args[0]) : null;
+    
+    if(jarmu == null){        
+        // --- Játékos léptetése (Változatlan) ---
+        Csomopont cel = nevTar.get(args[0]) instanceof Csomopont ? (Csomopont) nevTar.get(args[0]) : null;
+        if(cel == null) throw new IllegalArgumentException("Érvénytelen jármű vagy csomópont.");
+        if(jatekVezerlo.getAktivJatekos() == null) jatekVezerlo.nextJatekos();
+        if(!jatekVezerlo.lep(cel)) {
+            printFailed("Sikertelen lépés a " + args[0] + " csomópontra.");
+            return;
+        }
+        printOk("Sikeres lépés a " + args[0] + " csomópontra.");
+    } else {
+        // --- Jármű léptetése ---
+        Csomopont cel = null;
+        
+        // Ha van második paraméter, az a manuális célpont
+        if (args.length > 1) {
+            cel = nevTar.get(args[1]) instanceof Csomopont ? (Csomopont) nevTar.get(args[1]) : null;
+        } 
+        // Ha nincs második paraméter, de AUTO, akkor beindul az önvezetés!
+        else if (jarmu instanceof Auto) {
+            Auto auto = (Auto) jarmu;
+            // Megkeressük a BFS szerinti következő lépést[cite: 2]
+            java.util.List<Csomopont> ut = jatekVezerlo.getVarosModell().legrovidebbUtvonal(auto.getAktualisCsomopont(), auto.getCel());
+            if (ut.size() >= 2) {
+                cel = ut.get(1);
+                System.out.println("[OK] Az " + args[0] + " autó a rövidebb utat választotta (" + reverseNevTar.get(cel) + " felé).");
             }
         }
-        if(jarmu != null){
-             printOk("Sikeres lépés a "+args[0]+" járművel a "+ args[1]+" csomópontra.");
-        } else{
-             printOk("Sikeres lépés a "+ args[0] +" csomópontra.");
+
+        if(cel == null){
+            throw new IllegalArgumentException("A 'step' parancshoz célpont megadása szükséges.");
         }
+
+        if(!jatekVezerlo.lep(jarmu, cel)){
+            printFailed("Sikertelen lépés a " + args[0] + " járművel.");
+            return;
+        }
+        printOk("Az " + args[0] + " jármű sikeresen átlépett az " + reverseNevTar.get(cel) + " sávra.");
     }
+}
 
     private void handleStat(String[] args) {
        nevTar.get(args[0]).printStat(args[0]);
