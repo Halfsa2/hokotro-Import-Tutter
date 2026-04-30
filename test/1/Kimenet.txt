@@ -1,6 +1,41 @@
-[OK] h1 megtisztította a b sávot a söprő fejjel.
-SekelyHo all_b: Allapot=Tiszta, sozott=0, zuzalekos=0
-[OK] h1 megtisztította a c sávot a söprő fejjel.
-SekelyHo all_c: Allapot=Tiszta, sozott=0, zuzalekos=0
-[OK] h1 megtisztította az e sávot a sárkányfejjel.
-Jeges all_e: Allapot=Tiszta, sozott=0, zuzalekos=3
+[OK] KozosKassza létrehozva: k1
+[OK] Takarito létrehozva: p1
+[OK] Alagut létrehozva: alagut1
+[OK] Sav létrehozva: a
+[OK] Sav létrehozva: b
+[OK] Sav létrehozva: c
+[OK] Sav létrehozva: d
+[OK] Sav létrehozva: e
+[OK] Sav létrehozva: f
+[OK] Checkpoint létrehozva: keresztezodes1
+[OK] Checkpoint létrehozva: keresztezodes2
+[OK] Sáv hozzáadva.
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Állapot beállítva.
+[OK] Állapot beállítva.
+[OK] Állapot beállítva.
+[OK] Állapot beállítva.
+[OK] Zúzalékszórás sikeres.
+[OK] Állapot beállítva.
+[OK] Zúzalékszórás sikeres.
+[OK] Hokotro létrehozva: h1
+[OK] Jármű hozzáadva.
+[OK] Sikeres lépés a h1 járművel a a csomópontra.
+[OK] Sikeres lépés a h1 járművel a keresztezodes1 csomópontra.
+[FAILED] Sikertelen lépés a h1 járművel a b csomópontra.
+Sav b: allapot=SekelyHo, sozott=0, zuzalekos=false, jarmu=
+[FAILED] Sikertelen lépés a h1 járművel a c csomópontra.
+Sav c: allapot=SekelyHo, sozott=0, zuzalekos=false, jarmu=
+[OK] Vásárlás sikeres.
+[OK] Fejcsere sikeres.
+[FAILED] Sikertelen lépés a h1 járművel a keresztezodes2 csomópontra.
+[FAILED] Sikertelen lépés a h1 járművel a e csomópontra.
+Sav e: allapot=Jeges, sozott=0, zuzalekos=true, jarmu=
+KozosKassza k1: penzmennyiseg=700

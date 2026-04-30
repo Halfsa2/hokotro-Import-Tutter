@@ -1,3 +1,7 @@
-[OK] Sikeres vásárlás: p1 megvette a soszoro eszközt.
-KozosKassza k1: penzmennyiseg=400
-Hokotro h1: AktivFej=Soszoro
+[OK] KozosKassza létrehozva: k1
+[OK] Takarito létrehozva: p1
+[OK] Hokotro létrehozva: h1
+[OK] Jármű hozzáadva.
+[OK] Vásárlás sikeres.
+KozosKassza k1: penzmennyiseg=350
+Hokotro h1: aktualisCsomopont=, aktivFej=null

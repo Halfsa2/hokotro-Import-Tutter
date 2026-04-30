@@ -1,2 +1,11 @@
-[OK] Buszsofőr szerepkör kiválasztva. Járműirányítás engedélyezve. 
-[OK] A b1 jármű sikeresen átlépett az s2 sávra. 
+[OK] KozosKassza létrehozva: k1
+[OK] Sofor létrehozva: p1
+[OK] Checkpoint létrehozva: c1
+[OK] Checkpoint létrehozva: c2
+[OK] Sav létrehozva: s1
+[OK] Sav létrehozva: s2
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Busz létrehozva: b1
+[OK] Sikeres lépés a b1 járművel a s1 csomópontra.
+Sofor p1: busz=nincs

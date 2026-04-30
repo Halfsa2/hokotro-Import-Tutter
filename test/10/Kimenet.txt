@@ -1,2 +1,8 @@
-[FAILED] A művelet sikertelen: A h1 jármű nem rendelkezik kerozinnal működő fejjel.
-Hokotro h1: AktivFej=Sopro
+[OK] KozosKassza létrehozva: k1
+[OK] Takarito létrehozva: p1
+[OK] Hokotro létrehozva: h1
+[OK] Jármű hozzáadva.
+[OK] Vásárlás sikeres.
+[OK] Fejcsere sikeres.
+[OK] Vásárlás sikeres.
+Hokotro h1: aktualisCsomopont=, aktivFej=Soszoro

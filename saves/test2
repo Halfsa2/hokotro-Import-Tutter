@@ -1,5 +1,5 @@
-create takarito p1
 create kassza k1 500
-buy p1 HOKOTRO
+create takarito p1 k1
+create hokotro h1 p1
 addjarmu p1 h1
 stat k1

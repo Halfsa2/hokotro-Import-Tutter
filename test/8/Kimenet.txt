@@ -1,3 +1,10 @@
-[OK] Sikeres vásárlás: p1 feltöltötte a h1 járművet kerozinnal.
-Hokotro h1: AktivFej=Sarkanyfej, kerozin_mennyiseg=5
-KozosKassza k1: penzmennyiseg=50
+load test8
+[OK] KozosKassza létrehozva: k1
+[OK] Takarito létrehozva: p1
+[OK] Hokotro létrehozva: h1
+[OK] Jármű hozzáadva.
+[OK] Vásárlás sikeres.
+[OK] Fejcsere sikeres.
+[OK] Vásárlás sikeres.
+KozosKassza k1: penzmennyiseg=600
+Hokotro h1: aktualisCsomopont=, aktivFej=Sarkanyfej

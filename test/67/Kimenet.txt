@@ -1,2 +1,6 @@
-[ERROR] Ismeretlen árucikk azonosító: TESZT_CUCC
-KozosKassza k1: penzmennyiseg=500
+[OK] KozosKassza létrehozva: k1
+[OK] Takarito létrehozva: p1
+[OK] Hokotro létrehozva: h1
+[OK] Jármű hozzáadva.
+[ERROR] Hibás paraméterezés: Ismeretlen árucikk a 'buy' parancsban: teszt_cucc
+[ERROR] Hiba történt a fájl parancsainak feldolgozása közben.
