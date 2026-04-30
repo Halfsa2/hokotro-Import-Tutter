@@ -2,8 +2,8 @@ package jarmu;
 
 import halozat.Checkpoint;
 import halozat.Csomopont;
-import static prototipus.CommandInterpreter.reverseNevTar;
 import java.util.List;
+import static prototipus.CommandInterpreter.reverseNevTar;
 import vezerles.SkeletonLogger;
 
 /**
@@ -56,6 +56,24 @@ public class Auto extends Jarmu {
         
         // Ha a befogadás elutasítva (pl. foglalt a Checkpoint)
         SkeletonLogger.exit(false);
+        return false;
+    }
+
+    /**
+     * Önvezető mozgás: lekéri a VarosModell-től a legrövidebb utat, 
+     * és rálép a következő csomópontra.
+     * @param vm A város modellje, amely az útvonalat számolja
+     * @return true, ha sikerült a lépés
+     */
+    public boolean onvezetoLep(vezerles.VarosModell vm) {
+        // Lekérjük a teljes útvonalat BFS-sel
+        java.util.List<halozat.Csomopont> utvonal = vm.legrovidebbUtvonal(this.aktualisCsomopont, this.cel);
+        
+        // Az útvonal első eleme az aktuális helyünk, a második a következő lépés
+        if (utvonal.size() >= 2) {
+            halozat.Csomopont kovetkezo = utvonal.get(1);
+            return this.lep(kovetkezo);
+        }
         return false;
     }
     
