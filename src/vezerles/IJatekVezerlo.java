@@ -28,4 +28,6 @@ public interface IJatekVezerlo {
     public IMegvasarolhato getBolt();
 
     public IJatekKezelo getVarosModell();
+
+    public Jatekos<?> getAktivJatekos();
 }

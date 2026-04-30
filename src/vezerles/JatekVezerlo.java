@@ -165,4 +165,10 @@ public class JatekVezerlo implements IJatekVezerlo {
         //Nem szabadna egyébként használni, mert így kikerüljük a játék logikáját.
         return this.modell;
     }
+    @Override
+    public Jatekos<?> getAktivJatekos() {
+        //Ez a getter csak a prototípus csaló parancsának használatához van, hogy elérjük az aktív játékost a CommandInterpreterből.
+        //Nem szabadna egyébként használni, mert így kikerüljük a játék logikáját.
+        return this.aktivJatekos;
+    }
 }

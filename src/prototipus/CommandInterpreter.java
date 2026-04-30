@@ -409,7 +409,13 @@ public class CommandInterpreter {
         if(jarmu == null){        
             Csomopont cel = nevTar.get(args[0]) instanceof Csomopont ? (Csomopont) nevTar.get(args[0]) : null;
             if(cel == null){
-                throw new IllegalArgumentException("A 'step' parancs első paraméterének egy érvényes csomópontnak kell lennie.");
+                throw new IllegalArgumentException("A 'step' parancs első paraméterének egy érvényes járműnek, vagy csomópontnak kell lennie.");
+            }
+            if(jatekVezerlo.getAktivJatekos() == null){
+                jatekVezerlo.nextJatekos(); // Ha még nincs aktív játékos, akkor beállítjuk az elsőt 
+                if(jatekVezerlo.getAktivJatekos() == null){
+                    throw new IllegalStateException("Nincs aktív játékos a 'step' parancs végrehajtásához.");
+                }
             }
             if(!jatekVezerlo.lep(cel)){
                 printFailed("Sikertelen lépés a " + args[0] + " csomópontra.");
