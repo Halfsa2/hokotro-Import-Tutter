@@ -72,10 +72,9 @@ public class CommandInterpreter {
                 break;
             }
 
-            if (!processCommand(line)) {
-                break;
+            if (processCommand(line)) {
+                commandLog.add(line); // Parancs naplózása
             }
-            commandLog.add(line); // Parancs naplózása
         }
     }
 

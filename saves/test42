@@ -1,0 +1,16 @@
+# Mentés: test42
+create kassza k1 0
+create sofor p1 k1
+create sav s1
+create checkpoint cp1
+create checkpoint cp2
+connect cp2 cp1
+connect cp2 s1
+connect s1 cp1
+create auto a1 cp2 cp1
+step a1 cp1
+create busz b1 cp2 cp1 p1
+step b1 s1
+step b1 cp1
+stat b1
+stat k1

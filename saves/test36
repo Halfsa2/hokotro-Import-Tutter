@@ -1,0 +1,9 @@
+# Mentés: test36
+create kassza k1 0
+create takarito p1 k1
+create sav s1
+create sav s3
+create hokotro h1 p1
+step h1 s1
+step h1 s3
+stat h1
