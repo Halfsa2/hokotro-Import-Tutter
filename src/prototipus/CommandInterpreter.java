@@ -208,28 +208,41 @@ public class CommandInterpreter {
     }
 
     private void handleSave(String[] args) {
-            if (!mappa.exists()) {
-                mappa.mkdir();
-            }
+        if (!mappa.exists()) {
+            mappa.mkdir();
+        }
 
+        File mentesFajl;
+
+        if (args.length > 0) {
+            // Ha a játékos adott meg nevet
+            mentesFajl = new File(mappa, args[0]);
+            
+            // EGYEDISÉG ELLENŐRZÉSE: Ha már létezik ilyen nevű fájl, nem engedjük felülírni!
+            if (mentesFajl.exists()) {
+                printError("A '" + args[0] + "' nevű mentés már létezik! Kérlek, válassz egy másik nevet.");
+                return; // Megszakítjuk a mentést
+            }
+        } else {
+            // Ha nem adott meg nevet, jön a biztonságos automatikus sorszámozás
             int sorszam = 1;
-            File mentesFajl = new File(mappa, "save" + sorszam + ".txt");
+            mentesFajl = new File(mappa, "save" + sorszam + ".txt");
             while (mentesFajl.exists()) {
                 sorszam++;
                 mentesFajl = new File(mappa, "save" + sorszam + ".txt");
             }
-            try (PrintWriter out = new PrintWriter(new FileWriter(mentesFajl))) {
-            
-            // Ide jön a játékállapot kiíratása
-            out.println("# Automatikus mentés: " + mentesFajl.getName());
+        }
+
+        try (PrintWriter out = new PrintWriter(new FileWriter(mentesFajl))) {
+            out.println("# Mentés: " + mentesFajl.getName());
             for(String parancs : commandLog){
                 out.println(parancs);
             }
-            System.out.println("Sikeres mentés ide: " + mentesFajl.getPath());
+            printOk("Sikeres mentés ide: " + mentesFajl.getPath()); 
             
-            } catch (IOException e) {
-                System.out.println("Hiba történt a fájlba íráskor: " + e.getMessage());
-            }
+        } catch (IOException e) {
+            printError("Hiba történt a fájlba íráskor: " + e.getMessage());
+        }
     }
 
     private void handleCreate(String[] args) {
