@@ -11,63 +11,43 @@ import vezerles.SkeletonLogger;
  */
 public class Jeges extends Savallapot{
 
+    // Jelzi, hogy a sáv be van-e sózva (elkezdett-e olvadni a jég)
+    private boolean olvadasAlatt = false;
     
-    /**
-     * A sáv sózott szintjét jelzi. Ha nagyobb mint 0, a só hatása alatt van.
-     */
-    public int sozott = 0;
-    /**
-     * Jelzi, hogy a sáv zuzalekos-e.
-     */
-    private boolean zuzalekos = false;
-    
-    /**
-     * Konstruktor a Jeges osztályhoz.
-     * Inicializálja a jeges állapotot és regisztrálja a SkeletonLogger-ben.
-     */
-    public Jeges() { /* Konstruktor */
+    public Jeges() { 
         SkeletonLogger.create(this);
         SkeletonLogger.exit(this);
     }
 
-
-
     /**
      * Ellenőrzi, hogy a jármű befogadható-e a jeges sávba.
-     * Ha nincs zúzalék, a jármű megcsúszik és balesetet szenved.
-     * @param sav a sáv, amelybe a jármű szeretne befogadódni
-     * @param jarmu a jármű, amely befogadódni szeretne
-     * @return mindig true (ráléphet, de lehet, hogy karambolozik)
+     * Ha nincs zúzalék, a jármű megcsúszik és balesetet szenved (Teszt 43).
      */
     @Override
     public boolean befogad(Sav sav, Jarmu jarmu) {
         SkeletonLogger.enter(this, "befogad", sav, jarmu);
-        if (this.zuzalekos) {
+        
+        // A Sáv-tól kérdezzük meg, hogy van-e rajta zúzalék!
+        if (sav.isZuzalekos()) {
             SkeletonLogger.exit(true);
-            return true;
+            return true; // Biztonságos áthaladás
         } else {
-            jarmu.balesetetSzenved();
+            jarmu.balesetetSzenved(); // Baleset! (Teszt 43)
             SkeletonLogger.exit(true);
-            return true; 
+            return true; // Rálépni ráléphet, csak karambolozik.
         }
     }
 
-    /**
-     * Elengedi a járművet a jeges sávból.
-     */
     @Override
     public void elenged(Sav sav, Jarmu jarmu) {
         SkeletonLogger.enter(this, "elenged", sav, jarmu);
         SkeletonLogger.exit("void");
     }
 
-    /**
-     * Kezeli a hóesés esetét a jeges sávon.
-     */
     @Override
     public void hoesesEseten(Sav sav) {
         SkeletonLogger.enter(this, "hoesesEseten", sav);
-        // Itt a jövőben implementálható, hogy havazás hatására havas-jég jöjjön létre
+        // Jelenleg nem csinál semmit a jégen a havazás
         SkeletonLogger.exit("void");
     }
 
@@ -78,22 +58,15 @@ public class Jeges extends Savallapot{
     public void frissit(Sav sav) {
         SkeletonLogger.enter(this, "frissit", sav);
         
-        // Logikai javítás: Csak akkor csökken a só hatása, ha tényleg be van sózva.
-        if (this.sozott > 0) {
-            this.sozott--;
-            
-            // Ha a só kifejtette a hatását (lejárt a számláló), a jég elolvad.
-            if (this.sozott <= 0) {
-                sav.setAllapot(new Tiszta());
-            }
+        // Ha a sózás elindította az olvadást, és a sáv sózott számlálója lejárt (0)
+        if (this.olvadasAlatt && sav.getSozott() == 0) {
+            sav.setAllapot(new Tiszta());
+            sav.setZuzalekos(false); // A sózás a zúzalékot is lemossa
         }
         
         SkeletonLogger.exit("void");
     }
 
-    /**
-     * Teszteli, hogy a jármű ráléphet-e a jeges sávra.
-     */
     @Override
     public boolean lepesTeszt(Jarmu jarmu) {
         SkeletonLogger.enter(this, "lepesTeszt", jarmu);
@@ -103,32 +76,24 @@ public class Jeges extends Savallapot{
 
     /**
      * Kezeli, ha a sáv sót kap.
-     * Beállítja a sózott szintet 3-ra.
      */
     @Override
     public void sotKap(Sav sav) {
         SkeletonLogger.enter(this, "sotKap", sav);
-        this.sozott = 3;
+        this.olvadasAlatt = true; // Elindítja a jég olvadását (Teszt 45)
         SkeletonLogger.exit("void");
     }
 
-    /**
-     * Megpróbálja megtisztítani a havat a sávból.
-     * Jeges sávnál nincs hó, így nem sikerül.
-     */
     @Override
     public boolean hoTisztit(Sav sav) {
         SkeletonLogger.enter(this, "hoTisztit", sav);
         SkeletonLogger.exit(false);
-        return false;
+        return false; // Jeget hótolóval nem lehet takarítani
     }
 
     /**
      * Megpróbálja megtisztítani a jeget a sávból.
      * Ha sárkányfej használja, tiszta lesz; különben sekély hó marad.
-     * @param sav a tisztítandó sáv
-     * @param olvad jelzi, hogy a jeget törjük, vagy olvasztjuk
-     * @return true, mivel sikerül
      */
     @Override
     public boolean jegTisztit(Sav sav, Boolean olvad) {
@@ -137,9 +102,11 @@ public class Jeges extends Savallapot{
         if (olvad) {
             // Sárkányfej esetén teljesen leolvad
             sav.setAllapot(new Tiszta());
+            sav.setZuzalekos(false); // Sárkányfej eltünteti a zúzalékot (Teszt 54)
         } else {
             // Jégtörő esetén marad 1 réteg hó
             sav.setAllapot(new SekelyHo());
+            sav.setZuzalekos(false);
         }
 
         SkeletonLogger.exit(true);
@@ -149,15 +116,15 @@ public class Jeges extends Savallapot{
     @Override
     public boolean zuzalekTisztit(Sav sav) {
         SkeletonLogger.enter(this, "zuzalekTisztit", sav);
-        this.zuzalekos = false;
+        sav.setZuzalekos(false);
         SkeletonLogger.exit(true);
         return true;
-
     }
+    
     @Override
     public void zuzalekSzoras() {
         SkeletonLogger.enter(this, "zuzalekSzoras");
-        this.zuzalekos = true;
+        // Ezt most már a Sav.java kezeli közvetlenül!
         SkeletonLogger.exit("void");
     }
     @Override

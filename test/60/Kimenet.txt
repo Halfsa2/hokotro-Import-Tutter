@@ -1,0 +1,3 @@
+[OK] Az a1 autó a rövidebb utat választotta (s3 felé).
+[OK] Az a1 jármű sikeresen átlépett az s3 sávra.
+Auto a1: Hely=s3, Cél=cel, varakozik=0

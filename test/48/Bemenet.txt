@@ -1,0 +1,5 @@
+create sav s1
+setstate s1 sekelyho
+sethoreteg s1 2
+havazas
+stat s1

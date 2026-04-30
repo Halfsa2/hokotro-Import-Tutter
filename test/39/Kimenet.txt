@@ -1,0 +1,2 @@
+[OK] A b1 jármű rálépett az s2 sávra, de megcsúszott és balesetet szenvedett. 
+Busz b1: Hely=s2, varakozik=3

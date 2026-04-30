@@ -1,0 +1,3 @@
+[OK] Zúzalék kiszórva az s1 sávra.
+[OK] Sikeres vásárlás: p1 feltöltötte a h1 járművet zúzalékkal.
+Hokotro h1: Hely=s1, AktivFej=ZuzalekSzoro, zuzalek_mennyiseg=10

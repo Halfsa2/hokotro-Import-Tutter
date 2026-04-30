@@ -1,0 +1,2 @@
+[OK] A h1 jármű sikeresen átlépett az s2 sávra.
+Hokotro h1: Hely=s2, AktivFej=null

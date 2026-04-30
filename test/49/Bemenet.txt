@@ -1,0 +1,6 @@
+create alagut a1
+create sav s1
+addsav a1 s1
+setstate s1 tiszta
+havazas
+stat s1

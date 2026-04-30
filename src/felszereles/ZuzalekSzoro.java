@@ -55,12 +55,16 @@ public class ZuzalekSzoro extends Kotrofej {
      */
     @Override
     public void ujratolt(int mennyiseg) {
+        SkeletonLogger.enter(this, "ujratolt", mennyiseg); // LOGOLÁS PÓTOLVA
+        
         this.zuzalek_mennyiseg += mennyiseg;
         
-        // Kapacitás korlátozása: ha átlépné a 10-et, visszavágjuk 10-re
+        // Kapacitás korlátozása: ha átlépné a 10-et, visszavágjuk 10-re (Teszt 59)
         if (this.zuzalek_mennyiseg > 10) {
             this.zuzalek_mennyiseg = 10;
         }
+        
+        SkeletonLogger.exit("void"); // LOGOLÁS PÓTOLVA
     }
 
     /**

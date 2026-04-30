@@ -1,0 +1,3 @@
+Sav s1: Allapot=Tiszta, sozott=0, zuzalekos=0
+[OK] Havazás történt a városban.
+Sav s1: Allapot=SekelyHo, sozott=0, zuzalekos=0

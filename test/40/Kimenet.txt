@@ -1,0 +1,2 @@
+[FAILED] A lépés sikertelen: A sáv a mély hó miatt személygépjárművek és buszok számára járhatatlan. 
+Busz b1: Hely=s1, varakozik=0

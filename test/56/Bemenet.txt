@@ -1,0 +1,14 @@
+create takarito p1
+create sav s1
+setstate s1 jeges
+create hokotro h1 s1
+addjarmu p1 h1
+buy p1 SOSZORO
+fejcsere h1 soszoro
+# Sószorás (takarítás) a jégen
+step h1 s1
+tick 2
+stat s1
+# Utolsó kör letelte
+tick 1
+stat s1

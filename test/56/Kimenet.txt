@@ -1,0 +1,5 @@
+[OK] h1 besózta az s1 sávot a sószóró fejjel.
+[OK] Az idő 2 körrel előrehaladt.
+Sav s1: Allapot=Jeges, sozott=1, zuzalekos=0
+[OK] Az idő 1 körrel előrehaladt.
+Sav s1: Allapot=Tiszta, sozott=0, zuzalekos=0

@@ -27,15 +27,17 @@ public class Sopro extends Kotrofej {
     public boolean takarit(Sav s) {
         SkeletonLogger.enter(this, "takarit", s);
         
-        // 1. Megpróbáljuk eltakarítani a havat a jelenlegi sávról
+        // 1. Megpróbáljuk eltakarítani a havat a jelenlegi sávról (csak hóra működik)
         boolean sikeres = s.hoTisztit();
         
-        // 2. Ha volt mit eltakarítani, a havat áttoljuk a jobb oldali szomszédra
+        // 2. Ha volt mit eltakarítani (tehát nem tiszta jégen vagy tiszta aszfalton toltuk)
         if (sikeres) {
-            Sav szomszedos = s.getJobbSzomszed(s); // <-- ITT A JAVÍTÁS
+            // Lekérjük a jobb oldali szomszédot
+            Sav szomszedos = s.getJobbSzomszed(s); 
             
+            // Ha van jobb oldali sáv, áttoljuk rá a havat
             if (szomszedos != null) {
-                // A hóesés szimulálásával "növeljük" a szomszédos sáv hórétegét
+                // A hóesés szimulálásával "növeljük" a szomszédos sáv hórétegét (Teszt 52)
                 szomszedos.hoesesEseten(); 
             }
         }
@@ -46,5 +48,13 @@ public class Sopro extends Kotrofej {
     @Override
     public void printStat(String name) {
         System.out.println("Sopro "+ name);
+
+    /**
+     * Söprő fejnek nincsenek fogyóeszközei, így az újratöltés nem csinál semmit.
+     */
+    @Override
+    public void ujratolt(int mennyiseg) {
+        SkeletonLogger.enter(this, "ujratolt", mennyiseg);
+        SkeletonLogger.exit("void");
     }
 }

@@ -1,0 +1,2 @@
+[FAILED] A lépés sikertelen: Az s2 sáv már foglalt.
+Busz b1: Hely=s1, varakozik=0

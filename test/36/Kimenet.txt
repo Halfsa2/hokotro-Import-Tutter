@@ -1,0 +1,2 @@
+[FAILED] A lépés sikertelen: Az s3 sáv nem szomszédos. 
+Hokotro h1: Hely=s1, AktivFej=null

@@ -1,0 +1,5 @@
+# Nem létező fájl betöltésének megkísérlése 
+load nem_letezo_palya_404.txt 
+# Mivel a betöltés sikertelen volt, a rendszer üres kell maradjon 
+# Próbáljuk lekérdezni egy olyan objektumot, aminek nem szabadna léteznie 
+stat k1

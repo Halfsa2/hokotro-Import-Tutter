@@ -1,0 +1,3 @@
+[OK] A b1 jármű sikeresen átlépett az s1 sávra.
+[FAILED] Vásárlás megakadályozva: A cél sáv (s1) foglalt, a hókotró nem helyezhető el.
+KozosKassza k1: penzmennyiseg=500

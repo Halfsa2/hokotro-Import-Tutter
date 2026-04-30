@@ -1,0 +1,6 @@
+[OK] h1 megtisztította a b sávot a söprő fejjel.
+SekelyHo all_b: Allapot=Tiszta, sozott=0, zuzalekos=0
+[OK] h1 megtisztította a c sávot a söprő fejjel.
+SekelyHo all_c: Allapot=Tiszta, sozott=0, zuzalekos=0
+[OK] h1 megtisztította az e sávot a sárkányfejjel.
+Jeges all_e: Allapot=Tiszta, sozott=0, zuzalekos=3

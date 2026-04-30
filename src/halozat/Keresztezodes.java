@@ -31,7 +31,9 @@ public class Keresztezodes extends Csomopont {
      */
     public void addKimenet(Csomopont csp) {
         SkeletonLogger.enter(this, "addKimenet", csp);
-        this.kimenetek.add(csp);
+        if (!this.kimenetek.contains(csp)) {
+            this.kimenetek.add(csp);
+        }
         SkeletonLogger.exit("void");
     }
 
@@ -43,7 +45,11 @@ public class Keresztezodes extends Csomopont {
     @Override
     public boolean befogad(Jarmu jarmu) {
         SkeletonLogger.enter(this, "befogad", jarmu);
+        
+        // Nincs foglalt() ellenőrzés (mint a Sávnál vagy a Checkpointnál), 
+        // így a kereszteződés akármennyi járművet be tud fogadni egyszerre! (Teszt 42)
         this.bentLevoJarmuvek.add(jarmu);
+        
         SkeletonLogger.exit(true);
         return true;
     }
@@ -85,18 +91,26 @@ public class Keresztezodes extends Csomopont {
     @Override
     public void balesetEseten() {
         SkeletonLogger.enter(this, "balesetEseten");
-        // Kereszteződésbeli baleset speciális kezelése (pl. minden irány blokkolása)
+        
+        // Ha valaki balesetet okoz a kereszteződésben, az összes bent lévő jármű karambolozik
+        for (Jarmu j : bentLevoJarmuvek) {
+            j.balesetetSzenved();
+        }
+        
         SkeletonLogger.exit("void");
     }
 
     /**
      * Ellenőrzi, hogy foglalt-e a kereszteződés. 
-     * Megjegyzés: Jelenleg akkor foglalt, ha van benne legalább egy jármű.
-     * @return true, ha vannak járművek a kereszteződésben
+     * @return mindig false, mivel a kereszteződés kapacitása végtelen
      */
     @Override
     public boolean foglalt() {
-        return !this.bentLevoJarmuvek.isEmpty();
+        SkeletonLogger.enter(this, "foglalt");
+        // A kereszteződésnek végtelen a kapacitása, így sosem "foglalt" olyan értelemben,
+        // hogy ne tudna új autót befogadni (Teszt 42).
+        SkeletonLogger.exit(false);
+        return false;
     }
 
     /**

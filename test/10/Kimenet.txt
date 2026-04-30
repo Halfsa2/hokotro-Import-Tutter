@@ -1,0 +1,2 @@
+[FAILED] A művelet sikertelen: A h1 jármű nem rendelkezik kerozinnal működő fejjel.
+Hokotro h1: AktivFej=Sopro

@@ -1,0 +1,3 @@
+[OK] A b1 jármű sikeresen átlépett a cp1 célállomásra. 
+Busz b1: Hely=cp1, oda=false, varakozik=0 
+KozosKassza k1: penzmennyiseg=100 

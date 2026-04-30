@@ -1,0 +1,2 @@
+[OK] Buszsofőr szerepkör kiválasztva. Járműirányítás engedélyezve. 
+[OK] A b1 jármű sikeresen átlépett az s2 sávra. 

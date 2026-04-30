@@ -1,0 +1,3 @@
+[OK] Takarító szerepkör kiválasztva.
+[OK] Sikeres vásárlás: p1 megvette a hokotro-t.
+KozosKassza k1: penzmennyiseg=0
