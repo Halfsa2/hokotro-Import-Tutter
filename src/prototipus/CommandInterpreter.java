@@ -320,6 +320,7 @@ public class CommandInterpreter {
                 Sofor sofor = new Sofor(kSofor);
                 nevTar.put(args[1], sofor);
                 reverseNevTar.put(sofor, args[1]);
+                jatekVezerlo.addJatekos(sofor);
                 printOk("Sofor létrehozva: " + args[1]);
                 break;
             case "takarito":
@@ -330,6 +331,7 @@ public class CommandInterpreter {
                 Takarito takarito = new Takarito(kTakarito);
                 nevTar.put(args[1], takarito);
                 reverseNevTar.put(takarito, args[1]);
+                jatekVezerlo.addJatekos(takarito);
                 printOk("Takarito létrehozva: " + args[1]);
                 break;
             case "alagut":
@@ -374,6 +376,7 @@ public class CommandInterpreter {
                 Auto auto = new Auto(autoStart, autoCel);
                 nevTar.put(args[1], auto);
                 reverseNevTar.put(auto, args[1]);
+                jatekVezerlo.addAuto(auto);
                 printOk("Auto létrehozva: " + args[1]);
                 break;
             case "busz":
