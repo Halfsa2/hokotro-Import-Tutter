@@ -38,11 +38,13 @@ public class Sarkanyfej extends Kotrofej {
             // 2. TISZTÍTÁS: Üzemanyag felhasználásával azonnali olvasztást végez.
             boolean hoEltakaritva = s.hoTisztit();
             boolean jegEltakaritva = s.jegTisztit(true);
+            boolean tortentTakaritas = hoEltakaritva || jegEltakaritva;
+            if(tortentTakaritas) {
+                // Fogyasztjuk a kerozint
+                this.kerozin_mennyiseg--;
+            }
             
-            // Fogyasztjuk a kerozint
-            this.kerozin_mennyiseg--;
-            
-            boolean siker = hoEltakaritva || jegEltakaritva;
+            boolean siker = tortentTakaritas;
             SkeletonLogger.exit(siker);
             return siker;
         }
