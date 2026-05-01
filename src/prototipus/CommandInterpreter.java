@@ -720,12 +720,13 @@ public class CommandInterpreter {
             throw new IllegalArgumentException("A 'setzuzalekmennyiseg' parancs első paraméterének egy érvényes hókotrónak kell lennie.");
         }
         int zuzalekmennyiseg = Integer.parseInt(args[1]);
-        ZuzalekSzoro zuzalekszoro = (ZuzalekSzoro) hokotro.getFej("Zuzalekszoro");
+        ZuzalekSzoro zuzalekszoro = (ZuzalekSzoro) hokotro.getFej(ZuzalekSzoro.class.getSimpleName());
         if(zuzalekszoro == null){
             throw new IllegalArgumentException("A megadott hókotrón nincs zúzalékszóró feje, így nem állítható be a zúzalék mennyisége.");
         }
         zuzalekszoro.setZuzalekMennyiseg(zuzalekmennyiseg);
-        printOk("Zúzalék beállítva."); }
+        printOk("Zúzalék beállítva."); 
+    }
     private void handleBaleset(String[] args) { 
         if(args.length != 1){
             throw new IllegalArgumentException("A 'baleset' parancs egyetlen paramétert vár: a jármű nevét.");
