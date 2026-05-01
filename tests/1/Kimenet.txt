@@ -27,15 +27,15 @@
 [OK] Zúzalékszórás sikeres.
 [OK] Hokotro létrehozva: h1
 [OK] Jármű hozzáadva.
-[OK] Sikeres lépés a h1 járművel a a csomópontra.
-[OK] Sikeres lépés a h1 járművel a keresztezodes1 csomópontra.
-[FAILED] Sikertelen lépés a h1 járművel a b csomópontra.
-Sav b: allapot=SekelyHo, sozott=0, zuzalekos=false, jarmu=
-[FAILED] Sikertelen lépés a h1 járművel a c csomópontra.
-Sav c: allapot=SekelyHo, sozott=0, zuzalekos=false, jarmu=
+[OK] Az h1 jármű sikeresen átlépett az a sávra.
+[OK] Az h1 jármű sikeresen átlépett az keresztezodes1 sávra.
+[FAILED] Sikertelen lépés a h1 járművel.
+Sav b: allapot=SekelyHo, sozott=0, zuzalekos=0, jarmu=
+[FAILED] Sikertelen lépés a h1 járművel.
+Sav c: allapot=SekelyHo, sozott=0, zuzalekos=0, jarmu=
 [OK] Vásárlás sikeres.
 [OK] Fejcsere sikeres.
-[FAILED] Sikertelen lépés a h1 járművel a keresztezodes2 csomópontra.
-[FAILED] Sikertelen lépés a h1 járművel a e csomópontra.
-Sav e: allapot=Jeges, sozott=0, zuzalekos=true, jarmu=
+[FAILED] Sikertelen lépés a h1 járművel.
+[FAILED] Sikertelen lépés a h1 járművel.
+Sav e: allapot=Jeges, sozott=0, zuzalekos=3, jarmu=
 KozosKassza k1: penzmennyiseg=700

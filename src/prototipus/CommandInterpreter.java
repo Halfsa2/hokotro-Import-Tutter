@@ -770,5 +770,6 @@ public class CommandInterpreter {
     private void printError(String message) {
         String formattedMessage = "[ERROR] " + message;
         System.out.println(formattedMessage);
+        replyLog.add(formattedMessage);   //[ERROR]-ra futó teszt miatt kell
     }
 }

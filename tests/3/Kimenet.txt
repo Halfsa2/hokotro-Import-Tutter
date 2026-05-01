@@ -7,5 +7,5 @@
 [OK] Kapcsolat létrehozva.
 [OK] Kapcsolat létrehozva.
 [OK] Busz létrehozva: b1
-[OK] Sikeres lépés a b1 járművel a s1 csomópontra.
-Sofor p1: busz=nincs
+[OK] Az b1 jármű sikeresen átlépett az s1 sávra.
+Sofor p1: busz=b1

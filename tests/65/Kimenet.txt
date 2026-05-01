@@ -10,4 +10,4 @@
 [OK] Busz létrehozva: b1
 [OK] Az b1 jármű sikeresen átlépett az s1 sávra.
 [ERROR] Hibás paraméterezés: Ismeretlen árucikk a 'buy' parancsban: s1
-[ERROR] Hiba történt a fájl parancsainak feldolgozása közben.
+KozosKassza k1: penzmennyiseg=500

@@ -3,5 +3,7 @@
 [OK] Checkpoint létrehozva: c1
 [OK] Checkpoint létrehozva: c2
 [OK] Busz létrehozva: b1
-[FAILED] Váratlan hiba történt a parancs végrehajtása közben.
-[ERROR] Hiba történt a fájl parancsainak feldolgozása közben.
+[ERROR] Hibás paraméterezés: A sofőr már irányít egy buszt, nem adható hozzá újabb.
+[OK] Busz létrehozva: b2
+[ERROR] Hibás paraméterezés: A sofőr már irányít egy buszt, nem adható hozzá újabb.
+Sofor p1: busz=b1
