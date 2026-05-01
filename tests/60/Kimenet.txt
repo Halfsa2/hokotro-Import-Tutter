@@ -10,6 +10,5 @@
 [OK] Kapcsolat létrehozva.
 [OK] Auto létrehozva: a1
 [OK] Az a1 jármű sikeresen átlépett az start sávra.
-[OK] Az a1 autó a rövidebb utat választotta (s3 felé).
 [OK] Az a1 jármű sikeresen átlépett az s3 sávra.
 Auto a1: aktualisCsomopont=s3, start=start, cel=cel, varakozik=0
