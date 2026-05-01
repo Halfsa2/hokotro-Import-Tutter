@@ -1,2 +1,8 @@
-[OK] Sikeres vásárlás: Új Hokotro létrehozva.
-KozosKassza k1: penzmennyiseg=100
+[OK] KozosKassza létrehozva: k1
+[OK] Takarito létrehozva: p1
+[OK] Sav létrehozva: s1
+[OK] Hokotro létrehozva: h2
+[OK] Jármű hozzáadva.
+[OK] Az h2 jármű sikeresen átlépett az s1 sávra.
+KozosKassza k1: penzmennyiseg=600
+Hokotro h2: aktualisCsomopont=s1, aktivFej=null
