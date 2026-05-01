@@ -1,6 +1,5 @@
 package jarmu;
 
-import felszereles.Hanyofej;
 import felszereles.Jegtoro;
 import felszereles.Kotrofej;
 import felszereles.Sopro;
@@ -153,11 +152,7 @@ public class Hokotro extends IranyitottJarmu {
         StringBuilder sb = new StringBuilder();
         sb.append("Hokotro ").append(name).append(": aktualisCsomopont=");
         if (this.aktualisCsomopont != null) {
-<<<<<<< HEAD
             sb.append(aktualisCsomopont != null? reverseNevTar.get(this.aktualisCsomopont) : "null");
-=======
-            System.out.print(aktualisCsomopont != null ? reverseNevTar.get(this.aktualisCsomopont) : "null");
->>>>>>> 103e3f039332325d368c0a0bbc87c4a8586613c4
         }
         sb.append(", aktivFej=").append(aktiv != null ? aktiv.getClass().getSimpleName() : "null");
         return sb.toString();
