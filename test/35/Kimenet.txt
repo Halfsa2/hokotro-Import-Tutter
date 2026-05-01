@@ -1,0 +1,17 @@
+[OK] KozosKassza létrehozva: k1
+[OK] Takarito létrehozva: p1
+[OK] Sav létrehozva: s1
+[OK] Állapot beállítva.
+[OK] Hokotro létrehozva: h1
+[OK] Jármű hozzáadva.
+[OK] Vásárlás sikeres.
+[OK] Fejcsere sikeres.
+[OK] Az h1 jármű sikeresen átlépett az s1 sávra.
+Hokotro h1: aktualisCsomopont=s1, aktivFej=Soszoro
+Soszoro h1.soszoro: so_mennyiseg=9
+[OK] Játék előre léptetve 3 körrel.
+Sav s1: allapot=Jeges, sozott=2, zuzalekos=0, jarmu=h1
+[OK] Játék előre léptetve 3 körrel.
+Sav s1: allapot=Tiszta, sozott=1, zuzalekos=0, jarmu=h1
+[OK] Játék előre léptetve 3 körrel.
+Sav s1: allapot=Tiszta, sozott=0, zuzalekos=0, jarmu=h1

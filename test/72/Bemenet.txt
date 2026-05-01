@@ -1,0 +1,12 @@
+create kassza k1 500
+create takarito p1 k1
+create sav s1 
+create sav s2 
+connect s1 s2
+setstate s1 tiszta
+setstate s2 tiszta
+create hokotro h1 p1
+addjarmu p1 h1 
+step h1 s1
+step h1 s2 
+stat h1  
