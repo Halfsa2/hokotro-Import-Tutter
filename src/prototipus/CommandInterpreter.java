@@ -463,7 +463,30 @@ public class CommandInterpreter {
 }
 
     private void handleStat(String[] args) {
-       nevTar.get(args[0]).printStat(args[0]);
+        String[] nevek = args[0].split("\\.");
+       IStatable object = nevTar.get(nevek[0]);
+       if(object == null){
+            throw new IllegalArgumentException("A 'stat' parancs első paraméterének egy érvényes objektumnak kell lennie.");
+       }
+       if(nevek.length > 1){
+           if(object instanceof Hokotro){
+                Hokotro hokotro = (Hokotro) object;
+                switch(nevek[1].toLowerCase()){
+                    case "hanyofej" -> hokotro.getFej(Hanyofej.class.getSimpleName()).printStat(nevek[0] + ".hanyofej");
+                    case "jegtoro" -> hokotro.getFej(Jegtoro.class.getSimpleName()).printStat(nevek[0] + ".jegtoro");
+                    case "sarkanyfej" -> hokotro.getFej(Sarkanyfej.class.getSimpleName()).printStat(nevek[0] + ".sarkanyfej");
+                    case "sopro" -> hokotro.getFej(Sopro.class.getSimpleName()).printStat(nevek[0] + ".sopro");
+                    case "soszoro" -> hokotro.getFej(Soszoro.class.getSimpleName()).printStat(nevek[0] + ".soszoro");
+                    case "zuzalekszoro" -> hokotro.getFej(ZuzalekSzoro.class.getSimpleName()).printStat(nevek[0] + ".zuzalekszoro");
+                    default -> throw new IllegalArgumentException("Ismeretlen felszerelés a 'stat' parancsban: " + nevek[1]);
+                }
+           } else{
+               throw new IllegalArgumentException("A 'stat' parancs második paramétere csak hókotrónál használható.");
+           }
+       }else{
+           object.printStat(nevek[0]);
+       }
+       
     }
     private void handleAddMoney(String[] args) { 
         KozosKassza kassza = nevTar.get(args[0]) instanceof KozosKassza ? (KozosKassza) nevTar.get(args[0]) : null;
