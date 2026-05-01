@@ -20,7 +20,7 @@ public class Sav extends Csomopont {
     
     // Privátra véve, Getter/Setter használatával a csomagok közti átjárhatóságért
     private int sozott = 0;
-    private boolean zuzalekos = false;
+    private int zuzalekos = 0;
 
     /**
      * Konstruktor, inicializálja a sáv alapértelmezett állapotát és szomszédait.
@@ -58,10 +58,10 @@ public class Sav extends Csomopont {
 
     // --- ÚJ GETTER/SETTER METÓDUSOK AZ ÁLLAPOTOK SZÁMÁRA ---
     public boolean isZuzalekos() {
-        return this.zuzalekos;
+        return this.zuzalekos>0;
     }
 
-    public void setZuzalekos(boolean zuzalekos) {
+    public void setZuzalekos(int zuzalekos) {
         this.zuzalekos = zuzalekos;
     }
 
@@ -161,10 +161,14 @@ public class Sav extends Csomopont {
             // NullPointerException védelem: ha nincs útszakaszban, egyből az állapotnak szólunk
             if (this.utszakasz != null) {
                 this.utszakasz.havazikRa(this);
+                
             } else {
                 if (this.allapot != null) {
                     this.allapot.hoesesEseten(this);
                 }
+            }
+            if(zuzalekos > 0) {
+                    this.zuzalekos--;
             }
         } else {
             this.sozott--; // Teszt 47: A só védi a sávot a havazástól!
@@ -206,7 +210,15 @@ public class Sav extends Csomopont {
         if (allapot != null) {
             allapot.zuzalekSzoras(); 
         }
-        this.zuzalekos = true;
+        this.zuzalekos = 3;
+        SkeletonLogger.exit("void");
+    }
+    public void zuzalekTisztit(){
+        SkeletonLogger.enter(this, "zuzalekTisztit");
+        if (allapot != null) {
+            allapot.zuzalekTisztit(this); 
+        }
+        this.zuzalekos = 0;
         SkeletonLogger.exit("void");
     }
     @Override

@@ -11,8 +11,8 @@ import vezerles.SkeletonLogger;
  */
 public class Jeges extends Savallapot{
 
-    // Jelzi, hogy a sáv be van-e sózva (elkezdett-e olvadni a jég)
-    private boolean olvadasAlatt = false;
+    private int sozott = 0; 
+    private boolean zuzalekos = false;
     
     public Jeges() { 
         SkeletonLogger.create(this);
@@ -58,10 +58,10 @@ public class Jeges extends Savallapot{
     public void frissit(Sav sav) {
         SkeletonLogger.enter(this, "frissit", sav);
         
-        // Ha a sózás elindította az olvadást, és a sáv sózott számlálója lejárt (0)
-        if (this.olvadasAlatt && sav.getSozott() == 0) {
-            sav.setAllapot(new Tiszta());
-            sav.setZuzalekos(false); // A sózás a zúzalékot is lemossa
+        if(sozott > 0) {
+            sozott--; // Az idő, ami hiányzik, hogy megolvadjon a jég csökken
+        }else{
+            sav.setAllapot(new Tiszta()); // A jég elolvad
         }
         
         SkeletonLogger.exit("void");
@@ -80,7 +80,7 @@ public class Jeges extends Savallapot{
     @Override
     public void sotKap(Sav sav) {
         SkeletonLogger.enter(this, "sotKap", sav);
-        this.olvadasAlatt = true; // Elindítja a jég olvadását (Teszt 45)
+        sozott = 3; // Elindítja a jég olvadását (Teszt 45)
         SkeletonLogger.exit("void");
     }
 
@@ -102,11 +102,9 @@ public class Jeges extends Savallapot{
         if (olvad) {
             // Sárkányfej esetén teljesen leolvad
             sav.setAllapot(new Tiszta());
-            sav.setZuzalekos(false); // Sárkányfej eltünteti a zúzalékot (Teszt 54)
         } else {
             // Jégtörő esetén marad 1 réteg hó
             sav.setAllapot(new SekelyHo());
-            sav.setZuzalekos(false);
         }
 
         SkeletonLogger.exit(true);
@@ -116,19 +114,23 @@ public class Jeges extends Savallapot{
     @Override
     public boolean zuzalekTisztit(Sav sav) {
         SkeletonLogger.enter(this, "zuzalekTisztit", sav);
-        sav.setZuzalekos(false);
-        SkeletonLogger.exit(true);
-        return true;
+        if(zuzalekos){
+            zuzalekos = false; // A zuzalék eltávolítása megtisztítja a sávot a jégtől
+            SkeletonLogger.exit(true);
+            return true;
+        }
+        SkeletonLogger.exit(false);
+        return false; // Nem volt zuzalék, így nem történt tisztítás
     }
     
     @Override
     public void zuzalekSzoras() {
         SkeletonLogger.enter(this, "zuzalekSzoras");
-        // Ezt most már a Sav.java kezeli közvetlenül!
+        this.zuzalekos = true; // A zuzalék szórása megvédi a sávot a jégtől
         SkeletonLogger.exit("void");
     }
     @Override
     public void printStat(String name) {
-        System.out.println("Jeges " + name);
+        System.out.println("Jeges " + name + ": sozott=" + this.sozott + ", zuzalekos=" + this.zuzalekos);
     }
 }

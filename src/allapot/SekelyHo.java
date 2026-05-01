@@ -19,6 +19,8 @@ public class SekelyHo extends Savallapot {
      * A járművek által hagyott nyomvonalak száma.
      */
     protected int nyomvonal = 0;
+    
+    private boolean zuzalekos = false; // Jelzi, hogy van-e zúzalék a sávon 
 
     public SekelyHo() {
         SkeletonLogger.create(this);
@@ -37,10 +39,7 @@ public class SekelyHo extends Savallapot {
     public boolean befogad(Sav sav, Jarmu jarmu) {
         SkeletonLogger.enter(this, "befogad", sav, jarmu);
         
-        this.nyomvonal++; // A jármű kerekei letapossák a havat
-        if (this.nyomvonal >= 3) {
-            sav.setAllapot(new Jeges()); // Jéggé tömörödik
-        }
+       
         
         SkeletonLogger.exit(true);
         return true;
@@ -49,7 +48,12 @@ public class SekelyHo extends Savallapot {
     @Override
     public void elenged(Sav sav, Jarmu jarmu) {
         SkeletonLogger.enter(this, "elenged", sav, jarmu);
-        // Nincs teendő, a letaposás már a befogadáskor megtörtént
+        if(!zuzalekos){
+            this.nyomvonal++; // A jármű kerekei letapossák a havat
+            if (this.nyomvonal >= 3) {
+                sav.setAllapot(new Jeges()); // Jéggé tömörödik
+            }
+        }
         SkeletonLogger.exit("void");
     }
 
@@ -91,8 +95,6 @@ public class SekelyHo extends Savallapot {
     @Override
     public void sotKap(Sav sav) {
         SkeletonLogger.enter(this, "sotKap", sav);
-        // A só a sekély havat azonnal felolvasztja
-        sav.setAllapot(new Tiszta());
         SkeletonLogger.exit("void");
     }
 
@@ -113,6 +115,24 @@ public class SekelyHo extends Savallapot {
     @Override
     public void printStat(String name) {
         System.out.println("SekelyHo "+ name + ": horeteg=" + this.horeteg + ", nyomvonal=" + this.nyomvonal);
+    }
+    @Override
+    public void zuzalekSzoras() {
+        SkeletonLogger.enter(this, "zuzalekSzoras");
+        this.zuzalekos = true; // A zúzalék szórása megvédi a sávot a letaposástól
+        this.nyomvonal = 0; // A zúzalék szórása eltünteti a nyomvonalat
+        SkeletonLogger.exit("void");
+    }
+    @Override
+    public boolean zuzalekTisztit(Sav sav) {
+        SkeletonLogger.enter(this, "zuzalekTisztit", sav);
+        if(zuzalekos){
+            zuzalekos = false; // A zúzalék eltávolítása lehetővé teszi a letaposást
+            SkeletonLogger.exit(true);
+            return true;
+        }
+        SkeletonLogger.exit(false);
+        return false; // Nem volt zúzalék, így nem történt tisztítás
     }
 
 
