@@ -1,0 +1,4 @@
+# Mentés: anyad.txt
+create kassza k1 1
+create takarito t1 k1
+create hokotro h1 t1

@@ -1,12 +1,14 @@
 package jarmu;
 
+import felszereles.Hanyofej;
+import felszereles.Jegtoro;
 import felszereles.Kotrofej;
 import gazdasag.Takarito;
 import halozat.Csomopont;
 import halozat.Sav;
 import java.util.HashMap;
-import static prototipus.CommandInterpreter.reverseNevTar;
 import java.util.List;
+import static prototipus.CommandInterpreter.reverseNevTar;
 import vezerles.SkeletonLogger;
 
 /**
@@ -21,6 +23,8 @@ public class Hokotro extends IranyitottJarmu {
     public Hokotro(Takarito tulajdonos) {
         this.tulajdonos = tulajdonos;
         this.birtokolja = new HashMap<>();
+        addFej(new Hanyofej()); // Alapértelmezett fej, minden hókotró rendelkezik vele
+        addFej(new Jegtoro());
     }
 
     /**
