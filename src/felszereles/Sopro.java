@@ -41,7 +41,7 @@ public class Sopro extends Kotrofej {
                 // A hóesés szimulálásával "növeljük" a szomszédos sáv hórétegét (Teszt 52)
                 szomszedos.hoesesEseten(); 
                 if(zuzalekVolt){
-                    szomszedos.zuzalekTisztit(); // Ha volt zúzalék, azt is áttoljuk
+                    szomszedos.zuzalekSzoras(); // Ha volt zúzalék, azt is áttoljuk
                 }
             }
         }
