@@ -449,7 +449,7 @@ public class CommandInterpreter {
             java.util.List<Csomopont> ut = jatekVezerlo.getVarosModell().legrovidebbUtvonal(auto.getAktualisCsomopont(), auto.getCel());
             if (ut.size() >= 2) {
                 cel = ut.get(1);
-                System.out.println("[OK] Az " + args[0] + " autó a rövidebb utat választotta (" + reverseNevTar.get(cel) + " felé).");
+                System.out.println("Az " + args[0] + " autó a rövidebb utat választotta (" + reverseNevTar.get(cel) + " felé).");
             }
         }
 

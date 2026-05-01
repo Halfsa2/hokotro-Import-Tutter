@@ -1,5 +1,20 @@
-[OK] A b1 jármű rálépett az s2 sávra, de megcsúszott és balesetet szenvedett.
-[FAILED] A lépés sikertelen: A jármű baleset miatt várakozik.
-[OK] Az idő 3 körrel előrehaladt.
-[OK] A b1 jármű sikeresen átlépett az s3 sávra.
-Busz b1: Hely=s3, varakozik=0
+[OK] KozosKassza létrehozva: k1
+[OK] Sofor létrehozva: p1
+[OK] Checkpoint létrehozva: cp1
+[OK] Checkpoint létrehozva: cp2
+[OK] Sav létrehozva: s1
+[OK] Sav létrehozva: s2
+[OK] Sav létrehozva: s3
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Állapot beállítva.
+[OK] Állapot beállítva.
+[OK] Busz létrehozva: b1
+[OK] Az b1 jármű sikeresen átlépett az s1 sávra.
+[OK] Az b1 jármű sikeresen átlépett az s2 sávra.
+[FAILED] Sikertelen lépés a b1 járművel.
+[FAILED] Sikertelen lépés a b1 járművel.
+[FAILED] Sikertelen lépés a b1 járművel.
+[OK] Az b1 jármű sikeresen átlépett az s3 sávra.
+Busz b1: aktualisCsomopont=s3, start=cp1, cel=cp2, vezeto=p1, celhozTart=true, varakozik=0

@@ -1,13 +1,18 @@
-create buszsofor p1
+create kassza k1 0
+create sofor p1 k1
+create checkpoint cp1
+create checkpoint cp2
 create sav s1
 create sav s2
+connect cp1 s1
 connect s1 s2
 setstate s1 tiszta
 setstate s2 tiszta
-create busz b1 s1
-addjarmu p1 b1
-# Szándékos baleset okozása az s1 sávon
-baleset s1
-# A busz próbál menekülni, de nem tud
+create busz b1 cp1 cp2 p1
+# Busz felrakása a pályára
+step b1 s1
+# Baleset okozása a buszon (a Parser a járművet várja paraméterként!)
+baleset b1
+# A busz próbál menekülni, de nem tud (a várakozás 3-ról 2-re csökken)
 step b1 s2
 stat b1

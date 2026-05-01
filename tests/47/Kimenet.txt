@@ -1,3 +1,5 @@
-Sav s1: Allapot=Tiszta, sozott=0, zuzalekos=0
-[OK] Havazás történt a városban.
-Sav s1: Allapot=SekelyHo, sozott=0, zuzalekos=0
+[OK] Sav létrehozva: s1
+[OK] Állapot beállítva.
+Sav s1: allapot=Tiszta, sozott=0, zuzalekos=0, jarmu=
+[OK] Havazás végrehajtva.
+Sav s1: allapot=SekelyHo, sozott=0, zuzalekos=0, jarmu=

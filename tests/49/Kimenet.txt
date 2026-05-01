@@ -1,2 +1,6 @@
-[OK] Havazás történt a városban.
-Sav s1: Allapot=Tiszta, sozott=0, zuzalekos=0
+[OK] Alagut létrehozva: a1
+[OK] Sav létrehozva: s1
+[OK] Sáv hozzáadva.
+[OK] Állapot beállítva.
+[OK] Havazás végrehajtva.
+Sav s1: allapot=Tiszta, sozott=0, zuzalekos=0, jarmu=

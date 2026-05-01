@@ -1,11 +1,6 @@
-# Pálya inicializálása 
 create sav s1 
-# A sáv beállítása sekély havasra 
 setstate s1 sekelyho 
-# Sót szórunk a sávra (ez elindítja a belső olvadási számlálót) 
 sozas s1 
-# Állapot az idő múlása ELŐTT (még havas kell, hogy legyen) 
 stat s1 
-# Az idő előretekerése 3 körrel (Kör vége szimulálása) 
-tick 3 # Állapot az idő múlása UTÁN (már tisztának kell lennie) 
+tick 3 
 stat s1

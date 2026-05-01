@@ -1,2 +1,16 @@
-[OK] A b1 jármű sikeresen átlépett az s2 sávra.
-Sav s2: Allapot=Jeges, sozott=0, zuzalekos=0
+[OK] KozosKassza létrehozva: k1
+[OK] Sofor létrehozva: p1
+[OK] Checkpoint létrehozva: cp1
+[OK] Checkpoint létrehozva: cp2
+[OK] Sav létrehozva: s1
+[OK] Sav létrehozva: s2
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Állapot beállítva.
+[OK] Nyomvonal beállítva.
+[OK] Busz létrehozva: b1
+[OK] Az b1 jármű sikeresen átlépett az s1 sávra.
+[OK] Az b1 jármű sikeresen átlépett az s2 sávra.
+[OK] Az b1 jármű sikeresen átlépett az cp2 sávra.
+Sav s2: allapot=Jeges, sozott=0, zuzalekos=0, jarmu=

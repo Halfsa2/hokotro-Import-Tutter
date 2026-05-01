@@ -1,2 +1,8 @@
-[OK] A b1 jármű sikeresen átlépett az s2 sávra. 
-Busz b1: Hely=s2, varakozik=0  
+[OK] KozosKassza létrehozva: k1
+[OK] Takarito létrehozva: p1
+[OK] Sav létrehozva: s1
+[OK] Sav létrehozva: s3
+[OK] Hokotro létrehozva: h1
+[OK] Az h1 jármű sikeresen átlépett az s1 sávra.
+[FAILED] Sikertelen lépés a h1 járművel.
+Hokotro h1: aktualisCsomopont=s1, aktivFej=null

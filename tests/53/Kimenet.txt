@@ -1,3 +1,18 @@
-[OK] A b1 jármű sikeresen átlépett a k1 kereszteződésre.
-[OK] A h1 jármű sikeresen átlépett a k1 kereszteződésre.
-Keresztezodes k1: bentLevoJarmuvek=[b1, h1]
+[OK] KozosKassza létrehozva: k1
+[OK] Sofor létrehozva: p1
+[OK] Takarito létrehozva: p2
+[OK] Checkpoint létrehozva: cp1
+[OK] Checkpoint létrehozva: cp2
+[OK] Sav létrehozva: s1
+[OK] Sav létrehozva: s2
+[OK] Keresztezodes létrehozva: k1_csp
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Busz létrehozva: b1
+[OK] Az b1 jármű sikeresen átlépett az s1 sávra.
+[OK] Hokotro létrehozva: h1
+[OK] Az h1 jármű sikeresen átlépett az s2 sávra.
+[OK] Az b1 jármű sikeresen átlépett az k1_csp sávra.
+[OK] Az h1 jármű sikeresen átlépett az k1_csp sávra.
+Keresztezodes k1_csp: jarmuvek=b1, h1
