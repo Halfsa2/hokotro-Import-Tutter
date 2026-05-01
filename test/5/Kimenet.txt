@@ -1,2 +1,3 @@
-[FAILED] A művelet sikertelen: A Buszsofőr nem jogosult vásárlásra.
+[OK] KozosKassza létrehozva: k1
+[OK] Sofor létrehozva: p1
 KozosKassza k1: penzmennyiseg=200

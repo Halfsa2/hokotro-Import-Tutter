@@ -1,3 +1,5 @@
-[OK] Takarító szerepkör kiválasztva.
-[OK] Sikeres vásárlás: p1 megvette a hokotro-t.
-KozosKassza k1: penzmennyiseg=0
+[OK] KozosKassza létrehozva: k1
+[OK] Takarito létrehozva: p1
+[OK] Hokotro létrehozva: h1
+[OK] Jármű hozzáadva.
+KozosKassza k1: penzmennyiseg=500

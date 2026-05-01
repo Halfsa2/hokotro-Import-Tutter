@@ -1,3 +1,7 @@
-[OK] Jármű sikeresen hozzárendelve.
-[FAILED] A művelet sikertelen: A sofőr már rendelkezik járművel.
-Sofor p1: Jarmuvek=[b1]
+[OK] KozosKassza létrehozva: k1
+[OK] Sofor létrehozva: p1
+[OK] Checkpoint létrehozva: c1
+[OK] Checkpoint létrehozva: c2
+[OK] Busz létrehozva: b1
+[FAILED] Váratlan hiba történt a parancs végrehajtása közben.
+[ERROR] Hiba történt a fájl parancsainak feldolgozása közben.
