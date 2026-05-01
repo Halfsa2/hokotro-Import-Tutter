@@ -44,9 +44,8 @@ public class Sarkanyfej extends Kotrofej {
                 this.kerozin_mennyiseg--;
             }
             
-            boolean siker = tortentTakaritas;
-            SkeletonLogger.exit(siker);
-            return siker;
+            SkeletonLogger.exit(tortentTakaritas);
+            return tortentTakaritas;
         }
         
         // Ha nincs kerozin, nem történik semmi
