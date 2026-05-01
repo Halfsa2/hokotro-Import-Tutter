@@ -99,16 +99,17 @@ public class Busz extends IranyitottJarmu {
         oda = !oda; // Megfordítja a busz haladási irányát [cite: 104]
     }
     @Override
-    public void printStat(String name) {
-        System.out.print("Busz " + name + ": aktualisCsomopont=");
+    public String printStat(String name) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Busz ").append(name).append(": aktualisCsomopont=");
         if (this.aktualisCsomopont != null) {
-            System.out.print(aktualisCsomopont != null ? reverseNevTar.get(this.aktualisCsomopont) : "null");
+            sb.append(aktualisCsomopont != null ? reverseNevTar.get(this.aktualisCsomopont) : "null");
         }
-        System.out.print(", start="+ reverseNevTar.get(this.start));
-        System.out.print(", cel="+ reverseNevTar.get(this.cel));
-        System.out.print(", vezeto=" + (vezeto != null ? reverseNevTar.get(vezeto) : "null"));
-        System.out.print(", celhozTart=" + celhozTart());
-        System.out.print(", varakozik=" + varakozik);
-        System.out.println();
+        sb.append(", start=").append(reverseNevTar.get(this.start));
+        sb.append(", cel=").append(reverseNevTar.get(this.cel));
+        sb.append(", vezeto=").append(vezeto != null ? reverseNevTar.get(vezeto) : "null");
+        sb.append(", celhozTart=").append(celhozTart());
+        sb.append(", varakozik=").append(varakozik);
+        return sb.toString();
     }
 }

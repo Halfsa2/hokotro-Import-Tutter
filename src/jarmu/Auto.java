@@ -85,14 +85,15 @@ public class Auto extends Jarmu {
         return cel;
     }
    @Override
-    public void printStat(String name) {
-        System.out.print("Auto " + name + ": aktualisCsomopont=");
+    public String printStat(String name) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Auto ").append(name).append(": aktualisCsomopont=");
         if (this.aktualisCsomopont != null) {
-            System.out.print(aktualisCsomopont != null? reverseNevTar.get(this.aktualisCsomopont) : "null");
+            sb.append(aktualisCsomopont != null? reverseNevTar.get(this.aktualisCsomopont) : "null");
         }
-        System.out.print(", start="+ reverseNevTar.get(this.start));
-        System.out.print(", cel="+ reverseNevTar.get(this.cel));
-        System.out.print(", varakozik=" + varakozik);
-        System.out.println();
+        sb.append(", start=").append(reverseNevTar.get(this.start));
+        sb.append(", cel=").append(reverseNevTar.get(this.cel));
+        sb.append(", varakozik=").append(varakozik);
+        return sb.toString();
     }
 }

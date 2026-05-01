@@ -69,8 +69,8 @@ public class Sarkanyfej extends Kotrofej {
         this.kerozin_mennyiseg += mennyiseg;
     }
     @Override
-    public void printStat(String name) {
-        System.out.println("Sarkanyfej "+ name + ": kerozin_mennyiseg=" + this.kerozin_mennyiseg);
+    public String printStat(String name) {
+        return "Sarkanyfej " + name + ": kerozin_mennyiseg=" + this.kerozin_mennyiseg;
     }
 
     //CSAK A PROTOTÍPUS CSALÓ PARANCSÁNAK HASZNÁLATÁHOZ!

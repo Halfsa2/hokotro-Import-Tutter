@@ -20,8 +20,7 @@ public class Takarito extends Jatekos<Hokotro> {
         super(kassza);
         SkeletonLogger.create(this);
         
-        this.jarmuvek = new ArrayList<>();     
-        this.jarmuvek.add(new Hokotro(this));
+        this.jarmuvek = new ArrayList<>();
         
         SkeletonLogger.exit(this);
     }
@@ -88,14 +87,15 @@ public class Takarito extends Jatekos<Hokotro> {
         return siker;
     }
     @Override
-    public void printStat(String name) {
-        System.out.print("Takarito "+ name + ": jarmuvek=");
+    public String printStat(String name) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Takarito ").append(name).append(": jarmuvek=");
         for (Hokotro h : jarmuvek) {
-            System.out.print( reverseNevTar.get(h));
+            sb.append(reverseNevTar.get(h));
             if(h != jarmuvek.getLast()) {
-                System.out.print(", ");
+                sb.append(", ");
             }
         }
-        System.out.println();
+        return sb.toString();
     }
-}
+}  

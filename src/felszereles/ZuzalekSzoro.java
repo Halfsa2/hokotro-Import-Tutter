@@ -76,8 +76,8 @@ public class ZuzalekSzoro extends Kotrofej {
         return this.zuzalek_mennyiseg;
     }
     @Override 
-    public void printStat(String name) {
-        System.out.println("ZuzalekSzoro "+ name + ": zuzalek_mennyiseg=" + this.zuzalek_mennyiseg);
+    public String printStat(String name) {
+        return "ZuzalekSzoro " + name + ": zuzalek_mennyiseg=" + this.zuzalek_mennyiseg;
     }
 
     //EZ A METÓDUS CSAK A PROTOTÍPUS CSALÓ PARANCSÁNAK HASZNÁLATÁHOZ VAN, HOGY KÖNNYEN ÁLLÍTHASSUK A ZÚZALÉK MENNYISÉGÉT A TESZTEKHEZ!

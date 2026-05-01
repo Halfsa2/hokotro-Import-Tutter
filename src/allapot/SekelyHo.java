@@ -113,8 +113,8 @@ public class SekelyHo extends Savallapot {
         return false;
     }
     @Override
-    public void printStat(String name) {
-        System.out.println("SekelyHo "+ name + ": horeteg=" + this.horeteg + ", nyomvonal=" + this.nyomvonal);
+    public String printStat(String name) {
+        return "SekelyHo " + name + ": horeteg=" + this.horeteg + ", nyomvonal=" + this.nyomvonal + ", zuzalekos=" + this.zuzalekos;
     }
     @Override
     public void zuzalekSzoras() {

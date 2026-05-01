@@ -54,7 +54,7 @@ public class KozosKassza implements IStatable {
         return this.penzosszeg;
     }
     @Override
-    public void printStat(String name) {
-        System.out.println("KozosKassza "+ name + ": penzmennyiseg=" + this.penzosszeg);
+    public String printStat(String name) {
+        return "KozosKassza " + name + ": penzmennyiseg=" + this.penzosszeg;
     }
 }

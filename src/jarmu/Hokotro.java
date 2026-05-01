@@ -140,12 +140,13 @@ public class Hokotro extends IranyitottJarmu {
         return true; // A hókotró képes mély hóban is közlekedni
     }
     @Override
-    public void printStat(String name) {
-        System.out.print("Hokotro " + name + ": aktualisCsomopont=");
+    public String printStat(String name) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Hokotro ").append(name).append(": aktualisCsomopont=");
         if (this.aktualisCsomopont != null) {
-            System.out.print(aktualisCsomopont != null? reverseNevTar.get(this.aktualisCsomopont) : "null");
+            sb.append(aktualisCsomopont != null? reverseNevTar.get(this.aktualisCsomopont) : "null");
         }
-        System.out.print(", aktivFej=" + (aktiv != null ? aktiv.getClass().getSimpleName() : "null"));
-        System.out.println();
+        sb.append(", aktivFej=").append(aktiv != null ? aktiv.getClass().getSimpleName() : "null");
+        return sb.toString();
     }
 }

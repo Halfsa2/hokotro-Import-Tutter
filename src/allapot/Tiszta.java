@@ -121,7 +121,7 @@ public class Tiszta extends Savallapot {
         return false;
     }
     @Override
-    public void printStat(String name) {
-        System.out.println("Tiszta "+ name);
+    public String printStat(String name) {
+        return "Tiszta " + name;
     }
 }

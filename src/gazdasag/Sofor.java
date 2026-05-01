@@ -40,7 +40,7 @@ public class Sofor extends Jatekos<Busz> {
         return this.jarmuvek.get(0);
     }
     @Override
-    public void printStat(String name) {
-        System.out.println("Sofor "+ name + ": busz=" + (jarmuvek.isEmpty() ? "nincs" : reverseNevTar.get(jarmuvek.get(0))));
+    public String printStat(String name) {
+        return"Sofor "+ name + ": busz=" + (jarmuvek.isEmpty() ? "nincs" : reverseNevTar.get(jarmuvek.get(0)));
     }
 }

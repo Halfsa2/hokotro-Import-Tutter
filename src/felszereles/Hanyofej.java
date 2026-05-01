@@ -34,7 +34,7 @@ public class Hanyofej extends Kotrofej {
         return ret;
     }
     @Override
-    public void printStat(String name) {
-        System.out.println("Hanyofej "+ name);
+    public String printStat(String name) {
+        return "Hanyofej " + name;
     }
 }

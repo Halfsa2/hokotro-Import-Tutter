@@ -50,8 +50,9 @@ public class Sopro extends Kotrofej {
         return sikeres;
     }
     @Override
-    public void printStat(String name) {
-        System.out.println("Sopro "+ name);}
+    public String printStat(String name) {
+        return "Sopro " + name;
+    }
 
     /**
      * Söprő fejnek nincsenek fogyóeszközei, így az újratöltés nem csinál semmit.

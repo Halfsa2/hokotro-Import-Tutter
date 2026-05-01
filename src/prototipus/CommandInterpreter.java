@@ -46,6 +46,7 @@ public class CommandInterpreter {
     public static final Map<String, IStatable> nevTar = new HashMap<>();
     public static final Map<IStatable, String> reverseNevTar = new HashMap<>();
     private static List<String> commandLog = new ArrayList<>();
+    public static final List<String> replyLog = new ArrayList<>();
 
     CommandInterpreter() {
         this.jatekVezerlo = new JatekVezerlo(null, new VarosModell(), new Bolt());
@@ -399,6 +400,7 @@ public class CommandInterpreter {
                     throw new IllegalArgumentException("A 'busz' létrehozásához érvényes kiindulási és cél checkpoint, valamint egy sofőr szükséges paraméterként.");
                 }
                 jarmu.Busz busz = new jarmu.Busz(buszStart, buszCel, buszSofor);
+                buszSofor.setJarmu(busz); // A sofőr tudja, hogy melyik buszt vezeti
                 nevTar.put(args[1], busz);
                 reverseNevTar.put(busz, args[1]);
                 printOk("Busz létrehozva: " + args[1]);
@@ -409,6 +411,7 @@ public class CommandInterpreter {
                     throw new IllegalArgumentException("A 'hokotro' létrehozásához egy érvényes takarító szükséges paraméterként.");
                 }
                 Hokotro hokotro = new Hokotro(vezeto);
+                vezeto.addHokotro(hokotro); // A takarító tudja, hogy melyik hókotrót vezeti
                 nevTar.put(args[1], hokotro);
                 reverseNevTar.put(hokotro, args[1]);
                 printOk("Hokotro létrehozva: " + args[1]);
@@ -468,25 +471,27 @@ public class CommandInterpreter {
        if(object == null){
             throw new IllegalArgumentException("A 'stat' parancs első paraméterének egy érvényes objektumnak kell lennie.");
        }
+       String stat = "";
        if(nevek.length > 1){
            if(object instanceof Hokotro){
                 Hokotro hokotro = (Hokotro) object;
                 switch(nevek[1].toLowerCase()){
-                    case "hanyofej" -> hokotro.getFej(Hanyofej.class.getSimpleName()).printStat(nevek[0] + ".hanyofej");
-                    case "jegtoro" -> hokotro.getFej(Jegtoro.class.getSimpleName()).printStat(nevek[0] + ".jegtoro");
-                    case "sarkanyfej" -> hokotro.getFej(Sarkanyfej.class.getSimpleName()).printStat(nevek[0] + ".sarkanyfej");
-                    case "sopro" -> hokotro.getFej(Sopro.class.getSimpleName()).printStat(nevek[0] + ".sopro");
-                    case "soszoro" -> hokotro.getFej(Soszoro.class.getSimpleName()).printStat(nevek[0] + ".soszoro");
-                    case "zuzalekszoro" -> hokotro.getFej(ZuzalekSzoro.class.getSimpleName()).printStat(nevek[0] + ".zuzalekszoro");
+                    case "hanyofej" -> stat =hokotro.getFej(Hanyofej.class.getSimpleName()).printStat(nevek[0] + ".hanyofej");
+                    case "jegtoro" -> stat =hokotro.getFej(Jegtoro.class.getSimpleName()).printStat(nevek[0] + ".jegtoro");
+                    case "sarkanyfej" -> stat =hokotro.getFej(Sarkanyfej.class.getSimpleName()).printStat(nevek[0] + ".sarkanyfej");
+                    case "sopro" -> stat =hokotro.getFej(Sopro.class.getSimpleName()).printStat(nevek[0] + ".sopro");
+                    case "soszoro" -> stat =hokotro.getFej(Soszoro.class.getSimpleName()).printStat(nevek[0] + ".soszoro");
+                    case "zuzalekszoro" -> stat =hokotro.getFej(ZuzalekSzoro.class.getSimpleName()).printStat(nevek[0] + ".zuzalekszoro");
                     default -> throw new IllegalArgumentException("Ismeretlen felszerelés a 'stat' parancsban: " + nevek[1]);
                 }
            } else{
                throw new IllegalArgumentException("A 'stat' parancs második paramétere csak hókotrónál használható.");
            }
        }else{
-           object.printStat(nevek[0]);
+           stat = object.printStat(nevek[0]);
        }
-       
+       System.out.println(stat);
+       replyLog.add(stat); // Válasz naplózása
     }
     private void handleAddMoney(String[] args) { 
         KozosKassza kassza = nevTar.get(args[0]) instanceof KozosKassza ? (KozosKassza) nevTar.get(args[0]) : null;
@@ -751,14 +756,19 @@ public class CommandInterpreter {
 
 
     private void printOk(String message) {
-        System.out.println("[OK] " + message);
+        String formattedMessage = "[OK] " + message;
+        System.out.println(formattedMessage);
+        replyLog.add(formattedMessage);
     }
 
     private void printFailed(String message) {
-        System.out.println("[FAILED] " + message);
+        String formattedMessage = "[FAILED] " + message;
+        System.out.println(formattedMessage);
+        replyLog.add(formattedMessage);
     }
 
     private void printError(String message) {
-        System.out.println("[ERROR] " + message);
+        String formattedMessage = "[ERROR] " + message;
+        System.out.println(formattedMessage);
     }
 }

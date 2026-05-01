@@ -1,5 +1,5 @@
 package prototipus;
 
 public interface IStatable {
-    void printStat(String name);
+    String printStat(String name);
 }

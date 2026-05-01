@@ -93,14 +93,15 @@ public class Checkpoint extends Csomopont {
         return !varakozoJarmuvek.isEmpty();
     }
     @Override
-    public void printStat(String name) {
-        System.out.print("Checkpoint " + name + ": jarmuvek=");
+    public String printStat(String name) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Checkpoint ").append(name).append(": jarmuvek=");
         for (Jarmu j : varakozoJarmuvek) {
-            System.out.print(reverseNevTar.get(j));
+            sb.append(reverseNevTar.get(j));
             if(j != varakozoJarmuvek.getLast()) {
-                System.out.print(", ");
+                sb.append(", ");
             }
         }
-        System.out.println();
+        return sb.toString();
     }
 }

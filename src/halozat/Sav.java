@@ -227,11 +227,12 @@ public class Sav extends Csomopont {
         return false;
     }
     @Override
-    public void printStat(String name) {
-        System.out.print("Sav " + name + ": allapot="+ this.allapot.getClass().getSimpleName() + ", sozott=" + this.sozott + ", zuzalekos=" + this.zuzalekos + ", jarmu=");
+    public String printStat(String name) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Sav ").append(name).append(": allapot=").append(this.allapot.getClass().getSimpleName()).append(", sozott=").append(this.sozott).append(", zuzalekos=").append(this.zuzalekos).append(", jarmu=");
         if (this.jarmu != null) {
-            System.out.print(reverseNevTar.get(this.jarmu));
+            sb.append(reverseNevTar.get(this.jarmu));
         }
-        System.out.println();
+        return sb.toString();
     }
 }

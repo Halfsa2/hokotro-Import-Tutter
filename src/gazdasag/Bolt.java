@@ -58,7 +58,7 @@ public class Bolt implements IMegvasarolhato, IStatable {
         }
     }
     @Override
-    public void printStat(String name) {
-        System.out.println("Bolt "+ name);
+    public String printStat(String name) {
+        return "Bolt " + name;
     }
 }

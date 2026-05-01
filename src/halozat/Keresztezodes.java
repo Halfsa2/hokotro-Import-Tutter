@@ -124,14 +124,15 @@ public class Keresztezodes extends Csomopont {
         SkeletonLogger.exit("void");
     }
     @Override
-    public void printStat(String name) {
-        System.out.print("Keresztezodes " + name + ": jarmuvek=");
+    public String printStat(String name) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Keresztezodes ").append(name).append(": jarmuvek=");
         for (Jarmu j : bentLevoJarmuvek) {
-            System.out.print(reverseNevTar.get(j));
+            sb.append(reverseNevTar.get(j));
             if(j != bentLevoJarmuvek.getLast()) {
-                System.out.print(", ");
+                sb.append(", ");
             }
         }
-        System.out.println();
+        return sb.toString();
     }
 }

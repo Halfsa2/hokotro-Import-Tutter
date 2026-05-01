@@ -126,7 +126,7 @@ public class MelyHo extends Savallapot {
         return false;
     }
     @Override
-    public void printStat(String name) {
-        System.out.println("MelyHo "+ name );
+    public String printStat(String name) {
+        return "MelyHo " + name;
     }
 }

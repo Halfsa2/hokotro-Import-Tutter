@@ -32,7 +32,7 @@ public class Jegtoro extends Kotrofej {
         return ret;
     }
     @Override
-    public void printStat(String name) {
-        System.out.println("Jegtoro "+ name);
+    public String printStat(String name) {
+        return "Jegtoro " + name;
     }
 }

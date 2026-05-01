@@ -103,14 +103,15 @@ public class Utszakasz implements IStatable {
         return null;
     }
     @Override
-    public void printStat(String name) {
-        System.out.print("Utszakasz " + name + ": savok=");
+    public String printStat(String name) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Utszakasz ").append(name).append(": savok=");
         for (Sav s : this.savok) {
-            System.out.print(reverseNevTar.get(s));
+            sb.append(reverseNevTar.get(s));
             if(s != this.savok.getLast()) {
-                System.out.print(", ");
+                sb.append(", ");
             }
         }
-        System.out.println();
+        return sb.toString();
     }
 }

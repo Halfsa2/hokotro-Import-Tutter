@@ -130,7 +130,7 @@ public class Jeges extends Savallapot{
         SkeletonLogger.exit("void");
     }
     @Override
-    public void printStat(String name) {
-        System.out.println("Jeges " + name + ": sozott=" + this.sozott + ", zuzalekos=" + this.zuzalekos);
+    public String printStat(String name) {
+        return "Jeges " + name + ": sozott=" + this.sozott + ", zuzalekos=" + this.zuzalekos;
     }
 }

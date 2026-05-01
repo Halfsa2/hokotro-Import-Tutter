@@ -57,8 +57,8 @@ public class Soszoro extends Kotrofej {
         return false;
     }
     @Override
-    public void printStat(String name) {
-        System.out.println("Soszoro "+ name + ": so_mennyiseg=" + this.so_mennyiseg);
+    public String printStat(String name) {
+        return "Soszoro " + name + ": so_mennyiseg=" + this.so_mennyiseg;
     }
 
     //CSAK A PROTOTÍPUS CSALÓ PARANCSÁNAK HASZNÁLATÁHOZ!
