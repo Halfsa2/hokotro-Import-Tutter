@@ -29,6 +29,7 @@ public class Sopro extends Kotrofej {
         
         // 1. Megpróbáljuk eltakarítani a havat a jelenlegi sávról (csak hóra működik)
         boolean sikeres = s.hoTisztit();
+        boolean zuzalekVolt = s.zuzalekTisztit();
         
         // 2. Ha volt mit eltakarítani (tehát nem tiszta jégen vagy tiszta aszfalton toltuk)
         if (sikeres) {
@@ -39,6 +40,9 @@ public class Sopro extends Kotrofej {
             if (szomszedos != null) {
                 // A hóesés szimulálásával "növeljük" a szomszédos sáv hórétegét (Teszt 52)
                 szomszedos.hoesesEseten(); 
+                if(zuzalekVolt){
+                    szomszedos.zuzalekTisztit(); // Ha volt zúzalék, azt is áttoljuk
+                }
             }
         }
         

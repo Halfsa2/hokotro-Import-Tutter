@@ -213,13 +213,18 @@ public class Sav extends Csomopont {
         this.zuzalekos = 3;
         SkeletonLogger.exit("void");
     }
-    public void zuzalekTisztit(){
+    public boolean zuzalekTisztit(){
         SkeletonLogger.enter(this, "zuzalekTisztit");
         if (allapot != null) {
             allapot.zuzalekTisztit(this); 
         }
-        this.zuzalekos = 0;
-        SkeletonLogger.exit("void");
+        if(this.zuzalekos > 0) {
+            this.zuzalekos = 0;
+            SkeletonLogger.exit(true);
+            return true;
+        }
+        SkeletonLogger.exit(false);
+        return false;
     }
     @Override
     public void printStat(String name) {

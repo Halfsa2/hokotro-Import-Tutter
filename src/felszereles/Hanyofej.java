@@ -29,7 +29,7 @@ public class Hanyofej extends Kotrofej {
         
         // A hó eltűnik a hálózatról, az állapot (pl. SekelyHo) lecserélődik Tisztára.
         boolean ret = s.hoTisztit(); 
-        
+        s.zuzalekTisztit();
         SkeletonLogger.exit(ret);
         return ret;
     }
