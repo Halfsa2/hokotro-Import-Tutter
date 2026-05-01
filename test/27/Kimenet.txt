@@ -1,0 +1,14 @@
+[OK] KozosKassza létrehozva: k1
+[OK] Takarito létrehozva: p1
+[OK] Sav létrehozva: s1
+[OK] Állapot beállítva.
+[OK] Hokotro létrehozva: h1
+[OK] Jármű hozzáadva.
+[OK] Vásárlás sikeres.
+[OK] Fejcsere sikeres.
+[OK] Kerozin beállítva.
+[OK] Az h1 jármű sikeresen átlépett az s1 sávra.
+Hokotro h1: aktualisCsomopont=s1, aktivFej=Sarkanyfej
+Sarkanyfej h1.sarkanyfej: kerozin_mennyiseg=0
+Sav s1: allapot=Sekelyho, sozott=0, zuzalekos=0, jarmu=h1
+KozosKassza k1: penzmennyiseg=200

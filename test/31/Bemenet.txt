@@ -1,0 +1,19 @@
+create kassza k1 500
+create takarito p1 k1
+create utszakasz u1
+create sav s1
+create sav s2
+addsav u1 s1
+addsav u1 s2
+zuzalekszoras s1
+setstate s1 sekelyho
+setstate s2 tiszta
+stat s1
+stat s2
+create hokotro h1 p1
+addjarmu p1 h1
+fejcsere h1 sopro
+step h1 s1
+stat s1
+stat s2
+stat h1

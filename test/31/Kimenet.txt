@@ -1,0 +1,19 @@
+[OK] KozosKassza létrehozva: k1
+[OK] Takarito létrehozva: p1
+[OK] Utszakasz létrehozva: u1
+[OK] Sav létrehozva: s1
+[OK] Sav létrehozva: s2
+[OK] Sáv hozzáadva.
+[OK] Sáv hozzáadva.
+[OK] Zúzalékszórás sikeres.
+[OK] Állapot beállítva.
+[OK] Állapot beállítva.
+Sav s1: allapot=SekelyHo, sozott=0, zuzalekos=3, jarmu=
+Sav s2: allapot=Tiszta, sozott=0, zuzalekos=0, jarmu=
+[OK] Hokotro létrehozva: h1
+[OK] Jármű hozzáadva.
+[OK] Fejcsere sikeres.
+[OK] Az h1 jármű sikeresen átlépett az s1 sávra.
+Sav s1: allapot=Tiszta, sozott=0, zuzalekos=0, jarmu=h1
+Sav s2: allapot=SekelyHo, sozott=0, zuzalekos=3, jarmu=
+Hokotro h1: aktualisCsomopont=s1, aktivFej=Sopro
