@@ -1,0 +1,5 @@
+create kassza k1 5000
+create takarito p1 k1
+create hokotro h1 p1
+buy p1 h1 globalwarming
+stat k1

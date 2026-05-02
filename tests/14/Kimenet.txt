@@ -1,0 +1,5 @@
+[OK] KozosKassza létrehozva: k1
+[OK] Takarito létrehozva: p1
+[OK] Hokotro létrehozva: h1
+[FAILED] Vásárlás sikertelen. Ellenőrizd a kassza egyenlegét és a hókotród kapacitását.
+KozosKassza k1: penzmennyiseg=5000
