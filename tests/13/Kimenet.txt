@@ -1,0 +1,8 @@
+[OK] KozosKassza létrehozva: k1
+[OK] Takarito létrehozva: p1
+[OK] Sav létrehozva: s1
+Győzelem! A havazás elállt Zúzmaravárosban!
+[OK] Vásárlás sikeres.
+[OK] Játék előre léptetve 2 körrel.
+Sav s1: allapot=SekelyHo, sozott=0, zuzalekos=0, jarmu=
+KozosKassza k1: penzmennyiseg=0
