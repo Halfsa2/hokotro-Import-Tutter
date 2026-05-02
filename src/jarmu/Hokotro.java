@@ -3,6 +3,7 @@ package jarmu;
 import felszereles.Jegtoro;
 import felszereles.Kotrofej;
 import felszereles.Sopro;
+import felszereles.ZuzalekSzoro;
 import gazdasag.Takarito;
 import halozat.Csomopont;
 import halozat.Sav;
@@ -129,7 +130,8 @@ public class Hokotro extends IranyitottJarmu {
             if (aktualisCsomopont instanceof Sav sav) {
                 // Ha sikerült kitakarítani a sávot, akkor a tulajdonos pénzt keres.
                 if (this.takarit(sav)) {
-                    tulajdonos.keres(5);
+                    //zuzalék takarításnál a tulajdonos nem keres pénzt, mert az nem számít takarításnak
+                    if(aktiv != this.birtokolja.get(ZuzalekSzoro.class.getSimpleName())) tulajdonos.keres(5);
                 }
             }
             SkeletonLogger.exit(true);
