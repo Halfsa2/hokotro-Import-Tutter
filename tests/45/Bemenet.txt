@@ -1,5 +1,5 @@
 # Egy előre elkészített kezdőpálya betöltése 
-load kezdo_palya.txt 
+load kezdo_palyaForTest45
 # Ellenőrizzük, hogy a betöltött objektumok (pl. a kassza és egy sáv) létrejöttek-e 
 stat k1 
 stat s1

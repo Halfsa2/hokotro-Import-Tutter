@@ -1,5 +1,7 @@
 [OK] KozosKassza létrehozva: k1
 [OK] Takarito létrehozva: p1
 [OK] Hokotro létrehozva: h1
-[OK] Jármű hozzáadva.
-KozosKassza k1: penzmennyiseg=500
+[OK] Vásárlás sikeres.
+[OK] Vásárlás sikeres.
+KozosKassza k1: penzmennyiseg=200
+Hokotro h1: aktualisCsomopont=, aktivFej=null

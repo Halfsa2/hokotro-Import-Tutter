@@ -3,4 +3,4 @@
 [OK] Hokotro létrehozva: h1
 [OK] Jármű hozzáadva.
 [ERROR] Hibás paraméterezés: Ismeretlen árucikk a 'buy' parancsban: teszt_cucc
-[ERROR] Hiba történt a fájl parancsainak feldolgozása közben.
+KozosKassza k1: penzmennyiseg=500

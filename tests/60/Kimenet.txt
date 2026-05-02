@@ -1,3 +1,14 @@
-[OK] Az a1 autó a rövidebb utat választotta (s3 felé).
+[OK] Checkpoint létrehozva: start
+[OK] Checkpoint létrehozva: cel
+[OK] Sav létrehozva: s1
+[OK] Sav létrehozva: s2
+[OK] Sav létrehozva: s3
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Auto létrehozva: a1
+[OK] Az a1 jármű sikeresen átlépett az start sávra.
 [OK] Az a1 jármű sikeresen átlépett az s3 sávra.
-Auto a1: Hely=s3, Cél=cel, varakozik=0
+Auto a1: aktualisCsomopont=s3, start=start, cel=cel, varakozik=0

@@ -1,11 +1,16 @@
-create buszsofor p1 
-create sav s1 
-create sav s2 
-connect s1 s2 
-# s2 jeges, és NINCS rajta zúzalék 
-setstate s2 jeges 
-create busz b1 s1 
-addjarmu p1 b1 
-# Busz lépésének kísérlete az s2-re 
-step b1 s2 
+create kassza k1 0
+create sofor p1 k1
+create checkpoint cp1
+create checkpoint cp2
+create sav s1
+create sav s2
+connect cp1 s1
+connect s1 s2
+# s2 jeges, és NINCS rajta zúzalék
+setstate s2 jeges
+create busz b1 cp1 cp2 p1
+# Busz felrakása a pályára
+step b1 s1
+# Busz lépésének kísérlete az s2-re
+step b1 s2
 stat b1

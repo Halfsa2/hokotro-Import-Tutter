@@ -1,19 +1,26 @@
-create buszsofor p1
+create kassza k1 0
+create sofor p1 k1
+create checkpoint cp1
+create checkpoint cp2
 create sav s1
 create sav s2
 create sav s3
+connect cp1 s1
 connect s1 s2
 connect s2 s3
 setstate s2 jeges
 setstate s3 tiszta
-create busz b1 s1
-addjarmu p1 b1
+create busz b1 cp1 cp2 p1
+# Busz felrakása a pályára
+step b1 s1
 # Rálép a jégre zúzalék nélkül -> baleset -> varakozik=3
 step b1 s2
-# Próbál továbbmenni -> nem sikerül
+# 1. próbálkozás (a varakozik 3-ról 2-re csökken, lépés elutasítva)
 step b1 s3
-# Eltelik 3 kör
-tick 3
-# Letelt a büntetés, most már léphet
+# 2. próbálkozás (a varakozik 2-ről 1-re csökken, lépés elutasítva)
+step b1 s3
+# 3. próbálkozás (a varakozik 1-ről 0-ra csökken, lépés elutasítva)
+step b1 s3
+# Letelt a büntetés, most már léphet!
 step b1 s3
 stat b1

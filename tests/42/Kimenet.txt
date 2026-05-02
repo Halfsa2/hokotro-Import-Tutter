@@ -1,3 +1,15 @@
-[FAILED] A lépés sikertelen: A cp1 célállomás foglalt. 
-Busz b1: Hely=s1, oda=true, varakozik=0 
+[OK] KozosKassza létrehozva: k1
+[OK] Sofor létrehozva: p1
+[OK] Sav létrehozva: s1
+[OK] Checkpoint létrehozva: cp1
+[OK] Checkpoint létrehozva: cp2
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Auto létrehozva: a1
+[OK] Az a1 jármű sikeresen átlépett az cp1 sávra.
+[OK] Busz létrehozva: b1
+[OK] Az b1 jármű sikeresen átlépett az s1 sávra.
+[FAILED] Sikertelen lépés a b1 járművel.
+Busz b1: aktualisCsomopont=s1, start=cp2, cel=cp1, vezeto=p1, celhozTart=true, varakozik=0
 KozosKassza k1: penzmennyiseg=0

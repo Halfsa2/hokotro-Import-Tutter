@@ -1,4 +1,3 @@
-load test8
 [OK] KozosKassza létrehozva: k1
 [OK] Takarito létrehozva: p1
 [OK] Hokotro létrehozva: h1

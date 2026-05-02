@@ -1,2 +1,13 @@
-[OK] A b1 jármű rálépett az s2 sávra, de megcsúszott és balesetet szenvedett. 
-Busz b1: Hely=s2, varakozik=3
+[OK] KozosKassza létrehozva: k1
+[OK] Sofor létrehozva: p1
+[OK] Checkpoint létrehozva: cp1
+[OK] Checkpoint létrehozva: cp2
+[OK] Sav létrehozva: s1
+[OK] Sav létrehozva: s2
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Állapot beállítva.
+[OK] Busz létrehozva: b1
+[OK] Az b1 jármű sikeresen átlépett az s1 sávra.
+[OK] Az b1 jármű sikeresen átlépett az s2 sávra.
+Busz b1: aktualisCsomopont=s2, start=cp1, cel=cp2, vezeto=p1, celhozTart=true, varakozik=3

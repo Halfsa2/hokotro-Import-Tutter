@@ -1,2 +1,15 @@
-[FAILED] A lépés sikertelen: Az s2 sáv már foglalt.
-Busz b1: Hely=s1, varakozik=0
+[OK] KozosKassza létrehozva: k1
+[OK] Sofor létrehozva: p1
+[OK] Takarito létrehozva: p2
+[OK] Checkpoint létrehozva: cp1
+[OK] Checkpoint létrehozva: cp2
+[OK] Sav létrehozva: s1
+[OK] Sav létrehozva: s2
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Hokotro létrehozva: h1
+[OK] Az h1 jármű sikeresen átlépett az s2 sávra.
+[OK] Busz létrehozva: b1
+[OK] Az b1 jármű sikeresen átlépett az s1 sávra.
+[FAILED] Sikertelen lépés a b1 járművel.
+Busz b1: aktualisCsomopont=s1, start=cp1, cel=cp2, vezeto=p1, celhozTart=true, varakozik=0

@@ -1,3 +1,12 @@
-[OK] A b1 jármű sikeresen átlépett a cp1 célállomásra. 
-Busz b1: Hely=cp1, oda=false, varakozik=0 
-KozosKassza k1: penzmennyiseg=100 
+[OK] KozosKassza létrehozva: k1
+[OK] Sofor létrehozva: p1
+[OK] Sav létrehozva: s1
+[OK] Checkpoint létrehozva: cp1
+[OK] Checkpoint létrehozva: cp2
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Busz létrehozva: b1
+[OK] Az b1 jármű sikeresen átlépett az s1 sávra.
+[OK] Az b1 jármű sikeresen átlépett az cp1 sávra.
+Busz b1: aktualisCsomopont=cp1, start=cp2, cel=cp1, vezeto=p1, celhozTart=false, varakozik=0
+KozosKassza k1: penzmennyiseg=100

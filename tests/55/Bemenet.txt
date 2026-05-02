@@ -1,14 +1,20 @@
-create buszsofor p1
 create kassza k1 0
+create sofor p1 k1
 create checkpoint cp_start
+create checkpoint cp_end
 create sav s1
+# Odaút bekötése:
+connect cp_start s1
+connect s1 cp_end
+# Visszaút bekötése (hogy a busz vissza is tudjon jönni!):
+connect cp_end s1
 connect s1 cp_start
-# Busz elhelyezése a sávon, iránya beállítva visszafelé
-create busz b1 s1
-addjarmu p1 b1
-setendpoint b1 cp_start
-setoda b1 false
-# A busz rálép a kezdőállomásra (befejez egy teljes kört)
+create busz b1 cp_start cp_end p1
+# --- Odaút ---
+step b1 s1
+step b1 cp_end
+# --- Visszaút ---
+step b1 s1
 step b1 cp_start
 stat b1
 stat k1

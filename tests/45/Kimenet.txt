@@ -1,3 +1,5 @@
-[OK] Játékállapot sikeresen betöltve a kezdo_palya.txt fájlból. 
-KozosKassza k1: penzmennyiseg=500 
-Sav s1: Allapot=Tiszta, sozott=0, zuzalekos=false
+[OK] KozosKassza létrehozva: k1
+[OK] Sav létrehozva: s1
+[OK] Fájl sikeresen betöltve: kezdo_palyaForTest45
+KozosKassza k1: penzmennyiseg=500
+Sav s1: allapot=Tiszta, sozott=0, zuzalekos=0, jarmu=

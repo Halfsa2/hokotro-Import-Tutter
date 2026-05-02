@@ -1,3 +1,16 @@
-[OK] A b1 jármű sikeresen átlépett a cp_start célállomásra. (Irányváltás)
-Busz b1: Hely=cp_start, oda=true, varakozik=0
-KozosKassza k1: penzmennyiseg=100
+[OK] KozosKassza létrehozva: k1
+[OK] Sofor létrehozva: p1
+[OK] Checkpoint létrehozva: cp_start
+[OK] Checkpoint létrehozva: cp_end
+[OK] Sav létrehozva: s1
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Kapcsolat létrehozva.
+[OK] Busz létrehozva: b1
+[OK] Az b1 jármű sikeresen átlépett az s1 sávra.
+[OK] Az b1 jármű sikeresen átlépett az cp_end sávra.
+[OK] Az b1 jármű sikeresen átlépett az s1 sávra.
+[OK] Az b1 jármű sikeresen átlépett az cp_start sávra.
+Busz b1: aktualisCsomopont=cp_start, start=cp_start, cel=cp_end, vezeto=p1, celhozTart=true, varakozik=0
+KozosKassza k1: penzmennyiseg=200
