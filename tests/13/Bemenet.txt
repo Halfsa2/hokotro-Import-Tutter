@@ -1,8 +1,7 @@
 create kassza k1 10000
 create takarito p1 k1
 create sav s1
-create hokotro h1 p1
-buy p1 h1 globalwarming
+buy p1 globalwarming
 tick 2
 stat s1
 stat k1
