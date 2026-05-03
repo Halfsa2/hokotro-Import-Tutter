@@ -672,8 +672,11 @@ public class CommandInterpreter {
                 case "zuzalek" -> Arucikk.ZUZALEK;
                 case "globalwarming" -> Arucikk.GLOBAL_WARMING;
                 case "hokotro" -> Arucikk.HOKOTRO;
-                default -> throw new IllegalArgumentException("Ismeretlen árucikk a 'buy' parancsban: " + args[2]);
+                default -> throw new IllegalArgumentException("Ismeretlen árucikk a 'buy' parancsban: " + args[1]);
                 };
+                if(args.length > 2){
+                    throw new IllegalArgumentException("Ismeretlen árucikk a 'buy' parancsban: " + args[2]);
+                }
             } else{
             arucikk = switch(args[2].toLowerCase()){
                 case "hanyofej" -> Arucikk.HANYOFEJ;

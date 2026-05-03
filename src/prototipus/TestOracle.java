@@ -2,8 +2,10 @@ package prototipus;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Scanner;
 import static prototipus.CommandInterpreter.nevTar;
 import static prototipus.CommandInterpreter.reverseNevTar;
@@ -58,13 +60,13 @@ public class TestOracle {
     /**
      * Egyetlen tesztfájl futtatása a CommandInterpreter segítségével.
      */
-    public void RunTest(String testName) {
+    public boolean RunTest(String testName) {
         System.out.println("Running test: " + testName);
         File containerFolder = new File(testFolder, testName);
 
         if (!containerFolder.exists()) {
             System.out.println("[HIBA] A tesztfájl nem található: " + containerFolder.getPath());
-            return;
+            return false;
         }
         File inputFile = new File(containerFolder, "Bemenet.txt");
         try {
@@ -77,17 +79,18 @@ public class TestOracle {
             interpreter.start(fileScanner); // Ez végrehajtja a fájlban lévő összes parancsot
             
             System.out.println("--> Teszt véget ért: " + testName);
-            assertTest(testName);
+            return assertTest(testName);
         } catch (FileNotFoundException e) {
             System.out.println("[HIBA] Fájl beolvasási hiba: " + e.getMessage());
+            return false;
         }
     }
-    public void assertTest(String testName) {
+    public boolean assertTest(String testName) {
         File containerFolder = new File(testFolder, testName);
         File expectedOutputFile = new File(containerFolder, "Kimenet.txt");
         if (!expectedOutputFile.exists()) {
             System.out.println("[HIBA] A várt kimenet fájl nem található: " + expectedOutputFile.getPath());
-            return;
+            return false;
         }
         try{
             Scanner expectedScanner = new Scanner(expectedOutputFile);
@@ -95,16 +98,16 @@ public class TestOracle {
                 String expectedLine = expectedScanner.nextLine().trim();
                 if (!CommandInterpreter.replyLog.contains(expectedLine)) {
                     System.out.println("[ASSERTION HIBA] Várt kimenet nem található a logban: " + expectedLine);
-                    return;
+                    return false;
                 }
             }
             
         }catch(FileNotFoundException e){
             System.out.println("[HIBA] Várt kimenet fájl beolvasási hiba: " + e.getMessage());
-            return;
+            return false;
         }
         System.out.println("[ASSERTION SUCCESS] Minden várt kimenet megtalálható a logban.");
-
+        return true;
     }
 
     /**
@@ -112,6 +115,9 @@ public class TestOracle {
      */
     public void BatchRunTests() {
         System.out.println("Batch running all tests...");
+        Integer totalTests = 0;
+        Integer successfulTests = 0;
+        List<String> failedTests = new ArrayList<>();
         
         // Ellenőrizzük, hogy a mappa létezik-e
         if (!testFolder.exists() || !testFolder.isDirectory()) {
@@ -125,7 +131,6 @@ public class TestOracle {
             System.out.println("A teszt mappa üres, nincsenek futtatható tesztek.");
             return;
         }
-        
         // 1. Sorbarendezzük a tömböt a bennük lévő számok alapján
             Arrays.sort(files, Comparator.comparingInt(f -> {
                 // A "\\D+" regex eltávolít minden nem-szám karaktert a névből
@@ -138,11 +143,24 @@ public class TestOracle {
         for (File file : files) {
             if (file.isDirectory()) {
                 System.out.println("\n----------------------------------------");
-                RunTest(file.getName());
+                boolean success = RunTest(file.getName());
+                totalTests++;
+                if (success) {
+                    successfulTests++;
+                } else {
+                    failedTests.add(file.getName());
+                }
             }
         }
         
         System.out.println("----------------------------------------");
         System.out.println("Minden teszt futtatása befejeződött.");
+        System.out.println("Sikeres tesztek: " + successfulTests + "/" + totalTests);
+        if (!failedTests.isEmpty()) {
+            System.out.println("Sikertelen tesztek:");
+            for (String testName : failedTests) {
+                System.out.println("  - " + testName);
+            }
+        }
     }
 }
