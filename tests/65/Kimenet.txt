@@ -9,5 +9,6 @@
 [OK] Kapcsolat létrehozva.
 [OK] Busz létrehozva: b1
 [OK] Az b1 jármű sikeresen átlépett az s1 sávra.
-[ERROR] Hibás paraméterezés: Ismeretlen árucikk a 'buy' parancsban: s1
-KozosKassza k1: penzmennyiseg=500
+[OK] Hokotro létrehozva: h1
+[OK] Jármű hozzáadva.
+[FAILED] Sikertelen lépés a h1 járművel.
