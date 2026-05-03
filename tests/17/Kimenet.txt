@@ -1,0 +1,6 @@
+[OK] KozosKassza létrehozva: k1
+[OK] Sofor létrehozva: p1
+[OK] Checkpoint létrehozva: c1
+[OK] Checkpoint létrehozva: c2
+[OK] Busz létrehozva: b1
+[ERROR] Hibás paraméterezés: A 'fejcsere' parancs első paraméterének egy érvényes hókotrónak kell lennie.

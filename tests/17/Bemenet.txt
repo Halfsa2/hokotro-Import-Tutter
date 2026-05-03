@@ -1,0 +1,6 @@
+create kassza k1 1000
+create sofor p1 k1
+create checkpoint c1
+create checkpoint c2
+create busz b1 c1 c2 p1
+fejcsere b1 sopro
