@@ -1,0 +1,9 @@
+# Mentés: test19
+create kassza k1 100
+create takarito p1 k1
+create sav s1
+setstate s1 jeges
+create hokotro h1 p1
+fejcsere h1 sopro
+step h1 s1
+stat s1

@@ -1,0 +1,8 @@
+[OK] KozosKassza létrehozva: k1
+[OK] Takarito létrehozva: p1
+[OK] Sav létrehozva: s1
+[OK] Állapot beállítva.
+[OK] Hokotro létrehozva: h1
+[OK] Fejcsere sikeres.
+[OK] Az h1 jármű sikeresen átlépett az s1 sávra.
+Sav s1: allapot=Jeges, sozott=0, zuzalekos=0, jarmu=h1
