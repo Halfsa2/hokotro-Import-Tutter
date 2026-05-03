@@ -68,12 +68,14 @@ public class CommandInterpreter {
                 continue;
             }
             
-            // "0" esetén kilépünk (ha ez a kilépési feltétel a specifikáció végén)
+            // "0" vagy "exit" esetén kilépünk (ha ez a kilépési feltétel a specifikáció végén)
             if (line.equals("0")) {
                 break;
             }
-
-            if (processCommand(line)) {
+            if(line.equals("exit")){
+                    break;
+                }
+            if (processCommand(line)) { 
                 commandLog.add(line); // Parancs naplózása
             }
         }
