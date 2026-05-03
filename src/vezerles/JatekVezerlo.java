@@ -146,6 +146,7 @@ public class JatekVezerlo implements IJatekVezerlo {
     }
     @Override
     public void tick(int korokSzama) {
+        if(jatekVege) return;
         for (int i = 0; i < korokSzama; i++) {
             if(korokHoesesOta >=2) {modell.havazas();korokHoesesOta = 0;}else{korokHoesesOta++;}
             autokKore(); 
