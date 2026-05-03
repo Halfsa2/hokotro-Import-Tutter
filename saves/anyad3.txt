@@ -1,0 +1,5 @@
+# Mentés: anyad3.txt
+create kassza k1 100
+create takarito t1 k1
+buy t1 k1 hokotro
+save anyad.txt
