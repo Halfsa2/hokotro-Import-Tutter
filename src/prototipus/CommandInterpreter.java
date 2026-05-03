@@ -653,6 +653,7 @@ public class CommandInterpreter {
                 case "kerozin" -> Arucikk.KEROZIN;
                 case "zuzalek" -> Arucikk.ZUZALEK;
                 case "globalwarming" -> Arucikk.GLOBAL_WARMING;
+                case "hokotro" -> Arucikk.HOKOTRO;
                 default -> throw new IllegalArgumentException("Ismeretlen árucikk a 'buy' parancsban: " + args[1]);
             };
             jatekVezerlo.vasarol(arucikk, hokotro);
@@ -666,6 +667,7 @@ public class CommandInterpreter {
                 case "kerozin" -> Arucikk.KEROZIN;
                 case "zuzalek" -> Arucikk.ZUZALEK;
                 case "globalwarming" -> Arucikk.GLOBAL_WARMING;
+                case "hokotro" -> Arucikk.HOKOTRO;
                 default -> throw new IllegalArgumentException("Ismeretlen árucikk a 'buy' parancsban: " + args[2]);
             };
             Hokotro hokotro = nevTar.get(args[1]) instanceof Hokotro ? (Hokotro) nevTar.get(args[1]) : null;
