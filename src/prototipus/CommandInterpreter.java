@@ -653,11 +653,16 @@ public class CommandInterpreter {
                 case "kerozin" -> Arucikk.KEROZIN;
                 case "zuzalek" -> Arucikk.ZUZALEK;
                 case "globalwarming" -> Arucikk.GLOBAL_WARMING;
+                case "hokotro" -> Arucikk.HOKOTRO;
                 default -> throw new IllegalArgumentException("Ismeretlen árucikk a 'buy' parancsban: " + args[1]);
             };
             jatekVezerlo.vasarol(arucikk, hokotro);
         }else{
-            Arucikk arucikk = switch(args[2].toLowerCase()){
+            
+            Hokotro hokotro = nevTar.get(args[1]) instanceof Hokotro ? (Hokotro) nevTar.get(args[1]) : null;
+            Arucikk arucikk;
+            if(hokotro == null){
+                arucikk = switch(args[1].toLowerCase()){
                 case "hanyofej" -> Arucikk.HANYOFEJ;
                 case "sarkanyfej" -> Arucikk.SARKANYFEJ;
                 case "soszoro" -> Arucikk.SOSZORO;
@@ -666,9 +671,26 @@ public class CommandInterpreter {
                 case "kerozin" -> Arucikk.KEROZIN;
                 case "zuzalek" -> Arucikk.ZUZALEK;
                 case "globalwarming" -> Arucikk.GLOBAL_WARMING;
+                case "hokotro" -> Arucikk.HOKOTRO;
+                default -> throw new IllegalArgumentException("Ismeretlen árucikk a 'buy' parancsban: " + args[1]);
+                };
+                if(args.length > 2){
+                    throw new IllegalArgumentException("Ismeretlen árucikk a 'buy' parancsban: " + args[2]);
+                }
+            } else{
+            arucikk = switch(args[2].toLowerCase()){
+                case "hanyofej" -> Arucikk.HANYOFEJ;
+                case "sarkanyfej" -> Arucikk.SARKANYFEJ;
+                case "soszoro" -> Arucikk.SOSZORO;
+                case "zuzalekszoro" -> Arucikk.ZUZALEKSZORO;
+                case "so" -> Arucikk.SO;
+                case "kerozin" -> Arucikk.KEROZIN;
+                case "zuzalek" -> Arucikk.ZUZALEK;
+                case "globalwarming" -> Arucikk.GLOBAL_WARMING;
+                case "hokotro" -> Arucikk.HOKOTRO;
                 default -> throw new IllegalArgumentException("Ismeretlen árucikk a 'buy' parancsban: " + args[2]);
-            };
-            Hokotro hokotro = nevTar.get(args[1]) instanceof Hokotro ? (Hokotro) nevTar.get(args[1]) : null;
+                };
+            }
             if(jatekVezerlo.getBolt().vasarol(arucikk, takarito, hokotro)){
                 printOk("Vásárlás sikeres.");
             } else {
