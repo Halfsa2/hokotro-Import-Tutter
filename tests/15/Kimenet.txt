@@ -1,0 +1,9 @@
+[OK] KozosKassza létrehozva: k1
+[OK] Takarito létrehozva: p1
+[OK] Sav létrehozva: s1
+[OK] Hokotro létrehozva: h1
+[OK] Az h1 jármű sikeresen átlépett az s1 sávra.
+[OK] Vásárlás sikeres.
+[OK] Fejcsere sikeres.
+[OK] Fejcsere sikeres.
+Hokotro h1: aktualisCsomopont=s1, aktivFej=Sopro

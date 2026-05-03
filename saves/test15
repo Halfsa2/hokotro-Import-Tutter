@@ -1,0 +1,10 @@
+# Mentés: test15
+create kassza k1 1000
+create takarito p1 k1
+create sav s1
+create hokotro h1 p1
+step h1 s1
+buy p1 h1 sarkanyfej
+fejcsere h1 sarkanyfej
+fejcsere h1 sopro
+stat h1
