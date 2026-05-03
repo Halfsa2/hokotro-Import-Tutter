@@ -658,7 +658,6 @@ public class CommandInterpreter {
             };
             jatekVezerlo.vasarol(arucikk, hokotro);
         }else{
-            
             Hokotro hokotro = nevTar.get(args[1]) instanceof Hokotro ? (Hokotro) nevTar.get(args[1]) : null;
             Arucikk arucikk;
             if(hokotro == null){

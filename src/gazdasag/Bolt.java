@@ -2,6 +2,7 @@ package gazdasag;
 
 import felszereles.*;
 import jarmu.Hokotro;
+import prototipus.CommandInterpreter;
 import prototipus.IStatable;
 import vezerles.SkeletonLogger;
 
@@ -47,6 +48,7 @@ public class Bolt implements IMegvasarolhato, IStatable {
                 case HOKOTRO -> vevo.addHokotro(new Hokotro(vevo));
                 case GLOBAL_WARMING -> {
                     System.out.println("Győzelem! A havazás elállt Zúzmaravárosban!");
+                    CommandInterpreter.replyLog.add("Győzelem! A havazás elállt Zúzmaravárosban!"); // Ez a log üzenet jelzi a győzelmet a teszteléshez
                     // A visszatérési érték (true) jelzi a JatekVezerlonek, hogy vége a játéknak
                 }
             }
