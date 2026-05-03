@@ -1,6 +1,7 @@
 [OK] KozosKassza létrehozva: k1
 [OK] Takarito létrehozva: p1
 [OK] Sav létrehozva: s1
+[OK] Hokotro létrehozva: h1
 Győzelem! A havazás elállt Zúzmaravárosban!
 [OK] Vásárlás sikeres.
 [OK] Játék előre léptetve 2 körrel.
