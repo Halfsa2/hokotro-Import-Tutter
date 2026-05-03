@@ -5,4 +5,5 @@ create sav s1
 create hokotro h1 p1
 step h1 s1
 fejcsere h1 sopro
+fejcsere h1 hanyofej
 stat h1
