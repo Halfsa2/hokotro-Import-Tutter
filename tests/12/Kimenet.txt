@@ -1,0 +1,3 @@
+[OK] KozosKassza létrehozva: k1
+[OK] Takarito létrehozva: p1
+[FAILED] Vásárlás sikertelen. Ellenőrizd a kassza egyenlegét és a hókotród kapacitását.

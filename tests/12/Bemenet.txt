@@ -1,0 +1,3 @@
+create kassza k1 400
+create takarito p1 k1
+buy p1 hokotro
