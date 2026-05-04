@@ -1,14 +1,17 @@
-create takarito p1
+create kassza k1 500
+create takarito p1 k1
 create sav s1
 setstate s1 jeges
-create hokotro h1 s1
+create hokotro h1 p1
 addjarmu p1 h1
-buy p1 SOSZORO
+buy p1 h1 soszoro
 fejcsere h1 soszoro
+stat s1
 # Sószorás (takarítás) a jégen
 step h1 s1
-tick 2
+havazas
+havazas
 stat s1
-# Utolsó kör letelte
-tick 1
+# Utolsó hóesés letelte
+havazas
 stat s1

@@ -1,3 +1,6 @@
-[OK] h1 besózta az s1 sávot a sószóró fejjel.
-[OK] Havazás történt a városban.
-Sav s1: Allapot=Tiszta, sozott=2, zuzalekos=0
+[OK] Fejcsere sikeres.
+Sav s1: allapot=Tiszta, sozott=0, zuzalekos=0, jarmu=
+[OK] Az h1 jármű sikeresen átlépett az s1 sávra.
+Sav s1: allapot=Tiszta, sozott=3, zuzalekos=0, jarmu=h1
+[OK] Havazás végrehajtva.
+Sav s1: allapot=Tiszta, sozott=2, zuzalekos=0, jarmu=h1

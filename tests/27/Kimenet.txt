@@ -10,5 +10,5 @@
 [OK] Az h1 jármű sikeresen átlépett az s1 sávra.
 Hokotro h1: aktualisCsomopont=s1, aktivFej=Sarkanyfej
 Sarkanyfej h1.sarkanyfej: kerozin_mennyiseg=0
-Sav s1: allapot=Sekelyho, sozott=0, zuzalekos=0, jarmu=h1
+Sav s1: allapot=SekelyHo, sozott=0, zuzalekos=0, jarmu=h1
 KozosKassza k1: penzmennyiseg=200
