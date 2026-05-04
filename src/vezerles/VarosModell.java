@@ -172,4 +172,8 @@ public class VarosModell implements IJatekKezelo {
         SkeletonLogger.exit("lista");
         return utvonal;
     }
+
+    public List<Csomopont> getVarosGraf() {
+        return this.varosGraf;
+    }
 }

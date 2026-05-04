@@ -25,7 +25,7 @@ public class JatekVezerlo implements IJatekVezerlo {
     private List<Jatekos<?>> jatekosok;
     private boolean jatekVege = false;
     //Az első körben esik a hó, hogy legyen valami a pályán.
-    private int korokHoesesOta = 999;
+    private int korokHoesesOta = 0;
     private Jatekos<?> aktivJatekos;
 
     public JatekVezerlo(IJatekNezet nezet, IJatekKezelo modell, IMegvasarolhato bolt) {
@@ -172,4 +172,5 @@ public class JatekVezerlo implements IJatekVezerlo {
         //Nem szabadna egyébként használni, mert így kikerüljük a játék logikáját.
         return this.aktivJatekos;
     }
+
 }

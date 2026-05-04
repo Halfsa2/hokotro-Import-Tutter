@@ -104,4 +104,8 @@ public class Checkpoint extends Csomopont {
         }
         return sb.toString();
     }
+    // Getter a bent lévő járművek listájához, hogy a MapPanel meg tudja rajzolni
+        public List<Jarmu> getJarmuvek() {
+        return this.varakozoJarmuvek;
+    }
 }

@@ -52,4 +52,6 @@ public interface IJatekKezelo {
     // Ez a getter csak a prototípus csaló parancsának használatához van, hogy elérjük a város modellt a CommandInterpreterből.
     // Nem szabadna egyébként használni, mert így kikerüljük a játék logikáját.
     void addCsomopont(Csomopont csp);
+
+     List<Csomopont> getVarosGraf();
 }

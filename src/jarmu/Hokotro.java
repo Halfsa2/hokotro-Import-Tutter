@@ -1,8 +1,6 @@
 package jarmu;
 
-import felszereles.Jegtoro;
 import felszereles.Kotrofej;
-import felszereles.Sopro;
 import felszereles.ZuzalekSzoro;
 import gazdasag.Takarito;
 import halozat.Csomopont;
@@ -24,8 +22,12 @@ public class Hokotro extends IranyitottJarmu {
     public Hokotro(Takarito tulajdonos) {
         this.tulajdonos = tulajdonos;
         this.birtokolja = new HashMap<>();
-        addFej(new Sopro()); // Alapértelmezett fej, minden hókotró rendelkezik vele
-        addFej(new Jegtoro());
+        
+        felszereles.Sopro alapSopro = new felszereles.Sopro();
+        addFej(alapSopro); 
+        addFej(new felszereles.Jegtoro());
+        
+        this.aktiv = alapSopro;
     }
 
     /**
@@ -158,5 +160,13 @@ public class Hokotro extends IranyitottJarmu {
         }
         sb.append(", aktivFej=").append(aktiv != null ? aktiv.getClass().getSimpleName() : "null");
         return sb.toString();
+    }
+
+    public felszereles.Kotrofej getAktiv() {
+        return this.aktiv;
+    }
+
+    public java.util.Map<String, felszereles.Kotrofej> getBirtokolja() {
+        return this.birtokolja;
     }
 }
