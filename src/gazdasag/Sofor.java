@@ -13,11 +13,11 @@ public class Sofor extends Jatekos<Busz> {
 
     /**
      * Konstruktor a Sofőr osztályhoz.
+     * @param nev a sofőr neve
      * @param kassza a közös kassza referenciája
-     * @param busz a busz, amit a sofőr irányítani fog
      */
-    public Sofor(KozosKassza kassza) {
-        super(kassza);
+    public Sofor(String nev, KozosKassza kassza) {
+        super(nev, kassza);
         SkeletonLogger.create(this);
         
         this.jarmuvek = new ArrayList<>();

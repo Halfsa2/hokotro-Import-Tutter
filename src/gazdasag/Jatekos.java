@@ -14,8 +14,10 @@ public abstract class Jatekos <T extends IranyitottJarmu> implements IStatable {
     protected KozosKassza kassza; 
     protected T aktivJarmu;
     protected boolean korVege = false;
+    private String nev;
 
-    protected Jatekos(KozosKassza kassza) {
+    protected Jatekos(String nev,KozosKassza kassza) {
+        this.nev = nev;
         this.kassza = kassza;
         aktivJarmu = null; // Kezdetben nincs aktív jármű
     }
@@ -51,5 +53,12 @@ public abstract class Jatekos <T extends IranyitottJarmu> implements IStatable {
     }
     public boolean isKorVege() {
         return korVege;
+    }
+    public List<T> getJarmuvek() {
+        return this.jarmuvek;
+    }
+
+    public String getNev() {
+        return this.nev;
     }
 }

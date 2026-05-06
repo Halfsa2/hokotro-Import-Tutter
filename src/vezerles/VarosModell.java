@@ -15,6 +15,7 @@ public class VarosModell implements IJatekKezelo {
 
     private List<Csomopont> varosGraf;
     private KozosKassza kassza;
+    private int tickSzamlalo = 0;
 
     /**
      * Alapértelmezett konstruktor: új, üres városi gráfot hoz létre és üres pénztárcát inicializál.
@@ -47,6 +48,26 @@ public class VarosModell implements IJatekKezelo {
     public void epit() {
         SkeletonLogger.enter(this, "epit");
         // A manuális építést majd a parancsértelmező (Main) végzi a create és connect parancsokkal
+        SkeletonLogger.exit("void");
+    }
+
+    @Override
+    public void tick() {
+        SkeletonLogger.enter(this, "tick");
+        
+        // 1. Minden hívásnál megnöveljük a számlálót
+        tickSzamlalo++;
+        System.out.println("Eltelt egy tick... (Jelenlegi idő: " + tickSzamlalo + ")");
+        
+        // 2. Csak minden HARMADIK lépésnél hívjuk meg a havazást
+        if (tickSzamlalo % 3 == 0) {
+            System.out.println("Eltelt 3 időegység: Újabb hó hullik a városra!");
+            this.havazas(); // Meghívjuk a már létező havazas() metódusodat
+        }
+        
+        // 3. A pálya egyéb frissítései (ami eddig is benne volt)
+        palyaFrissit();
+        
         SkeletonLogger.exit("void");
     }
 
@@ -176,4 +197,5 @@ public class VarosModell implements IJatekKezelo {
     public List<Csomopont> getVarosGraf() {
         return this.varosGraf;
     }
+
 }

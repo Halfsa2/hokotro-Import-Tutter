@@ -330,7 +330,7 @@ public class CommandInterpreter {
                 if(kSofor == null){
                     throw new IllegalArgumentException("A 'sofor' létrehozásához egy érvényes közös kassza szükséges paraméterként.");
                 }
-                Sofor sofor = new Sofor(kSofor);
+                Sofor sofor = new Sofor(args[1], kSofor);
                 nevTar.put(args[1], sofor);
                 reverseNevTar.put(sofor, args[1]);
                 jatekVezerlo.addJatekos(sofor);
@@ -341,7 +341,7 @@ public class CommandInterpreter {
                 if(kTakarito == null){
                     throw new IllegalArgumentException("A 'takarito' létrehozásához egy érvényes közös kassza szükséges paraméterként.");
                 }
-                Takarito takarito = new Takarito(kTakarito);
+                Takarito takarito = new Takarito(args[1], kTakarito);
                 nevTar.put(args[1], takarito);
                 reverseNevTar.put(takarito, args[1]);
                 jatekVezerlo.addJatekos(takarito);

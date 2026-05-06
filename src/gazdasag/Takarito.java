@@ -12,12 +12,13 @@ import vezerles.SkeletonLogger;
  */
 public class Takarito extends Jatekos<Hokotro> {    
    
-   /**
-    * Konstruktor a Takarítóhoz. Létrehozáskor kap egy alapértelmezett hókotrót.
-    * @param kassza a közös kassza referenciája
-    */
-   public Takarito(KozosKassza kassza) {
-        super(kassza);
+/**
+     * Konstruktor a Takarítóhoz. Létrehozáskor kap egy alapértelmezett hókotrót.
+     * @param nev a takarító neve (pl. "Anna" vagy "Peti")
+     * @param kassza a közös kassza referenciája
+     */
+    public Takarito(String nev, KozosKassza kassza) {
+        super(nev, kassza); // <-- Itt adjuk át a kapott nevet az ősnek!
         SkeletonLogger.create(this);
         
         this.jarmuvek = new ArrayList<>();

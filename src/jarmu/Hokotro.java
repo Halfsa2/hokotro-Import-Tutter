@@ -18,6 +18,7 @@ public class Hokotro extends IranyitottJarmu {
     private Takarito tulajdonos;
     private Kotrofej aktiv;
     private HashMap<String, Kotrofej> birtokolja;
+    private String nev = "Névtelen Hókotró";
 
     public Hokotro(Takarito tulajdonos) {
         this.tulajdonos = tulajdonos;
@@ -168,5 +169,13 @@ public class Hokotro extends IranyitottJarmu {
 
     public java.util.Map<String, felszereles.Kotrofej> getBirtokolja() {
         return this.birtokolja;
+    }
+
+    public void setNev(String nev) {
+        this.nev = nev;
+    }
+
+    public String getNev() {
+        return this.nev;
     }
 }

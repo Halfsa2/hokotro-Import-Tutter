@@ -40,12 +40,12 @@ public class JatekVezerlo implements IJatekVezerlo {
         //TODO: autók hozzáadása, játékosok járműveinek beállítása, modell inicializálása, stb.
         modell.epit();
         for(int i = 0; i < soforokSzama; i++){
-            Sofor s = new Sofor(modell.getKassza());
+            Sofor s = new Sofor("Sofor" + i, modell.getKassza());
             s.setJarmu(new Busz(modell.getSzabadCheckpoint(), modell.getSzabadCheckpoint(),s));
             jatekosok.add(s);
         }
         for( int i = 0; i < takaritokSzama; i++){
-            Takarito t = new Takarito(modell.getKassza());
+            Takarito t = new Takarito("Takarito" + i, modell.getKassza());
             jatekosok.add(t);
         }
         // x mennyiségű autó létrehozása, hozzáadása a modellhez (startra léptetés) és útvonaltervezése
@@ -58,17 +58,18 @@ public class JatekVezerlo implements IJatekVezerlo {
         if(jatekVege) return false;
         boolean sikeres = false;
         if(aktivJatekos != null){
-            //Itt nem számít a lépés eredménye, ha sikertelen a lépés, akkor is tovább lépünk a következő játékosra/járműre.
             sikeres = aktivJatekos.lep(cel);
             
-            //minden 3. lépésnél leesik a hó.
-            if(korokHoesesOta >=2) {modell.havazas();korokHoesesOta = 0;}else{korokHoesesOta++;}
-            //Ha a játékos körének vége van, akkor következik a következő játékos, egyébként a következő járműve lép.
-            if(aktivJatekos.isKorVege()) {nextJatekos();}
-            else{aktivJatekos.nextJarmu();}
-            //autók lépnek még a lépés vége előtt
+            // --- INNEN TÖRÖLTÜK A korokHoesesOta LOGIKÁT! ---
+
+            // Ha a játékos körének vége van, akkor következik a következő játékos, egyébként a következő járműve lép.
+            if(aktivJatekos.isKorVege()) {
+                nextJatekos();
+            } else {
+                aktivJatekos.nextJarmu();
+            }
+            
             autokKore();
-            //só hatása most érvényesül (első lépésben úgysem lesz semmi, ami miatt frissíteni kéne, így nem baj, hogy ez az első lépésnél nem teljesül)
             modell.palyaFrissit();
         }
         return sikeres;
@@ -78,20 +79,28 @@ public class JatekVezerlo implements IJatekVezerlo {
         //Megkerüljük a játék logikáját, az adott járművet direktben léptetjük.
         return jarmu.lep(cel);
     }
-    public void nextJatekos(){
+    public void nextJatekos() {
         if(jatekVege) return;
 
-        //Ha ez lesz az első kör a játékban, akkor beállítjuk az első játékost aktívnak és NEM lépnek még az autók
-        if(aktivJatekos == null){aktivJatekos = jatekosok.getFirst(); aktivJatekos.korKezdodik(); return;}
+        if(aktivJatekos == null) {
+            aktivJatekos = jatekosok.getFirst(); 
+            aktivJatekos.korKezdodik(); 
+            return;
+        }
 
-        //Ha nem ez az első kör, akkor megszerezzük a jelenlegi játékos ID-jét
         int currentId = jatekosok.indexOf(aktivJatekos);
 
-        //Ha az utolsó játékos volt legutóbb, akkor az első jön
-        if(currentId == jatekosok.size()-1) currentId = -1;
+        // Ha az utolsó játékos lépett, újra az első jön, de ELTELT EGY KÖR!
+        if(currentId == jatekosok.size() - 1) {
+            currentId = -1;
+            
+            // --- IDŐ MÚLÁSA ---
+            if (modell != null) {
+                modell.tick();
+            }
+        }
 
-        //hivatalosan a kör vége, kövi játékos következik.
-        aktivJatekos = jatekosok.get(currentId+1);
+        aktivJatekos = jatekosok.get(currentId + 1);
         aktivJatekos.korKezdodik();
     }
     private void autokKore(){
@@ -171,6 +180,10 @@ public class JatekVezerlo implements IJatekVezerlo {
         //Ez a getter csak a prototípus csaló parancsának használatához van, hogy elérjük az aktív játékost a CommandInterpreterből.
         //Nem szabadna egyébként használni, mert így kikerüljük a játék logikáját.
         return this.aktivJatekos;
+    }
+
+    public void setNezet(megjelenites.IJatekNezet nezet) {
+        this.nezet = nezet;
     }
 
 }

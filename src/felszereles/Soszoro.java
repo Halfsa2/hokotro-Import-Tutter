@@ -35,6 +35,11 @@ public class Soszoro extends Kotrofej {
         return this.so_mennyiseg;
     }
 
+    @Override
+    public int getToltet() {
+        return this.getSoMennyiseg(); 
+    }
+
     /**
      * Takarítja a havat és jeget a sószóró fejjel.
      * Sót szór a sávra, ami feloldja a havat/jeget és védettséget ad.

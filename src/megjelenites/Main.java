@@ -36,7 +36,7 @@ public class Main {
         JatekVezerlo vezerlo = new JatekVezerlo(null, modell, bolt);
 
         // JÁTÉKOS LÉTREHOZÁSA (Autó helyett Takarítót csinálunk, hogy mi irányíthassunk)
-        Takarito takarito = new Takarito(kassza);
+        Takarito takarito = new Takarito("Takarito1", kassza);
         Hokotro hokotro = new Hokotro(takarito);
         takarito.addHokotro(hokotro);
         
@@ -50,6 +50,7 @@ public class Main {
 
         javax.swing.SwingUtilities.invokeLater(() -> {
             GameWindow ablak = new GameWindow(vezerlo);
+            vezerlo.setNezet(ablak);
             ablak.setVisible(true);
             ablak.frissit(); 
         });

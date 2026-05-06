@@ -9,7 +9,7 @@ import java.util.List;
  * Biztosítja, hogy a játék motorja egy egységes felületen keresztül tudjon kommunikálni a modellel.
  */
 public interface IJatekKezelo {
-    
+     void tick();
     /**
      * Előírja a játékbeli építkezési funkció megvalósítását[cite: 916].
      */
