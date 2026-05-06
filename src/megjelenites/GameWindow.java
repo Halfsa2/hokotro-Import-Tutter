@@ -40,16 +40,18 @@ public class GameWindow extends JFrame implements IJatekNezet {
         JButton csereButton = new JButton("Felszerelés cseréje");
         csereButton.setFocusable(false);
         csereButton.addActionListener(e -> cserelFelszerelest());
+
+        JButton ujSoforButton = new JButton("Új Sofőr felvétele");
+        ujSoforButton.setFocusable(false);
+        ujSoforButton.addActionListener(e -> ujSoforHozzaadasa());
         
         JButton passzButton = new JButton("Passz");
         passzButton.setFocusable(false);
         passzButton.addActionListener(e -> {
-            // --- ITT A LÉNYEG! ÁTÜLÜNK A MÁSIK GÉPBE! ---
             gazdasag.Jatekos<?> aktiv = vezerlo.getAktivJatekos();
             if (aktiv != null) {
                 aktiv.nextJarmu(); 
             }
-            // -------------------------------------------
             vezerlo.nextJatekos();
             frissit();
         });
@@ -58,52 +60,68 @@ public class GameWindow extends JFrame implements IJatekNezet {
         controlPanel.add(kasszaLabel);
         controlPanel.add(boltButton);
         controlPanel.add(csereButton);
+        controlPanel.add(ujSoforButton);
         controlPanel.add(passzButton);
         add(controlPanel, BorderLayout.SOUTH);
         
         setupKeyBindings();
     }
 
-    private void setupKeyBindings() {
+   private void setupKeyBindings() {
         InputMap im = this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap am = this.getRootPane().getActionMap();
 
-        im.put(KeyStroke.getKeyStroke("RIGHT"), "moveRight");
-        am.put("moveRight", new AbstractAction() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                gazdasag.Jatekos<?> aktiv = vezerlo.getAktivJatekos();
-                if (aktiv != null && aktiv.getAktivJarmu() != null) {
-                    halozat.Csomopont aktualis = aktiv.getAktivJarmu().getAktualisCsomopont();
-                    java.util.List<halozat.Csomopont> graf = vezerlo.getVarosModell().getVarosGraf();
+        java.util.function.BiConsumer<Integer, Integer> move = (dx, dy) -> {
+            gazdasag.Jatekos<?> aktiv = vezerlo.getAktivJatekos();
+            if (aktiv != null && aktiv.getAktivJarmu() != null) {
+                halozat.Csomopont aktualis = aktiv.getAktivJarmu().getAktualisCsomopont();
+                vezerles.VarosModell vModell = (vezerles.VarosModell) vezerlo.getVarosModell();
+                
+                int currX = -1, currY = -1;
+                for(int x = 0; x < vModell.getSzelesseg(); x++) {
+                    for(int y = 0; y < vModell.getMagassag(); y++) {
+                        if(vModell.getCsomopont(x, y) == aktualis) { currX = x; currY = y; break; }
+                    }
+                }
+
+                if (currX != -1 && currY != -1) {
+                    halozat.Csomopont cel = vModell.getCsomopont(currX + dx, currY + dy);
                     
-                    int index = graf.indexOf(aktualis);
-                    if (index < graf.size() - 1) {
-                        halozat.Csomopont cel = graf.get(index + 1);
+                    // HA CÉLÁLLOMÁSON VAGYUNK ÉS "FALNAK" MEGYÜNK (pl. Előre nyíl a pálya szélén)
+                    // A gép automatikusan megkeresi a Checkpoint U-Turn kimenetét!
+                    if (cel == null && aktualis instanceof halozat.Checkpoint) {
+                        java.util.List<halozat.Csomopont> kimenetek = aktualis.getNext();
+                        if(kimenetek != null && !kimenetek.isEmpty()) {
+                            cel = kimenetek.get(0); 
+                        }
+                    }
+
+                    if (cel != null && aktualis.getNext() != null && aktualis.getNext().contains(cel)) {
                         vezerlo.lep(cel);
                         frissit();
                     }
                 }
             }
+        };
+
+        im.put(KeyStroke.getKeyStroke("RIGHT"), "moveRight");
+        am.put("moveRight", new AbstractAction() {
+            @Override public void actionPerformed(java.awt.event.ActionEvent e) { move.accept(1, 0); }
         });
 
         im.put(KeyStroke.getKeyStroke("LEFT"), "moveLeft");
         am.put("moveLeft", new AbstractAction() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                gazdasag.Jatekos<?> aktiv = vezerlo.getAktivJatekos();
-                if (aktiv != null && aktiv.getAktivJarmu() != null) {
-                    halozat.Csomopont aktualis = aktiv.getAktivJarmu().getAktualisCsomopont();
-                    java.util.List<halozat.Csomopont> graf = vezerlo.getVarosModell().getVarosGraf();
-                    
-                    int index = graf.indexOf(aktualis);
-                    if (index > 0) {
-                        halozat.Csomopont cel = graf.get(index - 1);
-                        vezerlo.lep(cel);
-                        frissit();
-                    }
-                }
-            }
+            @Override public void actionPerformed(java.awt.event.ActionEvent e) { move.accept(-1, 0); }
+        });
+
+        im.put(KeyStroke.getKeyStroke("DOWN"), "moveDown");
+        am.put("moveDown", new AbstractAction() {
+            @Override public void actionPerformed(java.awt.event.ActionEvent e) { move.accept(0, 1); }
+        });
+
+        im.put(KeyStroke.getKeyStroke("UP"), "moveUp");
+        am.put("moveUp", new AbstractAction() {
+            @Override public void actionPerformed(java.awt.event.ActionEvent e) { move.accept(0, -1); }
         });
     }
 
@@ -114,12 +132,10 @@ public class GameWindow extends JFrame implements IJatekNezet {
             String jatekosNev = aktiv.getNev();
             String jarmuNev = "Nincs gép";
             
-            // Lekérjük az aktuális járművet, és ha van neve, kiolvassuk
             if (aktiv.getAktivJarmu() != null && aktiv.getAktivJarmu() instanceof jarmu.Hokotro) {
                 jarmuNev = ((jarmu.Hokotro)aktiv.getAktivJarmu()).getNev();
             }
             
-            // Így fog kinézni: "Aktív: Takarito1 (Hókotró 2000) "
             infoLabel.setText("Aktív: " + jatekosNev + " (" + jarmuNev + ") ");
         }
         
@@ -134,13 +150,22 @@ public class GameWindow extends JFrame implements IJatekNezet {
 
     private void setupCoordinates() {
         nodePositions.clear();
-        int tileSize = 64; 
-        java.util.List<halozat.Csomopont> graf = vezerlo.getVarosModell().getVarosGraf();
-        int startX = 100;
-        int startY = 300;
-        for (int i = 0; i < graf.size(); i++) {
-            halozat.Csomopont csp = graf.get(i);
-            nodePositions.put(csp, new java.awt.Point(startX + (i * tileSize), startY));
+        int tileSize = 20;
+        vezerles.VarosModell vModell = (vezerles.VarosModell) vezerlo.getVarosModell();
+        
+        // --- KÖZÉPRE IGAZÍTÁS KISZÁMOLÁSA ---
+        int mapPixelWidth = vModell.getSzelesseg() * tileSize;
+        int mapPixelHeight = vModell.getMagassag() * tileSize;
+        int offsetX = (1024 - mapPixelWidth) / 2; // Ablak szélessége mínusz a pálya szélessége
+        int offsetY = (768 - mapPixelHeight) / 2; // Ablak magassága mínusz a pálya magassága
+
+        for (int x = 0; x < vModell.getSzelesseg(); x++) {
+            for (int y = 0; y < vModell.getMagassag(); y++) {
+                halozat.Csomopont csp = vModell.getCsomopont(x, y);
+                if (csp != null) {
+                    nodePositions.put(csp, new java.awt.Point(offsetX + (x * tileSize), offsetY + (y * tileSize)));
+                }
+            }
         }
     }
     
@@ -171,10 +196,8 @@ public class GameWindow extends JFrame implements IJatekNezet {
         boltAblak.setLocationRelativeTo(this);
         boltAblak.setLayout(new BorderLayout());
 
-        // --- ÁLLAPOT TÁROLÁSA: Mit jelölt ki a játékos? ---
         final gazdasag.Arucikk[] kivalasztottArucikk = {null};
         
-        // --- 1. FELSŐ INFORMÁCIÓS PANEL ---
         JPanel infoPanel = new JPanel();
         infoPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
         JLabel kasszaBoltLabel = new JLabel();
@@ -182,7 +205,6 @@ public class GameWindow extends JFrame implements IJatekNezet {
         infoPanel.add(kasszaBoltLabel);
         boltAblak.add(infoPanel, BorderLayout.NORTH);
 
-        // --- 2. KÖZÉPSŐ PANEL (Bal: Bolt, Jobb: Inventori) ---
         JPanel tartalomPanel = new JPanel(new GridLayout(1, 2, 10, 0));
         tartalomPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -202,9 +224,7 @@ public class GameWindow extends JFrame implements IJatekNezet {
 
         boltAblak.add(tartalomPanel, BorderLayout.CENTER);
 
-        // --- 3. ÉLŐ FRISSÍTŐ FUNKCIÓ (HIBATŰRŐ VERZIÓ) ---
         jarmu.Hokotro finalAktivHokotro = aktivHokotro;
-        // --- 3. ÉLŐ FRISSÍTŐ FUNKCIÓ (OKOSÍTOTT FLOTTA INVENTORI) ---
         Runnable frissitBoltAdatok = () -> {
             try {
                 kasszaBoltLabel.setText("Jelenlegi Kassza: " + vezerlo.getVarosModell().getKassza().getPenzosszeg() + " ZT");
@@ -216,24 +236,20 @@ public class GameWindow extends JFrame implements IJatekNezet {
                     
                     invText.append("\n === ").append(takarito.getNev()).append(" FLOTTÁJA ===\n");
 
-                    // Végigmegyünk a játékos ÖSSZES hókotróján!
                     for (Object gep : takarito.getJarmuvek()) {
                         if (gep instanceof jarmu.Hokotro) {
                             jarmu.Hokotro h = (jarmu.Hokotro) gep;
                             
-                            // Kiírjuk a gép nevét
                             if (h == takarito.getAktivJarmu()) {
                                 invText.append("\n [> ").append(h.getNev()).append(" (Épp Ebben Ülsz) <]\n");
                             } else {
                                 invText.append("\n [ ").append(h.getNev()).append(" ]\n");
                             }
 
-                            // AKTÍV FEJ VIZSGÁLATA
                             String aktivFej = "Alap Söprő";
                             if (h.getAktiv() != null) {
                                 aktivFej = h.getAktiv().getClass().getSimpleName();
                                 
-                                // Töltöttség lekérdezése a te friss getToltet() metódusoddal!
                                 if (h.getAktiv() instanceof felszereles.Kotrofej) {
                                     int toltet = ((felszereles.Kotrofej) h.getAktiv()).getToltet(); 
                                     if (toltet > 0 || aktivFej.equals("Soszoro") || aktivFej.equals("Sarkanyfej") || aktivFej.equals("ZuzalekSzoro")) {
@@ -243,20 +259,17 @@ public class GameWindow extends JFrame implements IJatekNezet {
                             }
                             invText.append("  * Felszerelve: ").append(aktivFej).append("\n");
 
-                            // RAKTÁR VIZSGÁLATA (Zseb)
                             invText.append("  * Raktárban:\n");
                             if (h.getBirtokolja() != null && !h.getBirtokolja().isEmpty()) {
                                 for (Object f : h.getBirtokolja().values()) {
                                     String fejNev = f.getClass().getSimpleName();
                                     
-                                    // Zsebben lévő fej töltöttsége
                                     if (f instanceof felszereles.Kotrofej) {
                                         int toltet = ((felszereles.Kotrofej) f).getToltet(); 
                                         if (toltet > 0 || fejNev.equals("Soszoro") || fejNev.equals("Sarkanyfej") || fejNev.equals("ZuzalekSzoro")) {
                                             fejNev += " (" + toltet + " egység)";
                                         }
                                     }
-                                    
                                     invText.append("    - ").append(fejNev).append("\n");
                                 }
                             } else {
@@ -278,11 +291,9 @@ public class GameWindow extends JFrame implements IJatekNezet {
         };
         frissitBoltAdatok.run();
 
-        // --- ALSÓ PANEL ELŐKÉSZÍTÉSE (Kijelölés szövege) ---
         JLabel kivalasztottLabel = new JLabel("Kiválasztva: Még semmi");
         kivalasztottLabel.setFont(new Font("Arial", Font.ITALIC, 14));
 
-        // --- GOMBOK HOZZÁADÁSA ---
         gombPanel.add(createBoltGomb("Hányófej (100 ZT)", gazdasag.Arucikk.HANYOFEJ, "hanyo", kivalasztottArucikk, kivalasztottLabel));
         gombPanel.add(createBoltGomb("Sószóró (150 ZT)", gazdasag.Arucikk.SOSZORO, "soszoro", kivalasztottArucikk, kivalasztottLabel));
         gombPanel.add(createBoltGomb("Sárkányfej (300 ZT)", gazdasag.Arucikk.SARKANYFEJ, "sarkanyfej", kivalasztottArucikk, kivalasztottLabel));
@@ -293,9 +304,7 @@ public class GameWindow extends JFrame implements IJatekNezet {
         gombPanel.add(createBoltGomb("Új Hókotró (500 ZT)", gazdasag.Arucikk.HOKOTRO, "hokotro", kivalasztottArucikk, kivalasztottLabel));
         gombPanel.add(createBoltGomb("Globális Felmelegedés (10000 ZT)", gazdasag.Arucikk.GLOBAL_WARMING, "global_warning", kivalasztottArucikk, kivalasztottLabel));
 
-        // --- 4. ALSÓ PANEL (MEGVESZ GOMB - BIZTONSÁGOS SZÁLKEZELÉSSEL) ---
         JPanel alsoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        
         JButton megveszGomb = new JButton("Kijelölt Tárgy Megvásárlása");
         megveszGomb.setFont(new Font("Arial", Font.BOLD, 16));
         
@@ -304,20 +313,13 @@ public class GameWindow extends JFrame implements IJatekNezet {
                 try {
                     gazdasag.Arucikk mitVeszunk = kivalasztottArucikk[0];
                     
-                    // --- 1. JOGOSULTSÁG ÉS DUPLIKÁCIÓ ELLENŐRZÉSE ---
-                    // Csak akkor vizsgáljuk a gép tartalmát, ha nem új hókotrót vagy globális felmelegedést vesz
-                    // --- 1. JOGOSULTSÁG ÉS DUPLIKÁCIÓ ELLENŐRZÉSE ---
-                    // Csak akkor vizsgáljuk a gép tartalmát, ha nem új hókotrót vagy globális felmelegedést vesz
                     if (finalAktivHokotro != null && mitVeszunk != gazdasag.Arucikk.HOKOTRO && mitVeszunk != gazdasag.Arucikk.GLOBAL_WARMING) {
                         boolean vanHanyo = false;
                         boolean vanSoszoro = false;
                         boolean vanSarkanyfej = false;
                         boolean vanZuzalekSzoro = false;
-                        
-                        // ITT HOZZUK LÉTRE A VÁLTOZÓT, AMIT HIÁNYOLT A RENDSZER:
                         int zuzalekSzoroToltet = 0;
                         
-                        // Összeszedjük a gépen lévő aktív fejet és a zsebben lévőket is egy listába
                         java.util.List<Object> osszesFej = new java.util.ArrayList<>();
                         if (finalAktivHokotro.getAktiv() != null) {
                             osszesFej.add(finalAktivHokotro.getAktiv());
@@ -326,23 +328,19 @@ public class GameWindow extends JFrame implements IJatekNezet {
                             osszesFej.addAll(finalAktivHokotro.getBirtokolja().values());
                         }
                         
-                        // Megnézzük, mijünk van már meg, és mennyi ZÚZALÉK van benne!
                         for (Object f : osszesFej) {
                             String nev = f.getClass().getSimpleName();
                             if (nev.equals("HanyoFej")) vanHanyo = true;
                             if (nev.equals("Soszoro")) vanSoszoro = true;
                             if (nev.equals("Sarkanyfej")) vanSarkanyfej = true;
-                            
                             if (nev.equals("ZuzalekSzoro")) {
                                 vanZuzalekSzoro = true;
-                                // Itt olvassuk ki a töltetet, hogy később vizsgálhassuk!
                                 if (f instanceof felszereles.Kotrofej) {
                                     zuzalekSzoroToltet = ((felszereles.Kotrofej) f).getToltet();
                                 }
                             }
                         }
                         
-                        // --- A) Duplikált felszerelés tiltása ---
                         if (mitVeszunk == gazdasag.Arucikk.HANYOFEJ && vanHanyo) {
                             JOptionPane.showMessageDialog(boltAblak, "Már van Hányófej ezen a gépen!", "Tiltott Vásárlás", JOptionPane.WARNING_MESSAGE);
                             return;
@@ -360,18 +358,13 @@ public class GameWindow extends JFrame implements IJatekNezet {
                             return;
                         }
                         
-                        // --- B) Töltőanyag tiltása megfelelő fej nélkül (Zúzaléknál limit is) ---
-                        if (mitVeszunk == gazdasag.Arucikk.SO) {
-                            if (!vanSoszoro) {
-                                JOptionPane.showMessageDialog(boltAblak, "Nincs Sószóró a gépen, amibe a sót tölthetnéd!", "Tiltott Vásárlás", JOptionPane.WARNING_MESSAGE);
-                                return;
-                            }
+                        if (mitVeszunk == gazdasag.Arucikk.SO && !vanSoszoro) {
+                            JOptionPane.showMessageDialog(boltAblak, "Nincs Sószóró a gépen, amibe a sót tölthetnéd!", "Tiltott Vásárlás", JOptionPane.WARNING_MESSAGE);
+                            return;
                         }
-                        if (mitVeszunk == gazdasag.Arucikk.KEROZIN) {
-                            if (!vanSarkanyfej) {
-                                JOptionPane.showMessageDialog(boltAblak, "Nincs Sárkányfej a gépen, amibe a kerozint tölthetnéd!", "Tiltott Vásárlás", JOptionPane.WARNING_MESSAGE);
-                                return;
-                            }
+                        if (mitVeszunk == gazdasag.Arucikk.KEROZIN && !vanSarkanyfej) {
+                            JOptionPane.showMessageDialog(boltAblak, "Nincs Sárkányfej a gépen, amibe a kerozint tölthetnéd!", "Tiltott Vásárlás", JOptionPane.WARNING_MESSAGE);
+                            return;
                         }
                         if (mitVeszunk == gazdasag.Arucikk.ZUZALEK) {
                             if (!vanZuzalekSzoro) {
@@ -384,12 +377,9 @@ public class GameWindow extends JFrame implements IJatekNezet {
                         }
                     }
 
-                    // --- 2. VÁSÁRLÁS VÉGREHAJTÁSA (Ha idáig eljutott, minden rendben) ---
                     vezerlo.vasarol(mitVeszunk, finalAktivHokotro);
                     
-                    // --- 3. ÚJ HÓKOTRÓ ELHELYEZÉSE ÉS ELNEVEZÉSE ---
                     if (mitVeszunk == gazdasag.Arucikk.HOKOTRO) {
-                        
                         String beirtNev = JOptionPane.showInputDialog(boltAblak, "Hogy hívják az új hókotrót?", "Névadás", JOptionPane.PLAIN_MESSAGE);
                         if (beirtNev == null || beirtNev.trim().isEmpty()) { beirtNev = "Hókotró 2000"; }
 
@@ -431,9 +421,7 @@ public class GameWindow extends JFrame implements IJatekNezet {
                             }
                         }
                     }
-                    // ----------------------------------------------
                     
-                    // 2. GUI frissítése biztonságos szálon
                     SwingUtilities.invokeLater(() -> {
                         frissit(); 
                         frissitBoltAdatok.run(); 
@@ -484,16 +472,13 @@ public class GameWindow extends JFrame implements IJatekNezet {
 
         jarmu.Hokotro hokotro = (jarmu.Hokotro) aktiv.getAktivJarmu();
         
-        // Megnézzük, van-e egyáltalán valami a zsebében
         if (hokotro.getBirtokolja() == null || hokotro.getBirtokolja().isEmpty()) {
             uzenetKijelzese("Nincs más felszerelés a gép raktárában!");
             return;
         }
 
-        // Kilistázzuk a zsebben lévő fejeket a legördülő menühöz
         java.util.List<String> opciok = new java.util.ArrayList<>();
         for (Object f : hokotro.getBirtokolja().values()) {
-            // Hogy ne választhassa ki azt, ami épp rajta van:
             if (hokotro.getAktiv() != f) {
                 opciok.add(f.getClass().getSimpleName());
             }
@@ -516,13 +501,95 @@ public class GameWindow extends JFrame implements IJatekNezet {
         );
 
         if (valasztas != null) {
-            // --- TÉNYLEGES CSERE A MODELLBEN ---
             felszereles.Kotrofej kivalasztottFej = hokotro.getFej(valasztas);
             if (kivalasztottFej != null) {
                 hokotro.cserelFej(kivalasztottFej);
                 uzenetKijelzese("Sikeresen felszerelted a következő fejet: " + valasztas);
-                frissit(); // HUD azonnali frissítése az új aktív fejjel
+                frissit(); 
             }
+        }
+    }
+
+    // --- JAVÍTOTT BUSZOS ÚJ SOFŐR LOGIKA ---
+    private void ujSoforHozzaadasa() {
+        String beirtNev = JOptionPane.showInputDialog(
+                this, 
+                "Hogy hívják az új buszsofőrt?", 
+                "Új Sofőr Felvétele", 
+                JOptionPane.PLAIN_MESSAGE
+        );
+        
+        if (beirtNev == null) return;
+        if (beirtNev.trim().isEmpty()) beirtNev = "Új Sofőr";
+
+        java.util.List<halozat.Csomopont> graf = vezerlo.getVarosModell().getVarosGraf();
+        java.util.List<String> szabadNevek = new java.util.ArrayList<>();
+        java.util.List<halozat.Csomopont> szabadCsomopontok = new java.util.ArrayList<>();
+        java.util.List<String> osszesCelNev = new java.util.ArrayList<>();
+        java.util.List<halozat.Csomopont> osszesCelCsomopont = new java.util.ArrayList<>();
+        
+        // CSAK A CHECKPOINTOKAT VESSZÜK FIGYELEMBE
+        for (int i = 0; i < graf.size(); i++) {
+            halozat.Csomopont csp = graf.get(i);
+            if (csp instanceof halozat.Checkpoint) {
+                String nev = "Checkpoint " + i;
+                osszesCelNev.add(nev);
+                osszesCelCsomopont.add(csp);
+                
+                if (!csp.foglalt()) {
+                    szabadNevek.add(nev);
+                    szabadCsomopontok.add(csp);
+                }
+            }
+        }
+
+        if (szabadNevek.isEmpty()) {
+            uzenetKijelzese("Nincs szabad Checkpoint a pályán, ahova letehetnéd a buszt!");
+            return;
+        }
+
+        String[] szabadTomb = szabadNevek.toArray(new String[0]);
+        String startValasztas = (String) JOptionPane.showInputDialog(this, 
+                "Hova szeretnéd letenni a buszt (Start)?", "Indulási hely", 
+                JOptionPane.QUESTION_MESSAGE, null, szabadTomb, szabadTomb[0]);
+                
+        if (startValasztas == null) return;
+        halozat.Csomopont start = szabadCsomopontok.get(szabadNevek.indexOf(startValasztas));
+
+        String[] osszesTomb = osszesCelNev.toArray(new String[0]);
+        String celValasztas = (String) JOptionPane.showInputDialog(this, 
+                "Mi legyen a busz célállomása?", "Célállomás", 
+                JOptionPane.QUESTION_MESSAGE, null, osszesTomb, osszesTomb[0]);
+                
+        if (celValasztas == null) return;
+        halozat.Csomopont cel = osszesCelCsomopont.get(osszesCelNev.indexOf(celValasztas));
+
+        if (start.equals(cel)) {
+            uzenetKijelzese("A Start és a Cél nem lehet ugyanaz a mező!");
+            return;
+        }
+
+        try {
+            gazdasag.KozosKassza kassza = vezerlo.getVarosModell().getKassza();
+            gazdasag.Sofor ujSofor = new gazdasag.Sofor(beirtNev, kassza);
+            
+            // Biztonságos castolás, mert fent kiszűrtük, hogy csak Checkpoint lehet
+            jarmu.Busz ujBusz = new jarmu.Busz((halozat.Checkpoint) start, (halozat.Checkpoint) cel, ujSofor);
+            ujSofor.setJarmu(ujBusz);
+
+            if (start.befogad(ujBusz)) {
+                ujBusz.setAktualisCsomopont(start);
+            }
+
+            vezerlo.addJatekos(ujSofor);
+            vezerlo.registerJatekos("Sofor"); 
+
+            uzenetKijelzese("Sikeresen felvetted a flottába: " + beirtNev + "!\nIndul: " + startValasztas + "\nCél: " + celValasztas);
+            frissit(); 
+            
+        } catch (Exception ex) {
+            uzenetKijelzese("Hiba történt a busz létrehozásakor: " + ex.getMessage());
+            ex.printStackTrace();
         }
     }
 }

@@ -9,7 +9,7 @@ import vezerles.IJatekVezerlo;
 public class MapPanel extends JPanel {
     private IJatekVezerlo vezerlo;
     private Map<Csomopont, Point> nodePositions;
-    private final int TILE_SIZE = 64; // A képeitek mérete
+    private final int TILE_SIZE = 20; // A képeitek mérete
 
     // Konstruktor: megkapja a vezérlőt és a koordinátákat a GameWindow-tól
     public MapPanel(IJatekVezerlo vezerlo, Map<Csomopont, Point> nodePositions) {
@@ -24,21 +24,19 @@ public class MapPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        // --- 1. KÖR: CSAK A PÁLYAELEMEK ÉS AZ IDŐJÁRÁS KIRAJZOLÁSA ---
         for (Map.Entry<Csomopont, Point> entry : nodePositions.entrySet()) {
             Csomopont csp = entry.getKey();
             Point p = entry.getValue();
             Image baseTexture = null;
 
-            // 1. Alapréteg (sávok, állapotok) meghatározása
             if (csp instanceof halozat.Sav) {
                 halozat.Sav sav = (halozat.Sav) csp;
-                
-                // ELŐSZÖR megnézzük, hogy a sáv alagútban van-e!
                 if (sav.getUtszakasz() instanceof halozat.Alagut) {
                     baseTexture = TextureManager.getTexture("alagut");
-                } 
-                // Ha nem alagút, akkor megnézzük az állapotát (hó, jég, stb.)
-                else {
+                } else if (sav.getUtszakasz() instanceof halozat.Hid) {
+                    baseTexture = TextureManager.getTexture("hid");
+                } else {
                     allapot.Savallapot allapot = sav.getAllapot();
                     if (allapot instanceof allapot.Tiszta) {
                         baseTexture = TextureManager.getTexture("tiszta");
@@ -51,48 +49,64 @@ public class MapPanel extends JPanel {
                     }
                 }
             } else if (csp instanceof halozat.Keresztezodes) {
-                baseTexture = TextureManager.getTexture("keresztezodes");
+                baseTexture = TextureManager.getTexture("tiszta");
             } else if (csp instanceof halozat.Checkpoint) {
                 baseTexture = TextureManager.getTexture("vegallomas");
             }
 
-            // Kép kirajzolása
             if (baseTexture != null) {
+                // A SÁVOKAT A KISEBB MÉRETTEL RAJZOLJUK (pl. 40x40)
                 g.drawImage(baseTexture, p.x, p.y, TILE_SIZE, TILE_SIZE, null);
             }
 
-            // 2. Extra réteg: Zúzalék (ha van)
             if (csp instanceof halozat.Sav && ((halozat.Sav) csp).isZuzalekos()) {
                 Image zuzalekLayer = TextureManager.getTexture("zuzalekos");
                 g.drawImage(zuzalekLayer, p.x, p.y, TILE_SIZE, TILE_SIZE, null);
             }
+        }
 
-            // 3. JÁRMŰVEK KIRAJZOLÁSA (HA FOGLALT A CSOMÓPONT)
+        // --- 2. KÖR: JÁRMŰVEK KIRAJZOLÁSA (Hogy mindig legfelül legyenek!) ---
+        for (Map.Entry<Csomopont, Point> entry : nodePositions.entrySet()) {
+            Csomopont csp = entry.getKey();
+            Point p = entry.getValue();
+
             if (csp.foglalt()) {
                 Image jarmuTexture = null;
+                jarmu.Jarmu kirajzolandoJarmu = null;
+                boolean latszik = true;
 
-                // Megnézzük, hogy Sávon állunk-e, és lekérjük a rajta lévő járművet
                 if (csp instanceof halozat.Sav) {
                     halozat.Sav sav = (halozat.Sav) csp;
-                    jarmu.Jarmu j = sav.getJarmu(); // FONTOS: Ehhez kell a getJarmu() a Sav.java-ba!
-
-                    // Eldöntjük, melyik képet töltsük be a jármű típusa alapján
-                    if (j instanceof jarmu.Auto) {
-                        jarmuTexture = TextureManager.getTexture("auto");
-                    } else if (j instanceof jarmu.Busz) {
-                        jarmuTexture = TextureManager.getTexture("busz");
-                    } else if (j instanceof jarmu.Hokotro) {
-                        jarmuTexture = TextureManager.getTexture("hokotro");
+                    kirajzolandoJarmu = sav.getJarmu();
+                    if (sav.getUtszakasz() instanceof halozat.Alagut) {
+                        latszik = false;
+                    }
+                } else if (csp instanceof halozat.Checkpoint) {
+                    java.util.List<jarmu.Jarmu> bentLevok = ((halozat.Checkpoint) csp).getJarmuvek();
+                    if (bentLevok != null && !bentLevok.isEmpty()) {
+                        kirajzolandoJarmu = bentLevok.get(0); 
                     }
                 }
-                
-                // TODO később: Ugyanezt megcsinálni Checkpoint és Keresztezodes esetére is!
 
-                // Jármű tényleges kirajzolása (eltolva, hogy az aszfalt közepén legyen)
-                if (jarmuTexture != null) {
-                    int offset = 8; 
-                    int vehicleSize = TILE_SIZE - (offset * 2);
-                    g.drawImage(jarmuTexture, p.x + offset, p.y + offset, vehicleSize, vehicleSize, null);
+                if (latszik && kirajzolandoJarmu != null) {
+                    if (kirajzolandoJarmu instanceof jarmu.Auto) {
+                        jarmuTexture = TextureManager.getTexture("auto");
+                    } else if (kirajzolandoJarmu instanceof jarmu.Busz) {
+                        jarmuTexture = TextureManager.getTexture("busz");
+                    } else if (kirajzolandoJarmu instanceof jarmu.Hokotro) {
+                        jarmuTexture = TextureManager.getTexture("hokotro");
+                    }
+
+                    if (jarmuTexture != null) {
+                        // ITT A VARÁZSLAT: A jármű marad 64-es méretű!
+                        int vehicleSize = 64; 
+                        
+                        // Kiszámoljuk a középre igazítást (ha a jármű nagyobb, az offset negatív lesz, így kilóg a sávból)
+                        int offsetX = (TILE_SIZE - vehicleSize) / 2;
+                        int offsetY = (TILE_SIZE - vehicleSize) / 2;
+                        
+                        g.drawImage(jarmuTexture, p.x + offsetX, p.y + offsetY, vehicleSize, vehicleSize, null);
+                    }
                 }
             }
         }

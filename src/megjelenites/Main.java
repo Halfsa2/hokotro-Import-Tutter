@@ -1,53 +1,54 @@
 package megjelenites;
+
 import gazdasag.Bolt;
 import gazdasag.KozosKassza;
 import gazdasag.Takarito;
-import halozat.Sav;
+import halozat.Csomopont;
 import jarmu.Hokotro;
+import java.util.List;
 import vezerles.JatekVezerlo;
 import vezerles.VarosModell;
 
 public class Main {
     public static void main(String[] args) {
+        // 1. Textúrák betöltése
         TextureManager.loadTextures();
 
+        // 2. Fő rendszerek inicializálása
         KozosKassza kassza = new KozosKassza(1000);
         VarosModell modell = new VarosModell(kassza);
         Bolt bolt = new Bolt();
 
-        Sav s1 = new Sav();
-        Sav s2 = new Sav();
-        Sav s3 = new Sav();
-        s2.hoesesEseten(); // Havazzuk be a középsőt
-
-        // FONTOS: Összekötjük a sávokat, hogy a jármű tudjon haladni rajtuk!
-        s1.addSzomszed(s2);
-        s2.addSzomszed(s3);
-
-        // ... és vissza, hogy tudjunk tolatni a teszt során!
-        s2.addSzomszed(s1);
-        s3.addSzomszed(s2);
-
-        modell.addCsomopont(s1);
-        modell.addCsomopont(s2);
-        modell.addCsomopont(s3);
-
-
         JatekVezerlo vezerlo = new JatekVezerlo(null, modell, bolt);
 
-        // JÁTÉKOS LÉTREHOZÁSA (Autó helyett Takarítót csinálunk, hogy mi irányíthassunk)
-        Takarito takarito = new Takarito("Takarito1", kassza);
-        Hokotro hokotro = new Hokotro(takarito);
-        takarito.addHokotro(hokotro);
-        
-        vezerlo.addJatekos(takarito);
-        vezerlo.nextJatekos(); // Ő lesz a soron lévő (aktív) játékos
+        // 3. Játékosok regisztrálása (1 db Takarító)
+        vezerlo.registerJatekos("Takarito");
 
-        takarito.nextJarmu();
+        // 4. A VÁROS FELÉPÍTÉSE (Kereszteződés, AI autók, Start/Cél pontok)
+        vezerlo.initJatek();
 
-        s1.befogad(hokotro); // Felrakjuk a pályára az 1. sávra
-        hokotro.setAktualisCsomopont(s1); // Beállítjuk a helyzetét
+        // 5. Kezdőcsomag a Takarítónak (adunk egy hókotrót, hogy ne üres kézzel induljon)
+        gazdasag.Jatekos<?> aktiv = vezerlo.getAktivJatekos();
+        if (aktiv instanceof Takarito) {
+            Takarito takarito = (Takarito) aktiv;
+            Hokotro kezdoGep = new Hokotro(takarito);
+            kezdoGep.setNev("Kezdő Hókotró");
+            takarito.addHokotro(kezdoGep);
+            takarito.nextJarmu(); // Beültetjük a gépbe
 
+            // Megkeresünk egy üres Checkpointot a pályán, és letesszük oda
+            List<Csomopont> graf = modell.getVarosGraf();
+            for (Csomopont csp : graf) {
+                if (csp instanceof halozat.Checkpoint && !csp.foglalt()) {
+                    if (csp.befogad(kezdoGep)) {
+                        kezdoGep.setAktualisCsomopont(csp);
+                    }
+                    break;
+                }
+            }
+        }
+
+        // 6. Grafikus felület indítása
         javax.swing.SwingUtilities.invokeLater(() -> {
             GameWindow ablak = new GameWindow(vezerlo);
             vezerlo.setNezet(ablak);

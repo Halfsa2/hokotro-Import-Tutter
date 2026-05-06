@@ -17,26 +17,18 @@ public class VarosModell implements IJatekKezelo {
     private KozosKassza kassza;
     private int tickSzamlalo = 0;
 
-    /**
-     * Alapértelmezett konstruktor: új, üres városi gráfot hoz létre és üres pénztárcát inicializál.
-     */
+    // --- ÚJ: 2D-s Mátrix a térképhez ---
+    private Csomopont[][] varosMatrix;
+    private int szelesseg;
+    private int magassag;
+
     public VarosModell() {
         SkeletonLogger.create(this);
         this.kassza = new KozosKassza(0);
         this.varosGraf = new ArrayList<>();
         SkeletonLogger.exit(this);
     }
-    /**
-     * Visszaadja a város közös kasszáját, amely a játékosok pénzügyi tranzakcióihoz szükséges.
-     * @return kassza a város közös kasszája
-     */
-    public KozosKassza getKassza() {
-        return kassza;
-    }
-    /**
-     * Konstruktor meglévő közös kasszával.
-     * @param kassza a város közös kasszája
-     */
+
     public VarosModell(KozosKassza kassza) {
         SkeletonLogger.create(this);
         this.varosGraf = new ArrayList<>();
@@ -44,37 +36,76 @@ public class VarosModell implements IJatekKezelo {
         SkeletonLogger.exit(this);
     }
 
+    // --- ÚJ METÓDUSOK A 2D RÁCSHOZ ---
+    
+    /**
+     * Létrehozza az üres 2D-s rácsot a városnak.
+     */
+    public void initRacs(int szelesseg, int magassag) {
+        this.szelesseg = szelesseg;
+        this.magassag = magassag;
+        this.varosMatrix = new Csomopont[szelesseg][magassag];
+        this.varosGraf.clear(); // Tisztítjuk a régi listát, ha új pályát építünk
+    }
+
+    /**
+     * Hozzáad egy csomópontot egy konkrét X, Y koordinátára.
+     */
+    public void addCsomopont(int x, int y, Csomopont csp) {
+        SkeletonLogger.enter(this, "addCsomopont", csp);
+        if (x >= 0 && x < szelesseg && y >= 0 && y < magassag) {
+            this.varosMatrix[x][y] = csp;
+            
+            // Csak akkor adjuk a listához, ha még nincs benne (duplikáció elkerülése)
+            if (!this.varosGraf.contains(csp)) {
+                this.varosGraf.add(csp); 
+            }
+        }
+        SkeletonLogger.exit("void");
+    }
+
+    /**
+     * Visszaadja az adott koordinátán lévő csomópontot.
+     */
+    public Csomopont getCsomopont(int x, int y) {
+        if (x >= 0 && x < szelesseg && y >= 0 && y < magassag) {
+            return varosMatrix[x][y];
+        }
+        return null; // Ha a pályán kívülre mutat
+    }
+
+    public int getSzelesseg() { return szelesseg; }
+    public int getMagassag() { return magassag; }
+
+
+    // --- RÉGI METÓDUSOK ---
+
+    public KozosKassza getKassza() {
+        return kassza;
+    }
+
     @Override
     public void epit() {
         SkeletonLogger.enter(this, "epit");
-        // A manuális építést majd a parancsértelmező (Main) végzi a create és connect parancsokkal
         SkeletonLogger.exit("void");
     }
 
     @Override
     public void tick() {
         SkeletonLogger.enter(this, "tick");
-        
-        // 1. Minden hívásnál megnöveljük a számlálót
         tickSzamlalo++;
         System.out.println("Eltelt egy tick... (Jelenlegi idő: " + tickSzamlalo + ")");
         
-        // 2. Csak minden HARMADIK lépésnél hívjuk meg a havazást
         if (tickSzamlalo % 3 == 0) {
             System.out.println("Eltelt 3 időegység: Újabb hó hullik a városra!");
-            this.havazas(); // Meghívjuk a már létező havazas() metódusodat
+            this.havazas(); 
         }
         
-        // 3. A pálya egyéb frissítései (ami eddig is benne volt)
         palyaFrissit();
-        
         SkeletonLogger.exit("void");
     }
 
-    /**
-     * Hozzáad egy csomópontot a város gráfhoz.
-     * @param csp a hozzáadandó csomópont
-     */
+    // Visszafelé kompatibilitás miatt megmaradt
     public void addCsomopont(Csomopont csp) {
         SkeletonLogger.enter(this, "addCsomopont", csp);
         this.varosGraf.add(csp);
@@ -84,21 +115,20 @@ public class VarosModell implements IJatekKezelo {
     @Override
     public void palyaFrissit() {
         SkeletonLogger.enter(this, "palyaFrissit");
+        // Itt mostmár ellenőrizzük a null-t is, mert a mátrix üres cellái null-ok!
         for (Csomopont csp : varosGraf) {
-            csp.frissit();
+            if (csp != null) {
+                csp.frissit();
+            }
         }
         SkeletonLogger.exit("void");
     }
 
-    /**
-     * Kikeresi az első szabad (foglaltlan) checkpointot a városi gráfban.
-     * @return szabad Checkpoint objektum vagy null, ha nincs szabad
-     */
     @Override
     public Checkpoint getSzabadCheckpoint() {
         SkeletonLogger.enter(this, "getSzabadCheckpoint");
         for (Csomopont csp : varosGraf) {
-            if (csp instanceof Checkpoint && !csp.foglalt()) {
+            if (csp != null && csp instanceof Checkpoint && !csp.foglalt()) {
                 SkeletonLogger.exit(csp);
                 return (Checkpoint) csp;
             }
@@ -111,24 +141,13 @@ public class VarosModell implements IJatekKezelo {
     public void havazas() {
         SkeletonLogger.enter(this, "havazas");
         for (Csomopont csp : varosGraf) {
-            csp.hoesesEseten();
+            if (csp != null) {
+                csp.hoesesEseten();
+            }
         }
         SkeletonLogger.exit("void");
     }
 
-    /**
-     * Legrovidebb útvonal számítása két csomópont között (BFS Algoritmus).
-     * @param start a kezdő csomópont
-     * @param cel a cél csomópont
-     * @return Az útvonalat alkotó csomópontok listája
-     */
-    /*
-    Az autó kiindul a Start pontból. Megkérdezi a szomszédait (pl. Sáv1, Sáv2), és felírja őket egy listára.
-    Ezután megnézi Sáv1 szomszédait, majd Sáv2 szomszédait, és így tovább, hullámokban terjedve a hálózaton.
-    Mivel egy Map-ben (szótárban) felírja, hogy melyik sávra melyik előző sávról lépett rá,
-    amikor megtalálja a Célt, egyszerűen csak "visszagöngyölíti" a szálat a céltól a startig,
-    megfordítja a listát, és kész is a tökéletes útvonal!
-    */
     @Override
     public List<Csomopont> legrovidebbUtvonal(Csomopont start, Csomopont cel) {
         SkeletonLogger.enter(this, "legrovidebbUtvonal", start, cel);
@@ -140,53 +159,45 @@ public class VarosModell implements IJatekKezelo {
             return utvonal;
         }
 
-        // 1. Ha a start és a cél megegyezik
         if (start.equals(cel)) {
             utvonal.add(start);
             SkeletonLogger.exit("lista");
             return utvonal;
         }
 
-        // 2. BFS inicializálása
         Queue<Csomopont> sor = new LinkedList<>();
-        Map<Csomopont, Csomopont> szuloMap = new HashMap<>(); // Nyilvántartja, honnan jöttünk
+        Map<Csomopont, Csomopont> szuloMap = new HashMap<>(); 
         
         sor.add(start);
-        szuloMap.put(start, null); // A start csomópontnak nincs "szülője"
+        szuloMap.put(start, null); 
         
         boolean megtalaltuk = false;
 
-        // 3. Keresés
         while (!sor.isEmpty()) {
             Csomopont aktualis = sor.poll();
             
-            // Ha elértük a célt, leállítjuk a keresést
             if (aktualis.equals(cel)) {
                 megtalaltuk = true;
                 break;
             }
             
-            // Szomszédok bejárása
             List<Csomopont> szomszedok = aktualis.getNext();
             if (szomszedok != null) {
                 for (Csomopont szomszed : szomszedok) {
-                    // Ha a szomszédot még nem vizsgáltuk meg (nincs benne a map-ben)
                     if (szomszed != null && !szuloMap.containsKey(szomszed)) {
-                        szuloMap.put(szomszed, aktualis); // Megjegyezzük, hogy az "aktualis"-ból léptünk ide
+                        szuloMap.put(szomszed, aktualis); 
                         sor.add(szomszed);
                     }
                 }
             }
         }
 
-        // 4. Útvonal visszafejtése
         if (megtalaltuk) {
             Csomopont lepes = cel;
             while (lepes != null) {
                 utvonal.add(lepes);
-                lepes = szuloMap.get(lepes); // Visszalépünk a szülőre
+                lepes = szuloMap.get(lepes); 
             }
-            // Mivel a céltól haladtunk a start felé, a listát meg kell fordítani!
             Collections.reverse(utvonal);
         }
 
@@ -197,5 +208,4 @@ public class VarosModell implements IJatekKezelo {
     public List<Csomopont> getVarosGraf() {
         return this.varosGraf;
     }
-
 }
