@@ -36,6 +36,10 @@ public class GameWindow extends JFrame implements IJatekNezet {
         JButton boltButton = new JButton("Bolt megnyitása");
         boltButton.setFocusable(false);
         boltButton.addActionListener(e -> megnyitBolt());
+
+        JButton csereButton = new JButton("Felszerelés cseréje");
+        csereButton.setFocusable(false);
+        csereButton.addActionListener(e -> cserelFelszerelest());
         
         JButton passzButton = new JButton("Passz");
         passzButton.setFocusable(false);
@@ -53,6 +57,7 @@ public class GameWindow extends JFrame implements IJatekNezet {
         controlPanel.add(infoLabel);
         controlPanel.add(kasszaLabel);
         controlPanel.add(boltButton);
+        controlPanel.add(csereButton);
         controlPanel.add(passzButton);
         add(controlPanel, BorderLayout.SOUTH);
         
@@ -463,5 +468,61 @@ public class GameWindow extends JFrame implements IJatekNezet {
             label.setText("Kiválasztva: " + szoveg);
         });
         return gomb;
+    }
+
+    private void cserelFelszerelest() {
+        gazdasag.Jatekos<?> aktiv = vezerlo.getAktivJatekos();
+        if (!(aktiv instanceof gazdasag.Takarito)) {
+            uzenetKijelzese("Csak a Takarító cserélhet felszerelést!");
+            return;
+        }
+
+        if (!(aktiv.getAktivJarmu() instanceof jarmu.Hokotro)) {
+            uzenetKijelzese("Nincs aktív hókotró kiválasztva!");
+            return;
+        }
+
+        jarmu.Hokotro hokotro = (jarmu.Hokotro) aktiv.getAktivJarmu();
+        
+        // Megnézzük, van-e egyáltalán valami a zsebében
+        if (hokotro.getBirtokolja() == null || hokotro.getBirtokolja().isEmpty()) {
+            uzenetKijelzese("Nincs más felszerelés a gép raktárában!");
+            return;
+        }
+
+        // Kilistázzuk a zsebben lévő fejeket a legördülő menühöz
+        java.util.List<String> opciok = new java.util.ArrayList<>();
+        for (Object f : hokotro.getBirtokolja().values()) {
+            // Hogy ne választhassa ki azt, ami épp rajta van:
+            if (hokotro.getAktiv() != f) {
+                opciok.add(f.getClass().getSimpleName());
+            }
+        }
+        
+        if (opciok.isEmpty()) {
+            uzenetKijelzese("Nincs másik felszerelés a gép raktárában, amit feltehetnél!");
+            return;
+        }
+
+        String[] valaszthatoTomb = opciok.toArray(new String[0]);
+        String valasztas = (String) JOptionPane.showInputDialog(
+                this,
+                "Melyik felszerelést szeretnéd használni a(z) " + hokotro.getNev() + " gépen?",
+                "Felszerelés cseréje",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                valaszthatoTomb,
+                valaszthatoTomb[0]
+        );
+
+        if (valasztas != null) {
+            // --- TÉNYLEGES CSERE A MODELLBEN ---
+            felszereles.Kotrofej kivalasztottFej = hokotro.getFej(valasztas);
+            if (kivalasztottFej != null) {
+                hokotro.cserelFej(kivalasztottFej);
+                uzenetKijelzese("Sikeresen felszerelted a következő fejet: " + valasztas);
+                frissit(); // HUD azonnali frissítése az új aktív fejjel
+            }
+        }
     }
 }
