@@ -266,16 +266,16 @@ public void initJatek(){
     @Override
     public void vasarol(Arucikk termek, Hokotro gep){
         if(aktivJatekos instanceof Takarito t){
-            if(bolt.vasarol(termek, t, gep)){
+           if(bolt.vasarol(termek, t, gep)){
                 if(termek == Arucikk.GLOBAL_WARMING){
                     jatekVege();
-                }
-                nezet.uzenetKijelzese("Sikeres vásárlás!");
+              }
+               nezet.uzenetKijelzese("Sikeres vásárlás!");
             }else{
                 nezet.uzenetKijelzese("Sikertelen vásárlás!");
-            }
+           }
         }
-    }
+   }
 
     @Override
     public void registerJatekos(String tipus){

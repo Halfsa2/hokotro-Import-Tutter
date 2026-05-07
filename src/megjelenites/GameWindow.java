@@ -14,6 +14,9 @@ public class GameWindow extends JFrame implements IJatekNezet {
     private JLabel infoLabel;
     private JLabel kasszaLabel;
 
+    private int tileSize = 20; 
+    private java.awt.event.MouseAdapter aktivKattintasKezelo = null;
+
     public GameWindow(IJatekVezerlo vezerlo) {
         this.vezerlo = vezerlo;
         this.nodePositions = new HashMap<>();
@@ -150,7 +153,6 @@ public class GameWindow extends JFrame implements IJatekNezet {
 
     private void setupCoordinates() {
         nodePositions.clear();
-        int tileSize = 20;
         vezerles.VarosModell vModell = (vezerles.VarosModell) vezerlo.getVarosModell();
         
         // --- KÖZÉPRE IGAZÍTÁS KISZÁMOLÁSA ---
@@ -380,55 +382,33 @@ public class GameWindow extends JFrame implements IJatekNezet {
                     vezerlo.vasarol(mitVeszunk, finalAktivHokotro);
                     
                     if (mitVeszunk == gazdasag.Arucikk.HOKOTRO) {
-                        String beirtNev = JOptionPane.showInputDialog(boltAblak, "Hogy hívják az új hókotrót?", "Névadás", JOptionPane.PLAIN_MESSAGE);
+                        boltAblak.dispose(); // BEZÁRJUK A BOLTOT, hogy lássuk a térképet!
+                        
+                        String beirtNev = JOptionPane.showInputDialog(GameWindow.this, "Hogy hívják az új hókotrót?", "Névadás", JOptionPane.PLAIN_MESSAGE);
                         if (beirtNev == null || beirtNev.trim().isEmpty()) { beirtNev = "Hókotró 2000"; }
+                        final String finalNev = beirtNev;
 
-                        java.util.List<halozat.Csomopont> graf = vezerlo.getVarosModell().getVarosGraf();
-                        java.util.List<String> szabadNevek = new java.util.ArrayList<>();
-                        java.util.List<halozat.Csomopont> szabadCsomopontok = new java.util.ArrayList<>();
+                        uzenetKijelzese("Kattints a térképen arra az ÜRES mezőre, ahova le akarod tenni!");
                         
-                        for (int i = 0; i < graf.size(); i++) {
-                            halozat.Csomopont csp = graf.get(i);
-                            if (!csp.foglalt()) { 
-                                szabadNevek.add("Csomópont " + i);
-                                szabadCsomopontok.add(csp);
-                            }
-                        }
-                        
-                        if (szabadNevek.isEmpty()) {
-                            JOptionPane.showMessageDialog(boltAblak, "Nincs szabad hely a pályán az új gépnek!", "Hiba", JOptionPane.ERROR_MESSAGE);
-                        } else {
-                            String[] valaszthatoTomb = szabadNevek.toArray(new String[0]);
-                            String valasztas = (String) JOptionPane.showInputDialog(boltAblak,
-                                    "Hova szeretnéd letenni a(z) " + beirtNev + " nevű gépet?", "Új Hókotró Elhelyezése",
-                                    JOptionPane.QUESTION_MESSAGE, null, valaszthatoTomb, valaszthatoTomb[0]);
-                                    
-                            if (valasztas != null) {
-                                int valasztottIndex = szabadNevek.indexOf(valasztas);
-                                halozat.Csomopont celCsomopont = szabadCsomopontok.get(valasztottIndex);
-                                
+                        varjKattintasra("Kattints az új Hókotró helyére...", 
+                            csp -> !csp.foglalt(), // Bárhova leteheted, ami nem foglalt
+                            celCsp -> {
                                 gazdasag.Takarito aktivTakarito = (gazdasag.Takarito) vezerlo.getAktivJatekos();
                                 for (Object gep : aktivTakarito.getJarmuvek()) { 
                                     if (gep instanceof jarmu.Hokotro) {
                                         jarmu.Hokotro h = (jarmu.Hokotro) gep;
                                         if (h.getAktualisCsomopont() == null) {
-                                            h.setNev(beirtNev); 
-                                            if (celCsomopont.befogad(h)) { h.setAktualisCsomopont(celCsomopont); }
+                                            h.setNev(finalNev); 
+                                            if (celCsp.befogad(h)) { h.setAktualisCsomopont(celCsp); }
                                             break; 
                                         }
                                     }
                                 }
-                            }
-                        }
+                                uzenetKijelzese("Hókotró sikeresen lehelyezve!");
+                                frissit();
+                            });
+                        return; // Kilépünk a bolt logikájából, a kattintás majd befejezi!
                     }
-                    
-                    SwingUtilities.invokeLater(() -> {
-                        frissit(); 
-                        frissitBoltAdatok.run(); 
-                        
-                        kivalasztottArucikk[0] = null;
-                        kivalasztottLabel.setText("Vásárlás sikeres! Válassz következőt...");
-                    });
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(boltAblak, "Kivétel történt: " + ex.getMessage());
                 }
@@ -510,86 +490,71 @@ public class GameWindow extends JFrame implements IJatekNezet {
         }
     }
 
-    // --- JAVÍTOTT BUSZOS ÚJ SOFŐR LOGIKA ---
     private void ujSoforHozzaadasa() {
-        String beirtNev = JOptionPane.showInputDialog(
-                this, 
-                "Hogy hívják az új buszsofőrt?", 
-                "Új Sofőr Felvétele", 
-                JOptionPane.PLAIN_MESSAGE
-        );
-        
-        if (beirtNev == null) return;
-        if (beirtNev.trim().isEmpty()) beirtNev = "Új Sofőr";
+        String beirtNev = JOptionPane.showInputDialog(this, "Hogy hívják az új buszsofőrt?", "Új Sofőr Felvétele", JOptionPane.PLAIN_MESSAGE);
+        if (beirtNev == null || beirtNev.trim().isEmpty()) return;
 
-        java.util.List<halozat.Csomopont> graf = vezerlo.getVarosModell().getVarosGraf();
-        java.util.List<String> szabadNevek = new java.util.ArrayList<>();
-        java.util.List<halozat.Csomopont> szabadCsomopontok = new java.util.ArrayList<>();
-        java.util.List<String> osszesCelNev = new java.util.ArrayList<>();
-        java.util.List<halozat.Csomopont> osszesCelCsomopont = new java.util.ArrayList<>();
-        
-        // CSAK A CHECKPOINTOKAT VESSZÜK FIGYELEMBE
-        for (int i = 0; i < graf.size(); i++) {
-            halozat.Csomopont csp = graf.get(i);
-            if (csp instanceof halozat.Checkpoint) {
-                String nev = "Checkpoint " + i;
-                osszesCelNev.add(nev);
-                osszesCelCsomopont.add(csp);
+        uzenetKijelzese("Kattints a térképen egy START végállomásra (piros mező)!");
+
+        varjKattintasra("Kattints a START állomásra (Checkpoint)...", 
+            csp -> csp instanceof halozat.Checkpoint && !csp.foglalt(), 
+            startCsp -> {
+                uzenetKijelzese("Most kattints a CÉL állomásra!");
                 
-                if (!csp.foglalt()) {
-                    szabadNevek.add(nev);
-                    szabadCsomopontok.add(csp);
+                varjKattintasra("Kattints a CÉL állomásra...", 
+                    csp -> csp instanceof halozat.Checkpoint && csp != startCsp, 
+                    celCsp -> {
+                        try {
+                            gazdasag.Sofor ujSofor = new gazdasag.Sofor(beirtNev, vezerlo.getVarosModell().getKassza());
+                            jarmu.Busz ujBusz = new jarmu.Busz((halozat.Checkpoint) startCsp, (halozat.Checkpoint) celCsp, ujSofor);
+                            ujSofor.setJarmu(ujBusz);
+                            
+                            if (startCsp.befogad(ujBusz)) ujBusz.setAktualisCsomopont(startCsp);
+                            
+                            vezerlo.addJatekos(ujSofor);
+                            vezerlo.registerJatekos("Sofor"); 
+                            
+                            uzenetKijelzese("Sikeresen felvetted a buszt!");
+                            frissit();
+                        } catch (Exception ex) { ex.printStackTrace(); }
+                    });
+            });
+    }
+
+    private void varjKattintasra(String infoSzoveg, java.util.function.Predicate<halozat.Csomopont> validalo, java.util.function.Consumer<halozat.Csomopont> akcio) {
+        infoLabel.setText(">>> " + infoSzoveg + " <<<");
+        
+        // Ha volt előző figyelő, azt levesszük
+        if (aktivKattintasKezelo != null) {
+            mapPanel.removeMouseListener(aktivKattintasKezelo);
+        }
+
+        aktivKattintasKezelo = new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                halozat.Csomopont kattintottCsp = null;
+                
+                // Megkeressük, melyik mezőre kattintott a játékos
+                for (Map.Entry<halozat.Csomopont, Point> entry : nodePositions.entrySet()) {
+                    Rectangle rect = new Rectangle(entry.getValue().x, entry.getValue().y, tileSize, tileSize);
+                    if (rect.contains(e.getPoint())) {
+                        kattintottCsp = entry.getKey();
+                        break;
+                    }
+                }
+
+                if (kattintottCsp != null && validalo.test(kattintottCsp)) {
+                    // Ha jó helyre kattintott, levesszük a figyelőt és végrehajtjuk az akciót
+                    mapPanel.removeMouseListener(this);
+                    aktivKattintasKezelo = null;
+                    akcio.accept(kattintottCsp);
+                    frissit(); // Visszaállítja a normál infó szöveget
+                } else {
+                    uzenetKijelzese("Érvénytelen mező! Kérlek a megfelelő helyre kattints.");
                 }
             }
-        }
-
-        if (szabadNevek.isEmpty()) {
-            uzenetKijelzese("Nincs szabad Checkpoint a pályán, ahova letehetnéd a buszt!");
-            return;
-        }
-
-        String[] szabadTomb = szabadNevek.toArray(new String[0]);
-        String startValasztas = (String) JOptionPane.showInputDialog(this, 
-                "Hova szeretnéd letenni a buszt (Start)?", "Indulási hely", 
-                JOptionPane.QUESTION_MESSAGE, null, szabadTomb, szabadTomb[0]);
-                
-        if (startValasztas == null) return;
-        halozat.Csomopont start = szabadCsomopontok.get(szabadNevek.indexOf(startValasztas));
-
-        String[] osszesTomb = osszesCelNev.toArray(new String[0]);
-        String celValasztas = (String) JOptionPane.showInputDialog(this, 
-                "Mi legyen a busz célállomása?", "Célállomás", 
-                JOptionPane.QUESTION_MESSAGE, null, osszesTomb, osszesTomb[0]);
-                
-        if (celValasztas == null) return;
-        halozat.Csomopont cel = osszesCelCsomopont.get(osszesCelNev.indexOf(celValasztas));
-
-        if (start.equals(cel)) {
-            uzenetKijelzese("A Start és a Cél nem lehet ugyanaz a mező!");
-            return;
-        }
-
-        try {
-            gazdasag.KozosKassza kassza = vezerlo.getVarosModell().getKassza();
-            gazdasag.Sofor ujSofor = new gazdasag.Sofor(beirtNev, kassza);
-            
-            // Biztonságos castolás, mert fent kiszűrtük, hogy csak Checkpoint lehet
-            jarmu.Busz ujBusz = new jarmu.Busz((halozat.Checkpoint) start, (halozat.Checkpoint) cel, ujSofor);
-            ujSofor.setJarmu(ujBusz);
-
-            if (start.befogad(ujBusz)) {
-                ujBusz.setAktualisCsomopont(start);
-            }
-
-            vezerlo.addJatekos(ujSofor);
-            vezerlo.registerJatekos("Sofor"); 
-
-            uzenetKijelzese("Sikeresen felvetted a flottába: " + beirtNev + "!\nIndul: " + startValasztas + "\nCél: " + celValasztas);
-            frissit(); 
-            
-        } catch (Exception ex) {
-            uzenetKijelzese("Hiba történt a busz létrehozásakor: " + ex.getMessage());
-            ex.printStackTrace();
-        }
+        };
+        
+        mapPanel.addMouseListener(aktivKattintasKezelo);
     }
 }
