@@ -1,7 +1,6 @@
 package gazdasag;
 
 import jarmu.Busz;
-import java.util.ArrayList;
 import static prototipus.CommandInterpreter.reverseNevTar;
 import vezerles.SkeletonLogger;
 
@@ -19,15 +18,18 @@ public class Sofor extends Jatekos<Busz> {
     public Sofor(String nev, KozosKassza kassza) {
         super(nev, kassza);
         SkeletonLogger.create(this);
-        
-        this.jarmuvek = new ArrayList<>();
-        
         SkeletonLogger.exit(this);
     }
+
     public void setJarmu(Busz busz) {
         SkeletonLogger.enter(this, "setJarmu", busz);
-        if(!jarmuvek.isEmpty()){return;} // A sofőr csak egy buszt irányíthat, így ha már van egy, nem adunk hozzá újat
+        if(!jarmuvek.isEmpty()){return;} 
         this.jarmuvek.add(busz);
+        
+        // Azonnal beültetjük a buszba!
+        if (this.aktivJarmu == null) {
+            this.aktivJarmu = busz;
+        }
         SkeletonLogger.exit("void");
     }
     

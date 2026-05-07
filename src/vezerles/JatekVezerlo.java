@@ -188,18 +188,27 @@ public void initJatek(){
     }
 
 
-    public boolean lep(Csomopont cel){
+   public boolean lep(Csomopont cel){
         if(jatekVege) return false;
         boolean sikeres = false;
+        
         if(aktivJatekos != null){
             sikeres = aktivJatekos.lep(cel);
-            if(aktivJatekos.isKorVege()) {
-                nextJatekos();
-            } else {
+            
+            if (sikeres) {
+                // ELŐSZÖR levonjuk a lépést (járművet váltunk)
                 aktivJatekos.nextJarmu();
+                
+                // UTÁNA ellenőrizzük, hogy elfogyott-e minden jármű lépése!
+                if(aktivJatekos.isKorVege()) {
+                    nextJatekos();
+                }
+                
+                autokKore();
+                modell.palyaFrissit();
+            } else {
+                nezet.uzenetKijelzese("Hoppá! Ide nem tudsz lépni. (Foglalt, vagy túl mély a hó)");
             }
-            autokKore();
-            modell.palyaFrissit();
         }
         return sikeres;
     }

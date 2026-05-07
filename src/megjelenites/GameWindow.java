@@ -513,8 +513,16 @@ public class GameWindow extends JFrame implements IJatekNezet {
                             
                             vezerlo.addJatekos(ujSofor);
                             vezerlo.registerJatekos("Sofor"); 
+                            // --- ÚJ VARÁZSLAT: Azonnal a Buszra ugrik a kör! ---
+                            // Ezzel a ciklussal a gép automatikusan befejezi a jelenlegi játékos körét,
+                            // és rögtön az új busznak adja az irányítást, Passz gomb megnyomása nélkül.
+                            int loopGuard = 0;
+                            while(vezerlo.getAktivJatekos() != ujSofor && loopGuard < 20) {
+                                vezerlo.nextJatekos();
+                                loopGuard++;
+                            }
                             
-                            uzenetKijelzese("Sikeresen felvetted a buszt!");
+                            uzenetKijelzese("Sikeresen felvetted a buszt! Azonnal indulhatsz is vele!");
                             frissit();
                         } catch (Exception ex) { ex.printStackTrace(); }
                     });
