@@ -150,14 +150,31 @@ public void initJatek(){
             }
         }
 
-        // --- 3. JÁTÉKOSOK ÉS AUTÓK ---
-        for(int i = 0; i < takaritokSzama; i++) jatekosok.add(new gazdasag.Takarito("Takarito" + i, modell.getKassza()));
+       // --- 3. JÁTÉKOSOK ÉS AUTÓK ---
+        for(int i = 0; i < takaritokSzama; i++) {
+            jatekosok.add(new gazdasag.Takarito("Takarito" + i, modell.getKassza()));
+        }
 
-        halozat.Checkpoint start1 = (halozat.Checkpoint)vModell.getCsomopont(0, 4);  // Bal felső, Keletre tartó belső sáv
+        // 1. Autó (Északi vízszintes út: Nyugatról Keletre)
+        halozat.Checkpoint start1 = (halozat.Checkpoint)vModell.getCsomopont(0, 4);  
         halozat.Checkpoint cel1 = (halozat.Checkpoint)vModell.getCsomopont(W-1, 4);
-        Auto a1 = new Auto(start1, cel1);
+        jarmu.Auto a1 = new jarmu.Auto(start1, cel1);
         if(start1.befogad(a1)) a1.setAktualisCsomopont(start1);
         addAuto(a1);
+
+        // 2. Autó (Középső függőleges út: Északról Délre)
+        halozat.Checkpoint start2 = (halozat.Checkpoint)vModell.getCsomopont(20, 0);  
+        halozat.Checkpoint cel2 = (halozat.Checkpoint)vModell.getCsomopont(20, H-1);
+        jarmu.Auto a2 = new jarmu.Auto(start2, cel2);
+        if(start2.befogad(a2)) a2.setAktualisCsomopont(start2);
+        addAuto(a2);
+
+        // 3. Autó (Déli vízszintes út: Keletről Nyugatra)
+        halozat.Checkpoint start3 = (halozat.Checkpoint)vModell.getCsomopont(W-1, 29);  
+        halozat.Checkpoint cel3 = (halozat.Checkpoint)vModell.getCsomopont(0, 29);
+        jarmu.Auto a3 = new jarmu.Auto(start3, cel3);
+        if(start3.befogad(a3)) a3.setAktualisCsomopont(start3);
+        addAuto(a3);
 
         modell.havazas();
         nextJatekos(); 

@@ -61,25 +61,41 @@ public class Utszakasz implements IStatable {
     }
     
     /**
-     * Visszaadja a vizsgált sávtól jobbra lévő sávot.
-     * Elengedhetetlen a Söprő fej működéséhez (Teszt 52).
-     * @param sav a vizsgált sáv
-     * @return a jobbra lévő sáv referenciája, vagy null
+     * Visszaadja a vizsgált sávhoz képest a menetirány szerinti "külső" sávot.
+     * Elengedhetetlen a Söprő fej helyes működéséhez (Teszt 52).
      */
     public Sav getJobbSzomszed(Sav sav){
         SkeletonLogger.enter(this, "getJobbSzomszed", sav); 
         
         int id = this.savok.indexOf(sav);
         
-        // Ha benne van a listában és nem a szélső jobb oldali sáv
-        if (id != -1 && id < this.savok.size() - 1) {
-            Sav szomszed = this.savok.get(id + 1);
-            SkeletonLogger.exit(szomszed);
-            return szomszed;
+        // Ha valamiért nem találjuk, vagy nem 4 sávos az út, marad az alapértelmezett logika
+        if (id == -1 || this.savok.size() != 4) {
+            if (id != -1 && id < this.savok.size() - 1) {
+                Sav szomszed = this.savok.get(id + 1);
+                SkeletonLogger.exit(szomszed);
+                return szomszed;
+            }
+            SkeletonLogger.exit(null);
+            return null;
         }
         
-        SkeletonLogger.exit(null);
-        return null;
+        // --- 4 SÁVOS ÚT "KIFELÉ TOLÓ" LOGIKÁJA ---
+        Sav szomszed = null;
+        
+        // Ha az 1-es belső sávon vagyunk, a hó a 0-ás külső sávra kerül
+        if (id == 1) {
+            szomszed = this.savok.get(0);
+        }
+        // Ha a 2-es belső sávon vagyunk (szemben), a hó a 3-as külső sávra kerül
+        else if (id == 2) {
+            szomszed = this.savok.get(3);
+        }
+        
+        // (Ha a 0-ás vagy 3-as külső sávon vagyunk, a hó leesik az útról az árokba, így null marad)
+
+        SkeletonLogger.exit(szomszed);
+        return szomszed;
     }
     
     /**

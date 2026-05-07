@@ -30,17 +30,27 @@ public class MapPanel extends JPanel {
             Point p = entry.getValue();
             Image baseTexture = null;
 
+            // 1. Megnézzük a mező típusát
             if (csp instanceof halozat.Sav) {
                 halozat.Sav sav = (halozat.Sav) csp;
+                
+                // Az Alagút mindig alagút marad (oda nem esik hó)
                 if (sav.getUtszakasz() instanceof halozat.Alagut) {
                     baseTexture = TextureManager.getTexture("alagut");
-                } else if (sav.getUtszakasz() instanceof halozat.Hid) {
-                    baseTexture = TextureManager.getTexture("hid");
                 } else {
+                    // Ha nem alagút (tehát Sima út vagy Híd), lekérjük az állapotát!
                     allapot.Savallapot allapot = sav.getAllapot();
+                    
                     if (allapot instanceof allapot.Tiszta) {
-                        baseTexture = TextureManager.getTexture("tiszta");
-                    } else if (allapot instanceof allapot.SekelyHo) {
+                        // Ha TISZTA, megnézzük, hogy híd-e. Ha igen, híd textúra, ha nem, sima aszfalt.
+                        if (sav.getUtszakasz() instanceof halozat.Hid) {
+                            baseTexture = TextureManager.getTexture("hid");
+                        } else {
+                            baseTexture = TextureManager.getTexture("tiszta");
+                        }
+                    } 
+                    // Ha viszont esett rá a hó, a hó textúrák befedik a hidat és az utat is!
+                    else if (allapot instanceof allapot.SekelyHo) {
                         baseTexture = TextureManager.getTexture("sekely");
                     } else if (allapot instanceof allapot.MelyHo) {
                         baseTexture = TextureManager.getTexture("mely");
@@ -49,7 +59,7 @@ public class MapPanel extends JPanel {
                     }
                 }
             } else if (csp instanceof halozat.Keresztezodes) {
-                baseTexture = TextureManager.getTexture("tiszta");
+                baseTexture = TextureManager.getTexture("tiszta"); 
             } else if (csp instanceof halozat.Checkpoint) {
                 baseTexture = TextureManager.getTexture("vegallomas");
             }
@@ -65,48 +75,60 @@ public class MapPanel extends JPanel {
             }
         }
 
-        // --- 2. KÖR: JÁRMŰVEK KIRAJZOLÁSA (Hogy mindig legfelül legyenek!) ---
+       // --- 2. KÖR: JÁRMŰVEK KIRAJZOLÁSA (Hogy mindig legfelül legyenek!) ---
         for (Map.Entry<Csomopont, Point> entry : nodePositions.entrySet()) {
             Csomopont csp = entry.getKey();
             Point p = entry.getValue();
 
-            if (csp.foglalt()) {
-                Image jarmuTexture = null;
-                jarmu.Jarmu kirajzolandoJarmu = null;
-                boolean latszik = true;
+            Image jarmuTexture = null;
+            jarmu.Jarmu kirajzolandoJarmu = null;
+            boolean latszik = true;
 
-                if (csp instanceof halozat.Sav) {
-                    halozat.Sav sav = (halozat.Sav) csp;
+            // 1. Megnézzük, milyen típusú mezőn vagyunk, és van-e rajta jármű
+            if (csp instanceof halozat.Sav) {
+                halozat.Sav sav = (halozat.Sav) csp;
+                if (sav.getJarmu() != null) {
                     kirajzolandoJarmu = sav.getJarmu();
+                    // Alagútban láthatatlan
                     if (sav.getUtszakasz() instanceof halozat.Alagut) {
                         latszik = false;
                     }
-                } else if (csp instanceof halozat.Checkpoint) {
-                    java.util.List<jarmu.Jarmu> bentLevok = ((halozat.Checkpoint) csp).getJarmuvek();
-                    if (bentLevok != null && !bentLevok.isEmpty()) {
-                        kirajzolandoJarmu = bentLevok.get(0); 
-                    }
+                }
+            } 
+            else if (csp instanceof halozat.Checkpoint) {
+                java.util.List<jarmu.Jarmu> bentLevok = ((halozat.Checkpoint) csp).getJarmuvek();
+                if (bentLevok != null && !bentLevok.isEmpty()) {
+                    kirajzolandoJarmu = bentLevok.get(0); 
+                }
+            } 
+            else if (csp instanceof halozat.Keresztezodes) {
+                java.util.List<jarmu.Jarmu> bentLevok = ((halozat.Keresztezodes) csp).getJarmuvek();
+                if (bentLevok != null && !bentLevok.isEmpty()) {
+                    // Mivel a Kereszteződésbe több autó is befér egyszerre, a legutoljára 
+                    // belépett (legfelső) járművet rajzoljuk ki, hogy biztosan lásd a sajátodat!
+                    kirajzolandoJarmu = bentLevok.get(bentLevok.size() - 1);
+                }
+            }
+
+            // 2. Tényleges kirajzolás, ha van mit
+            if (latszik && kirajzolandoJarmu != null) {
+                if (kirajzolandoJarmu instanceof jarmu.Auto) {
+                    jarmuTexture = TextureManager.getTexture("auto");
+                } else if (kirajzolandoJarmu instanceof jarmu.Busz) {
+                    jarmuTexture = TextureManager.getTexture("busz");
+                } else if (kirajzolandoJarmu instanceof jarmu.Hokotro) {
+                    jarmuTexture = TextureManager.getTexture("hokotro");
                 }
 
-                if (latszik && kirajzolandoJarmu != null) {
-                    if (kirajzolandoJarmu instanceof jarmu.Auto) {
-                        jarmuTexture = TextureManager.getTexture("auto");
-                    } else if (kirajzolandoJarmu instanceof jarmu.Busz) {
-                        jarmuTexture = TextureManager.getTexture("busz");
-                    } else if (kirajzolandoJarmu instanceof jarmu.Hokotro) {
-                        jarmuTexture = TextureManager.getTexture("hokotro");
-                    }
-
-                    if (jarmuTexture != null) {
-                        // ITT A VARÁZSLAT: A jármű marad 64-es méretű!
-                        int vehicleSize = 64; 
-                        
-                        // Kiszámoljuk a középre igazítást (ha a jármű nagyobb, az offset negatív lesz, így kilóg a sávból)
-                        int offsetX = (TILE_SIZE - vehicleSize) / 2;
-                        int offsetY = (TILE_SIZE - vehicleSize) / 2;
-                        
-                        g.drawImage(jarmuTexture, p.x + offsetX, p.y + offsetY, vehicleSize, vehicleSize, null);
-                    }
+                if (jarmuTexture != null) {
+                    // A jármű mérete marad a szép nagy (64 pixel)
+                    int vehicleSize = 64; 
+                    
+                    // Középre igazítás a sávokon (kilógás engedélyezése)
+                    int offsetX = (TILE_SIZE - vehicleSize) / 2;
+                    int offsetY = (TILE_SIZE - vehicleSize) / 2;
+                    
+                    g.drawImage(jarmuTexture, p.x + offsetX, p.y + offsetY, vehicleSize, vehicleSize, null);
                 }
             }
         }
