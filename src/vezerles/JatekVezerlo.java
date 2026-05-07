@@ -32,20 +32,23 @@ public class JatekVezerlo implements IJatekVezerlo {
         this.jatekosok = new ArrayList<>();
         autoUtvonalak = new HashMap<>();
     }
-
+    
+@Override
 public void initJatek(){
         vezerles.VarosModell vModell = (vezerles.VarosModell) modell;
-        int W = 40; // Pálya szélessége
-        int H = 35; // Pálya magassága
+        
+        // --- 1. A PÁLYA MÉRETE ÉS AZ UTAK HELYZETE ---
+        int W = 30; // 40-ről 30-ra csökkent (5 csempés távolságok miatt)
+        int H = 35; 
         vModell.initRacs(W, H);
 
-        // Az utak kezdő koordinátái (4 sáv szélesek lesznek)
-        int[] vX = {4, 18, 32}; 
+        // Az utak kezdő koordinátái (Mindegyik között pont 5 mező távolság van!)
+        int[] vX = {4, 13, 22}; 
         int[] hY = {2, 11, 20, 29}; 
 
         java.util.Map<String, halozat.Utszakasz> sliceMap = new java.util.HashMap<>();
 
-        // --- 1. A PÁLYA MEZŐINEK LÉTREHOZÁSA ---
+        // --- 2. A PÁLYA MEZŐINEK LÉTREHOZÁSA ---
         for(int x = 0; x < W; x++) {
             for(int y = 0; y < H; y++) {
                 
@@ -63,11 +66,11 @@ public void initJatek(){
                 else if ((rX != -1 && (y == 0 || y == H-1)) || (rY != -1 && (x == 0 || x == W-1))) {
                     csp = new halozat.Checkpoint();
                 } 
-                // Sima utak, Hidak, Alagutak (Csak 1 mezőnyiek!)
+                // Sima utak, Hidak, Alagutak
                 else {
                     boolean isTunnel = false, isBridge = false;
                     
-                    // Pozíciók a rajzod alapján (Y vagy X koordináta a kereszteződések között)
+                    // Pozíciók (hozzáigazítva a rövidebb blokkokhoz)
                     if (rY == -1) { // Függőleges szakasz
                         if (rX == 0 && y == 8) isTunnel = true;
                         if (rX == 0 && y == 26) isTunnel = true;
@@ -76,8 +79,8 @@ public void initJatek(){
                         if (rX == 2 && y == 8) isTunnel = true;
                         if (rX == 2 && y == 17) isBridge = true;
                     } else if (rX == -1) { // Vízszintes szakasz
-                        if (rY == 2 && x == 26) isBridge = true;
-                        if (rY == 3 && x == 12) isTunnel = true;
+                        if (rY == 2 && x == 19) isBridge = true; // Középre igazítva
+                        if (rY == 3 && x == 10) isTunnel = true; // Középre igazítva
                     }
 
                     String key = (rX != -1) ? "V_" + rX + "_" + y : "H_" + x + "_" + rY;
@@ -95,7 +98,7 @@ public void initJatek(){
             }
         }
 
-        // --- 2. TOPOLÓGIA ÉS SÁVVÁLTÁS ÖSSZEKÖTÉSE ---
+        // --- 3. TOPOLÓGIA ÉS SÁVVÁLTÁS ÖSSZEKÖTÉSE ---
         for(int x = 0; x < W; x++) {
             for(int y = 0; y < H; y++) {
                 Csomopont akt = vModell.getCsomopont(x, y);
@@ -104,9 +107,9 @@ public void initJatek(){
                 int rX = -1; for(int i=0; i<vX.length; i++) if(x >= vX[i] && x < vX[i]+4) rX = i;
                 int rY = -1; for(int i=0; i<hY.length; i++) if(y >= hY[i] && y < hY[i]+4) rY = i;
 
-                // Vízszintes haladás (2 Nyugat, 2 Kelet)
+                // Vízszintes haladás
                 if (rY != -1) {
-                    int lane = y - hY[rY]; // 0-3 sáv index
+                    int lane = y - hY[rY]; 
                     if ((lane == 0 || lane == 1) && x > 0) kapcsol(akt, vModell.getCsomopont(x-1, y)); // Nyugat
                     if ((lane == 2 || lane == 3) && x < W-1) kapcsol(akt, vModell.getCsomopont(x+1, y)); // Kelet
                     
@@ -116,9 +119,9 @@ public void initJatek(){
                     if (lane == 3) kapcsol(akt, vModell.getCsomopont(x, y-1));
                 }
 
-                // Függőleges haladás (2 Észak, 2 Dél)
+                // Függőleges haladás
                 if (rX != -1) {
-                    int lane = x - vX[rX]; // 0-3 sáv index
+                    int lane = x - vX[rX]; 
                     if ((lane == 0 || lane == 1) && y > 0) kapcsol(akt, vModell.getCsomopont(x, y-1)); // Észak
                     if ((lane == 2 || lane == 3) && y < H-1) kapcsol(akt, vModell.getCsomopont(x, y+1)); // Dél
                     
@@ -150,7 +153,7 @@ public void initJatek(){
             }
         }
 
-       // --- 3. JÁTÉKOSOK ÉS AUTÓK ---
+        // --- 4. JÁTÉKOSOK ÉS AUTÓK ---
         for(int i = 0; i < takaritokSzama; i++) {
             jatekosok.add(new gazdasag.Takarito("Takarito" + i, modell.getKassza()));
         }
@@ -162,14 +165,14 @@ public void initJatek(){
         if(start1.befogad(a1)) a1.setAktualisCsomopont(start1);
         addAuto(a1);
 
-        // 2. Autó (Középső függőleges út: Északról Délre)
-        halozat.Checkpoint start2 = (halozat.Checkpoint)vModell.getCsomopont(20, 0);  
-        halozat.Checkpoint cel2 = (halozat.Checkpoint)vModell.getCsomopont(20, H-1);
+        // 2. Autó (Középső függőleges út: Északról Délre - rX=1, sáv=16)
+        halozat.Checkpoint start2 = (halozat.Checkpoint)vModell.getCsomopont(16, 0);  
+        halozat.Checkpoint cel2 = (halozat.Checkpoint)vModell.getCsomopont(16, H-1);
         jarmu.Auto a2 = new jarmu.Auto(start2, cel2);
         if(start2.befogad(a2)) a2.setAktualisCsomopont(start2);
         addAuto(a2);
 
-        // 3. Autó (Déli vízszintes út: Keletről Nyugatra)
+        // 3. Autó (Déli vízszintes út: Keletről Nyugatra - rY=3, sáv=29)
         halozat.Checkpoint start3 = (halozat.Checkpoint)vModell.getCsomopont(W-1, 29);  
         halozat.Checkpoint cel3 = (halozat.Checkpoint)vModell.getCsomopont(0, 29);
         jarmu.Auto a3 = new jarmu.Auto(start3, cel3);
@@ -187,7 +190,7 @@ public void initJatek(){
         if (honnan instanceof halozat.Keresztezodes) ((halozat.Keresztezodes)honnan).addKimenet(hova);
     }
 
-
+    @Override
    public boolean lep(Csomopont cel){
         if(jatekVege) return false;
         boolean sikeres = false;
@@ -213,11 +216,13 @@ public void initJatek(){
         return sikeres;
     }
 
+    @Override
     public boolean lep(Jarmu jarmu, Csomopont cel){
         if(jatekVege) return false;
         return jarmu.lep(cel);
     }
 
+    @Override
     public void nextJatekos() {
         if(jatekVege) return;
         if(aktivJatekos == null) {
