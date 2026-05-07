@@ -22,7 +22,7 @@ public class GameWindow extends JFrame implements IJatekNezet {
         this.nodePositions = new HashMap<>();
         
         setTitle("Zúzmaraváros - Hókotró Szimulátor");
-        setSize(1024, 768);
+        setSize(1024, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -380,6 +380,8 @@ public class GameWindow extends JFrame implements IJatekNezet {
                     }
 
                     vezerlo.vasarol(mitVeszunk, finalAktivHokotro);
+                    frissitBoltAdatok.run();
+                    frissit();
                     
                     if (mitVeszunk == gazdasag.Arucikk.HOKOTRO) {
                         boltAblak.dispose(); // BEZÁRJUK A BOLTOT, hogy lássuk a térképet!
