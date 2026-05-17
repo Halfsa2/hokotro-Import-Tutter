@@ -567,4 +567,88 @@ public class GameWindow extends JFrame implements IJatekNezet {
         
         mapPanel.addMouseListener(aktivKattintasKezelo);
     }
+
+    /**
+     * Ezt hívjuk meg legelőször, hogy elinduljon a beállítás!
+     */
+    public void inditJatekBeallitas() {
+        String input = JOptionPane.showInputDialog(this, "Üdvözöl Zúzmaraváros!\nMennyi játékos fog játszani?", "Játékosok száma", JOptionPane.QUESTION_MESSAGE);
+        if (input == null) System.exit(0); // Ha rányom a Mégse gombra, kilép a játék
+        
+        int jatekosSzam;
+        try {
+            jatekosSzam = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            jatekosSzam = 1; // Ha betűt ír be, alapértelmezetten 1 lesz
+        }
+        
+        // Elindítjuk a bekérést a 0. indextől
+        kerdezJatekos(0, jatekosSzam);
+    }
+
+    /**
+     * Rekurzív metódus, ami sorban megkérdez mindenkit.
+     */
+    private void kerdezJatekos(int index, int total) {
+        // Ha mindenki végzett, indul a játék!
+        if (index >= total) {
+            uzenetKijelzese("Minden játékos készen áll! Indul a műszak!");
+            // Itt kell kasztolni a vezerlot JatekVezerlo-re, ha a startElsoKor nincs benne az interface-ben:
+            if (vezerlo instanceof vezerles.JatekVezerlo) {
+                ((vezerles.JatekVezerlo) vezerlo).startElsoKor();
+            }
+            frissit();
+            return;
+        }
+
+        // 1. Név bekérése
+        String nev = JOptionPane.showInputDialog(this, (index + 1) + ". Játékos neve:", "Játékos " + (index+1), JOptionPane.QUESTION_MESSAGE);
+        if (nev == null || nev.trim().isEmpty()) nev = "Játékos " + (index+1);
+
+        // 2. Szerep bekérése
+        String[] opciok = {"Takarító (Hókotró)", "Sofőr (Busz)"};
+        int valasztas = JOptionPane.showOptionDialog(this, nev + ", mi a szereped?", "Szerepválasztás",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciok, opciok[0]);
+
+        // 3. Pályára helyezés
+        if (valasztas == 0) { // TAKARÍTÓ
+            uzenetKijelzese(nev + " (Takarító): Kattints egy ÜRES mezőre a térképen a Hókotród lehelyezéséhez!");
+            
+            final String veglegesNev = nev;
+            varjKattintasra("Hókotró lehelyezése...", csp -> !csp.foglalt(), celCsp -> {
+                gazdasag.Takarito t = new gazdasag.Takarito(veglegesNev, vezerlo.getVarosModell().getKassza());
+                jarmu.Hokotro h = (jarmu.Hokotro) t.getAktivJarmu(); // A Takarító konstruktora elvileg létrehozta
+                if (h != null) {
+                    h.setNev(veglegesNev + " Hókotrója");
+                    if (celCsp.befogad(h)) h.setAktualisCsomopont(celCsp);
+                }
+                vezerlo.addJatekos(t);
+                vezerlo.registerJatekos("Takarito");
+                
+                // Jöhet a következő játékos!
+                kerdezJatekos(index + 1, total);
+            });
+            
+        } else { // SOFŐR
+            uzenetKijelzese(nev + " (Sofőr): Kattints egy START végállomásra (piros házikó)!");
+            
+            final String veglegesNev = nev;
+            varjKattintasra("START állomás kiválasztása...", csp -> csp instanceof halozat.Checkpoint && !csp.foglalt(), startCsp -> {
+                uzenetKijelzese(veglegesNev + " (Sofőr): Most kattints a CÉL állomásra!");
+                
+                varjKattintasra("CÉL állomás kiválasztása...", csp -> csp instanceof halozat.Checkpoint && csp != startCsp, celCsp -> {
+                    gazdasag.Sofor s = new gazdasag.Sofor(veglegesNev, vezerlo.getVarosModell().getKassza());
+                    jarmu.Busz b = new jarmu.Busz((halozat.Checkpoint) startCsp, (halozat.Checkpoint) celCsp, s);
+                    s.setJarmu(b);
+                    if (startCsp.befogad(b)) b.setAktualisCsomopont(startCsp);
+                    
+                    vezerlo.addJatekos(s);
+                    vezerlo.registerJatekos("Sofor");
+                    
+                    // Jöhet a következő játékos!
+                    kerdezJatekos(index + 1, total);
+                });
+            });
+        }
+    }
 }

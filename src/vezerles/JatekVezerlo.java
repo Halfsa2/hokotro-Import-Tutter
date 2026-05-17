@@ -33,8 +33,8 @@ public class JatekVezerlo implements IJatekVezerlo {
         autoUtvonalak = new HashMap<>();
     }
     
-@Override
-public void initJatek(){
+    @Override
+    public void initJatek(){
         vezerles.VarosModell vModell = (vezerles.VarosModell) modell;
         
         // --- 1. A PÁLYA MÉRETE ÉS AZ UTAK HELYZETE ---
@@ -154,9 +154,9 @@ public void initJatek(){
         }
 
         // --- 4. JÁTÉKOSOK ÉS AUTÓK ---
-        for(int i = 0; i < takaritokSzama; i++) {
-            jatekosok.add(new gazdasag.Takarito("Takarito" + i, modell.getKassza()));
-        }
+        //for(int i = 0; i < takaritokSzama; i++) {
+       //     jatekosok.add(new gazdasag.Takarito("Takarito" + i, modell.getKassza()));
+       // }
 
         // 1. Autó (Északi vízszintes út: Nyugatról Keletre)
         halozat.Checkpoint start1 = (halozat.Checkpoint)vModell.getCsomopont(0, 4);  
@@ -179,9 +179,14 @@ public void initJatek(){
         if(start3.befogad(a3)) a3.setAktualisCsomopont(start3);
         addAuto(a3);
 
-        modell.havazas();
-        nextJatekos(); 
+        //modell.havazas();
+        //nextJatekos(); 
     }
+
+    public void startElsoKor() {
+            modell.havazas(); // Leesik az első adag hó
+            nextJatekos();    // Megkapja az első játékos az irányítást
+        }
 
     private void kapcsol(Csomopont honnan, Csomopont hova) {
         if (honnan == null || hova == null) return;

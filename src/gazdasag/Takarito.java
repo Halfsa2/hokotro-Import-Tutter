@@ -14,6 +14,10 @@ public class Takarito extends Jatekos<Hokotro> {
         public Takarito(String nev, KozosKassza kassza) {
                 super(nev, kassza); 
                 SkeletonLogger.create(this);
+                
+                // Amint létrejön egy Takarító, azonnal kap egy saját alap hókotrót!
+                Hokotro kezdoGep = new Hokotro(this);
+                this.addHokotro(kezdoGep);
                 SkeletonLogger.exit(this);
             }
 
