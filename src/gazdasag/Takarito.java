@@ -2,7 +2,6 @@ package gazdasag;
 
 import felszereles.Kotrofej;
 import jarmu.Hokotro;
-import java.util.ArrayList;
 import static prototipus.CommandInterpreter.reverseNevTar;
 import vezerles.SkeletonLogger;
 
@@ -12,28 +11,25 @@ import vezerles.SkeletonLogger;
  */
 public class Takarito extends Jatekos<Hokotro> {    
    
-   /**
-    * Konstruktor a Takarítóhoz. Létrehozáskor kap egy alapértelmezett hókotrót.
-    * @param kassza a közös kassza referenciája
-    */
-   public Takarito(KozosKassza kassza) {
-        super(kassza);
-        SkeletonLogger.create(this);
-        
-        this.jarmuvek = new ArrayList<>();
-        
-        SkeletonLogger.exit(this);
-    }
+        public Takarito(String nev, KozosKassza kassza) {
+                super(nev, kassza); 
+                SkeletonLogger.create(this);
+                
+                // Amint létrejön egy Takarító, azonnal kap egy saját alap hókotrót!
+                Hokotro kezdoGep = new Hokotro(this);
+                this.addHokotro(kezdoGep);
+                SkeletonLogger.exit(this);
+            }
 
-    /**
-     * Hozzáad egy új hókotrót a takarító flottájához (pl. vásárlás után).
-     * @param gep az új hókotró
-     */
-    public void addHokotro(Hokotro gep) {
-        SkeletonLogger.enter(this, "addHokotro", gep);        
-        this.jarmuvek.add(gep);        
-        SkeletonLogger.exit("void"); 
-    }
+            public void addHokotro(Hokotro gep) {
+                SkeletonLogger.enter(this, "addHokotro", gep);        
+                this.jarmuvek.add(gep);  
+                // Ha eddig nem volt gépe, akkor automatikusan ez lesz az aktív!
+                if (this.aktivJarmu == null) {
+                    this.aktivJarmu = gep;
+                }
+                SkeletonLogger.exit("void"); 
+            }
 
     /**
      * Sót tölt a megadott hókotró számára, amely a sószóró fej működéséhez szükséges.

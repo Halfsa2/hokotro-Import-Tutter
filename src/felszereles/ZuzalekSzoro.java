@@ -75,6 +75,12 @@ public class ZuzalekSzoro extends Kotrofej {
     public int getZuzalekMennyiseg() {
         return this.zuzalek_mennyiseg;
     }
+
+    @Override
+    public int getToltet() {
+        return this.getZuzalekMennyiseg(); 
+    }
+    
     @Override 
     public String printStat(String name) {
         return "ZuzalekSzoro " + name + ": zuzalek_mennyiseg=" + this.zuzalek_mennyiseg;

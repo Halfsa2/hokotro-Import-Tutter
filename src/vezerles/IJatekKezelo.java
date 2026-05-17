@@ -9,7 +9,7 @@ import java.util.List;
  * Biztosítja, hogy a játék motorja egy egységes felületen keresztül tudjon kommunikálni a modellel.
  */
 public interface IJatekKezelo {
-    
+     void tick();
     /**
      * Előírja a játékbeli építkezési funkció megvalósítását[cite: 916].
      */
@@ -52,4 +52,6 @@ public interface IJatekKezelo {
     // Ez a getter csak a prototípus csaló parancsának használatához van, hogy elérjük a város modellt a CommandInterpreterből.
     // Nem szabadna egyébként használni, mert így kikerüljük a játék logikáját.
     void addCsomopont(Csomopont csp);
+
+     List<Csomopont> getVarosGraf();
 }

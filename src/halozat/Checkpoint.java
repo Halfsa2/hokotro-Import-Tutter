@@ -11,19 +11,16 @@ import vezerles.SkeletonLogger;
  */
 public class Checkpoint extends Csomopont {
 
-    private Csomopont kimenet;
-    private List<Jarmu> varakozoJarmuvek;
+    private List<Csomopont> szomszedok = new ArrayList<>();
+    private List<Jarmu> varakozoJarmuvek = new ArrayList<>();
 
     public Checkpoint() {
         this.varakozoJarmuvek = new ArrayList<>();
     }
 
-    /**
-     * Beállítja a kimenő csomópontot a checkpointhoz.
-     * @param kimenet a célként szolgáló csomópont
-     */
+    // A kimenetet is átirányítjuk a listába a kompatibilitás miatt
     public void setKimenet(Csomopont kimenet) {
-        this.kimenet = kimenet;
+        addSzomszed(kimenet);
     }
 
     /**
@@ -60,19 +57,9 @@ public class Checkpoint extends Csomopont {
         // Checkpoint állapotának aktualizálása (jelenleg nem csinál semmit)
     }
 
-    /**
-     * Visszaadja a checkpoint következő csomópontjait.
-     * @return a kimeneti csomópontok listája
-     */
-    @Override
+   @Override
     public List<Csomopont> getNext() {
-        SkeletonLogger.enter(this, "getNext"); // Logoljuk a hívást
-        List<Csomopont> kimenetek = new ArrayList<>();
-        if (kimenet != null) {
-            kimenetek.add(kimenet);
-        }
-        SkeletonLogger.exit("lista");
-        return kimenetek;
+        return this.szomszedok; // Most már több irányt is visszaad!
     }
 
     /**
@@ -103,5 +90,16 @@ public class Checkpoint extends Csomopont {
             }
         }
         return sb.toString();
+    }
+    // Getter a bent lévő járművek listájához, hogy a MapPanel meg tudja rajzolni
+        public List<Jarmu> getJarmuvek() {
+        return this.varakozoJarmuvek;
+    }
+
+    // Ez a metódus mostantól hozzáad a listához, nem felülírja!
+    public void addSzomszed(Csomopont szomszed) {
+        if (!this.szomszedok.contains(szomszed)) {
+            this.szomszedok.add(szomszed);
+        }
     }
 }

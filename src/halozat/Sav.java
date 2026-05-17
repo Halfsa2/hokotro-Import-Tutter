@@ -235,4 +235,8 @@ public class Sav extends Csomopont {
         }
         return sb.toString();
     }
+    // Getter a járműhöz, hogy a MapPanel meg tudja rajzolni
+        public Jarmu getJarmu() {
+        return this.jarmu;
+    }
 }

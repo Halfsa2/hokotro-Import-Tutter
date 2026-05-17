@@ -60,6 +60,11 @@ public class Sarkanyfej extends Kotrofej {
     public int getKerozinMennyiseg() {
         return this.kerozin_mennyiseg;
     }
+
+    @Override
+    public int getToltet() {
+        return this.getKerozinMennyiseg(); 
+    }
     
     /**
      * Kerozin újratöltése vásárlás esetén.

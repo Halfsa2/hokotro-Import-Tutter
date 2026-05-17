@@ -642,7 +642,7 @@ public class SkeletonMain {
         SkeletonLogger.register(kassza, "kassza");
         Bolt bolt = new Bolt();
         SkeletonLogger.register(bolt, "bolt");
-        Takarito takarito = new Takarito(kassza);
+        Takarito takarito = new Takarito("takarito", kassza);
         SkeletonLogger.register(takarito, "takarito");
         Hokotro hokotro = new Hokotro(takarito);
         SkeletonLogger.register(hokotro, "hokotro");
@@ -659,7 +659,7 @@ public class SkeletonMain {
         SkeletonLogger.register(kassza, "kassza");
         Bolt bolt = new Bolt();
         SkeletonLogger.register(bolt, "bolt");
-        Takarito takarito = new Takarito(kassza);
+        Takarito takarito = new Takarito("takarito", kassza);
         SkeletonLogger.register(takarito, "takarito");
         Hokotro hokotro = new Hokotro(takarito);
         SkeletonLogger.register(hokotro, "hokotro");
@@ -676,7 +676,7 @@ public class SkeletonMain {
         SkeletonLogger.register(kassza, "kassza");
         Bolt bolt = new Bolt();
         SkeletonLogger.register(bolt, "bolt");
-        Takarito takarito = new Takarito(kassza);
+        Takarito takarito = new Takarito("takarito", kassza);
         SkeletonLogger.register(takarito, "takarito");
         Hokotro hokotro = new Hokotro(takarito);
         SkeletonLogger.register(hokotro, "hokotro");
@@ -693,7 +693,7 @@ public class SkeletonMain {
         SkeletonLogger.register(kassza, "kassza");
         Bolt bolt = new Bolt();
         SkeletonLogger.register(bolt, "bolt");
-        Takarito takarito = new Takarito(kassza);
+        Takarito takarito = new Takarito("takarito", kassza);
         SkeletonLogger.register(takarito, "takarito");
         Hokotro hokotro = new Hokotro(takarito);
         SkeletonLogger.register(hokotro, "hokotro");
@@ -710,7 +710,7 @@ public class SkeletonMain {
         SkeletonLogger.register(kassza, "kassza");
         Bolt bolt = new Bolt();
         SkeletonLogger.register(bolt, "bolt");
-        Takarito takarito = new Takarito(kassza);
+        Takarito takarito = new Takarito("takarito", kassza);
         SkeletonLogger.register(takarito, "takarito");
         Hokotro hokotro = new Hokotro(takarito);
         SkeletonLogger.register(hokotro, "hokotro");
@@ -727,7 +727,7 @@ public class SkeletonMain {
         SkeletonLogger.register(kassza, "kassza");
         Bolt bolt = new Bolt();
         SkeletonLogger.register(bolt, "bolt");
-        Takarito takarito = new Takarito(kassza);
+        Takarito takarito = new Takarito("takarito", kassza);
         SkeletonLogger.register(takarito, "takarito");
         Hokotro hokotro = new Hokotro(takarito);
         SkeletonLogger.register(hokotro, "hokotro");

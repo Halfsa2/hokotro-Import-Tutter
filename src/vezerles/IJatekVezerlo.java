@@ -30,4 +30,5 @@ public interface IJatekVezerlo {
     public IJatekKezelo getVarosModell();
 
     public Jatekos<?> getAktivJatekos();
+
 }
