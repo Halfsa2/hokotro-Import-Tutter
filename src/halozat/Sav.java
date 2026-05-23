@@ -134,7 +134,7 @@ public class Sav extends Csomopont {
         SkeletonLogger.enter(this, "lepesTeszt", jarmu);
         boolean teszt = false;
         if (allapot != null) {
-            teszt = allapot.lepesTeszt(jarmu);
+            teszt = allapot.lepesTeszt(jarmu) && !this.foglalt(); 
         }
         SkeletonLogger.exit(teszt);
         return teszt;
