@@ -214,6 +214,7 @@ public class JatekVezerlo implements IJatekVezerlo {
                 
                 autokKore();
                 modell.palyaFrissit();
+                if(korokHoesesOta >=20) {modell.havazas();korokHoesesOta = 0;}else{korokHoesesOta++;}
             } else {
                 nezet.uzenetKijelzese("Hoppá! Ide nem tudsz lépni. (Foglalt, vagy túl mély a hó)");
             }
@@ -238,10 +239,7 @@ public class JatekVezerlo implements IJatekVezerlo {
 
         int currentId = jatekosok.indexOf(aktivJatekos);
         if(currentId == jatekosok.size() - 1) {
-            currentId = -1;
-            if (modell != null) {
-                modell.tick();
-            }
+            currentId = -1; // Visszatérünk az első játékoshoz
         }
         aktivJatekos = jatekosok.get(currentId + 1);
         aktivJatekos.korKezdodik();
@@ -253,34 +251,30 @@ public class JatekVezerlo implements IJatekVezerlo {
         }
     }
 
-    private void autoKore(Auto auto){
-        List<Csomopont> utvonal = autoUtvonalak.get(auto);
-        Csomopont aktualis = auto.getAktualisCsomopont();
-        
-        // Megnézzük, hol állunk az útvonalban
-        int nextIndex = utvonal.indexOf(aktualis) + 1;
-        
-        // --- HA CÉLBA ÉRT (vagy elfogyott az út) ---
-        if(nextIndex >= utvonal.size() || nextIndex <= 0){
-            // Megkeressük az új célt: ha a 'cel'-nél van, menjen a 'start'-hoz, és fordítva
-            // (Ez feltételezi, hogy az Auto osztályodban vannak getStart() és getCel() getterek)
-            Csomopont ujCel = (aktualis == auto.getCel()) ? auto.getStart() : auto.getCel();
-            
-            // Újratervezzük az utat a túlsó végállomásig
-            List<Csomopont> ujUtvonal = modell.legrovidebbUtvonal(aktualis, ujCel);
-            autoUtvonalak.put(auto, ujUtvonal);
-            
-            // Ebben a körben megfordul, a következőben már indul is vissza
-            return;
-        }
-        
-        // --- HALADÁS ---
-        Csomopont kovetkezo = utvonal.get(nextIndex);
-        
-        // Csak akkor lép, ha az út tiszta (nincs rajta hó vagy másik autó)
-        // Ha nem tud lépni, ott marad (dugó), amíg fel nem szabadul az út
-        auto.lep(kovetkezo);
+    private void autoKore(Auto auto) {
+    Csomopont aktualis = auto.getAktualisCsomopont();
+    Csomopont celMezo = auto.getOda() ? auto.getCel() : auto.getStart();
+
+    // 1. CÉLBA ÉRÉS: Csak akkor fordulunk meg, ha már TÉNYLEG rajta állunk a célon!
+    if (aktualis.equals(celMezo)) {
+        auto.setOda(!auto.getOda());
+        // Frissítjük a célt, hogy a BFS már jó felé tervezzen
+        celMezo = auto.getOda() ? auto.getCel() : auto.getStart();
     }
+
+    // 2. Útvonaltervezés a (frissített) cél felé
+    List<Csomopont> utvonal = modell.legrovidebbUtvonal(aktualis, celMezo);
+    autoUtvonalak.put(auto, utvonal);
+
+    // 3. BIZTONSÁGI FÉK (Ez védi meg az autót a kifagyástól!)
+    // Ha nincs út (üres lista), vagy már a célban állunk és nincs hova lépni (size == 1)
+    if (utvonal == null || utvonal.size() < 2) {
+        return; // Az autó várakozik
+    }
+    Csomopont kovetkezo = utvonal.get(1);
+
+    auto.lep(kovetkezo);
+}
 
     @Override
     public void vasarol(Arucikk termek, Hokotro gep){

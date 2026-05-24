@@ -54,6 +54,8 @@ public class GameWindow extends JFrame implements IJatekNezet {
             gazdasag.Jatekos<?> aktiv = vezerlo.getAktivJatekos();
             if (aktiv != null) {
                 aktiv.nextJarmu(); 
+                //Teszt
+                frissit();
             }
             vezerlo.nextJatekos();
             frissit();

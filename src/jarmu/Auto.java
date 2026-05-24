@@ -2,6 +2,7 @@ package jarmu;
 
 import halozat.Checkpoint;
 import halozat.Csomopont;
+import halozat.Sav;
 import java.util.List;
 import static prototipus.CommandInterpreter.reverseNevTar;
 import vezerles.SkeletonLogger;
@@ -13,12 +14,20 @@ public class Auto extends Jarmu {
 
     private final Checkpoint start; // Az autó kiindulási pozíciója (nem változik a játék során)
     private final Checkpoint cel; // Az autó célállomása (nem változik a játék során)
+    private boolean oda; // true, ha a cél felé tart, false, ha vissza a start felé
 
     public Auto(Checkpoint start, Checkpoint cel) {
         SkeletonLogger.create(this);
         this.start = start;
         this.cel = cel;
+        this.oda = true; // Alapértelmezetten az első cél felé tart
         SkeletonLogger.exit(this);
+    }
+    public boolean getOda(){
+        return oda;
+    }
+    public void setOda(boolean oda) {
+        this.oda = oda;
     }
 
     /**
@@ -52,7 +61,34 @@ public class Auto extends Jarmu {
             this.aktualisCsomopont = celCsomopont;
             SkeletonLogger.exit(true);
             return true;
+        }else {
+            if(aktualisCsomopont instanceof Sav sav){
+                Sav szomszedSav = sav.getUtszakasz().getBalSzomszed(sav) == null? sav.getUtszakasz().getJobbSzomszed(sav) : sav.getUtszakasz().getBalSzomszed(sav);
+                if(szomszedSav != null && szomszedSav.befogad(this)){
+                    if (this.aktualisCsomopont != null) {
+                        this.aktualisCsomopont.elenged(this);
+                    }
+                    this.aktualisCsomopont = szomszedSav;
+                    SkeletonLogger.exit(true);
+                    return true;
+                }
+            }else{
+                if(celCsomopont instanceof Sav sav){
+                    Sav szomszedSav = sav.getUtszakasz().getBalSzomszed(sav) == null? sav.getUtszakasz().getJobbSzomszed(sav) : sav.getUtszakasz().getBalSzomszed(sav);
+                    for(Csomopont szomszed : aktualisCsomopont.getNext()){
+                        if(szomszed.getNext().contains(szomszedSav) && szomszed.befogad(this)){
+                                if (this.aktualisCsomopont != null) {
+                                    this.aktualisCsomopont.elenged(this);
+                                }
+                                this.aktualisCsomopont = szomszed;
+                                SkeletonLogger.exit(true);
+                                return true;
+                            }
+                    }
+                }
+            }
         }
+
         
         // Ha a befogadás elutasítva (pl. foglalt a Checkpoint)
         SkeletonLogger.exit(false);

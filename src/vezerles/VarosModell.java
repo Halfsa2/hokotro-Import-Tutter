@@ -1,8 +1,10 @@
 package vezerles;
 
+import allapot.MelyHo;
 import gazdasag.KozosKassza;
 import halozat.Checkpoint;
 import halozat.Csomopont;
+import halozat.Sav;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -148,62 +150,73 @@ public class VarosModell implements IJatekKezelo {
         SkeletonLogger.exit("void");
     }
 
-    @Override
-    public List<Csomopont> legrovidebbUtvonal(Csomopont start, Csomopont cel) {
-        SkeletonLogger.enter(this, "legrovidebbUtvonal", start, cel);
-        
-        List<Csomopont> utvonal = new ArrayList<>();
-        
-        if (start == null || cel == null) {
-            SkeletonLogger.exit("ures_lista");
-            return utvonal;
+@Override
+public List<Csomopont> legrovidebbUtvonal(Csomopont start, Csomopont cel) {
+    SkeletonLogger.enter(this, "legrovidebbUtvonal", start, cel);
+    
+    // A-TERV: Keresünk egy utat úgy, hogy szigorúan kikerüljük a havat
+    List<Csomopont> utvonal = bfsKereses(start, cel, true);
+    /*
+    // B-TERV: Ha nincs végig tiszta út, keresünk egyet a hó figyelmen kívül hagyásával
+    if (utvonal.isEmpty()) {
+        utvonal = bfsKereses(start, cel, false);
+    }
+    */
+    
+    SkeletonLogger.exit("lista");
+    return utvonal;
+}
+
+private List<Csomopont> bfsKereses(Csomopont start, Csomopont cel, boolean keruldAHavat) {
+    List<Csomopont> utvonal = new ArrayList<>();
+    if (start == null || cel == null) return utvonal;
+    
+
+    if (start.equals(cel)) {
+        utvonal.add(start);
+        return utvonal;
+    }
+
+    Queue<Csomopont> sor = new LinkedList<>();
+    Map<Csomopont, Csomopont> szuloMap = new HashMap<>(); 
+    sor.add(start);
+    szuloMap.put(start, null); 
+    boolean megtalaltuk = false;
+
+    while (!sor.isEmpty()) {
+        Csomopont aktualis = sor.poll();
+        if (aktualis.equals(cel)) {
+            megtalaltuk = true;
+            break;
         }
-
-        if (start.equals(cel)) {
-            utvonal.add(start);
-            SkeletonLogger.exit("lista");
-            return utvonal;
-        }
-
-        Queue<Csomopont> sor = new LinkedList<>();
-        Map<Csomopont, Csomopont> szuloMap = new HashMap<>(); 
         
-        sor.add(start);
-        szuloMap.put(start, null); 
-        
-        boolean megtalaltuk = false;
-
-        while (!sor.isEmpty()) {
-            Csomopont aktualis = sor.poll();
-            
-            if (aktualis.equals(cel)) {
-                megtalaltuk = true;
-                break;
-            }
-            
-            List<Csomopont> szomszedok = aktualis.getNext();
-            if (szomszedok != null) {
-                for (Csomopont szomszed : szomszedok) {
-                    if (szomszed != null && !szuloMap.containsKey(szomszed)) {
-                        szuloMap.put(szomszed, aktualis); 
-                        sor.add(szomszed);
+        List<Csomopont> szomszedok = aktualis.getNext();
+        if (szomszedok != null) {
+            for (Csomopont szomszed : szomszedok) {
+                if (szomszed != null && !szuloMap.containsKey(szomszed)) {
+                    
+                    // Itt döntjük el, hogy kikerüljük-e a havat
+                    if (keruldAHavat && szomszed instanceof Sav sav && sav.getAllapot() instanceof MelyHo) {
+                        continue; 
                     }
+                    
+                    szuloMap.put(szomszed, aktualis); 
+                    sor.add(szomszed);
                 }
             }
         }
-
-        if (megtalaltuk) {
-            Csomopont lepes = cel;
-            while (lepes != null) {
-                utvonal.add(lepes);
-                lepes = szuloMap.get(lepes); 
-            }
-            Collections.reverse(utvonal);
-        }
-
-        SkeletonLogger.exit("lista");
-        return utvonal;
     }
+
+    if (megtalaltuk) {
+        Csomopont lepes = cel;
+        while (lepes != null) {
+            utvonal.add(lepes);
+            lepes = szuloMap.get(lepes); 
+        }
+        Collections.reverse(utvonal);
+    }
+    return utvonal;
+}
 
     public List<Csomopont> getVarosGraf() {
         return this.varosGraf;
