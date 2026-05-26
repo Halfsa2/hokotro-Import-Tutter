@@ -10,15 +10,24 @@ import vezerles.SkeletonLogger;
  * A hálózat speciális, végpontként szolgáló csomópontja.
  */
 public class Checkpoint extends Csomopont {
-
+    /**
+     * A checkpointból elérhető szomszédos csomópontok listája.
+     */
     private List<Csomopont> szomszedok = new ArrayList<>();
+    /**
+     * A checkpointon jelenleg bent lévő (várakozó) járművek listája.
+     */
     private List<Jarmu> varakozoJarmuvek = new ArrayList<>();
 
     public Checkpoint() {
         this.varakozoJarmuvek = new ArrayList<>();
     }
 
-    // A kimenetet is átirányítjuk a listába a kompatibilitás miatt
+    /**
+     * A paraméterként kapott 
+     * kimenetet hozzáadja a szomszédok listájához.
+     * @param kimenet A beállítani/hozzáadni kívánt kimeneti csomópont
+     */
     public void setKimenet(Csomopont kimenet) {
         addSzomszed(kimenet);
     }
@@ -91,12 +100,20 @@ public class Checkpoint extends Csomopont {
         }
         return sb.toString();
     }
-    // Getter a bent lévő járművek listájához, hogy a MapPanel meg tudja rajzolni
-        public List<Jarmu> getJarmuvek() {
+/**
+     * Getter a bent lévő járművek listájához. 
+     * Ezt például a MapPanel használhatja a járművek grafikus kirajzolásához.
+     * @return A várakozó járművek listája
+     */        
+    public List<Jarmu> getJarmuvek() {
         return this.varakozoJarmuvek;
     }
 
-    // Ez a metódus mostantól hozzáad a listához, nem felülírja!
+/**
+     * Hozzáad egy új szomszédos csomópontot a kimenetek listájához, 
+     * ha az még nem szerepel benne (nem felülírja a meglévőket).
+     * @param szomszed A hozzáadni kívánt szomszédos csomópont
+     */
     public void addSzomszed(Csomopont szomszed) {
         if (!this.szomszedok.contains(szomszed)) {
             this.szomszedok.add(szomszed);

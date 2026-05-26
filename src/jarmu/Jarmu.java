@@ -8,10 +8,10 @@ import vezerles.SkeletonLogger;
  */
 public abstract class Jarmu implements IJarmuMozgas, IStatable {
     
-    // Azt tárolja, hogy a járműnek baleset esetén hány szimulációs körből kell kimaradnia
+    /** Azt tárolja, hogy a járműnek baleset esetén hány szimulációs körből kell kimaradnia */
     protected int varakozik = 0; 
     
-    // A jármű aktuális helyzete (kétirányú asszociáció a Csomoponttal)
+    /** A jármű aktuális helyzete (kétirányú asszociáció a Csomoponttal)*/
     protected Csomopont aktualisCsomopont;
 
     /**

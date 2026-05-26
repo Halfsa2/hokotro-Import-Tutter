@@ -11,6 +11,11 @@ import vezerles.SkeletonLogger;
  */
 public class Takarito extends Jatekos<Hokotro> {    
    
+    /**
+     * Konstruktor a Takarito osztályhoz.
+     * @param nev A játékos neve
+     * @param kassza A közös kassza amibe/amiből a pénzt fogja gyűjteni/költeni
+     */
         public Takarito(String nev, KozosKassza kassza) {
                 super(nev, kassza); 
                 SkeletonLogger.create(this);
@@ -20,7 +25,11 @@ public class Takarito extends Jatekos<Hokotro> {
                 this.addHokotro(kezdoGep);
                 SkeletonLogger.exit(this);
             }
-
+            /**
+             * A takarító hókotrói közé helyezi a paraméterként megadott
+             * hókotrót. Ha eddig egy sem volt, akkor ez lesz az aktív járműve is.
+             * @param gep
+             */
             public void addHokotro(Hokotro gep) {
                 SkeletonLogger.enter(this, "addHokotro", gep);        
                 this.jarmuvek.add(gep);  

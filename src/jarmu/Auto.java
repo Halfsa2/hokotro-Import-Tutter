@@ -12,10 +12,19 @@ import vezerles.SkeletonLogger;
  */
 public class Auto extends Jarmu {
 
-    private final Checkpoint start; // Az autó kiindulási pozíciója (nem változik a játék során)
-    private final Checkpoint cel; // Az autó célállomása (nem változik a játék során)
-    private boolean oda; // true, ha a cél felé tart, false, ha vissza a start felé
+    /** Az autó kiindulási pozíciója (nem változik a játék során). */
+    private final Checkpoint start; 
+    /** Az autó célállomása (nem változik a játék során). */
+    private final Checkpoint cel; 
+    /** Irányjelző: true, ha a cél felé tart, false, ha vissza a start felé. */
+    private boolean oda; 
 
+    /**
+     * Konstruktor az Auto osztályhoz.
+     * Beállítja az autó kezdőpontját, célját, és az alapértelmezett haladási irányt.
+     * @param start A kiindulási Checkpoint
+     * @param cel A cél Checkpoint
+     */
     public Auto(Checkpoint start, Checkpoint cel) {
         SkeletonLogger.create(this);
         this.start = start;
@@ -23,15 +32,27 @@ public class Auto extends Jarmu {
         this.oda = true; // Alapértelmezetten az első cél felé tart
         SkeletonLogger.exit(this);
     }
+    /**
+     * Lekérdezi, hogy az autó éppen az elsődleges célja felé tart-e.
+     * @return true, ha a cél felé tart, false, ha visszafelé (start pont felé)
+     */
     public boolean getOda(){
         return oda;
     }
+    /**
+     * Beállítja az autó haladási irányát (cél felé vagy vissza).
+     * @param oda Az új irány (true = cél felé, false = start felé)
+     */
     public void setOda(boolean oda) {
         this.oda = oda;
     }
 
     /**
-     * Ez a metódus felelős az autó tényleges mozgásáért.
+     * Ez a metódus felelős az autó tényleges mozgásáért és a sávváltási (kikerülési) logikáért.
+     * Ellenőrzi a várakozási büntetést (pl. baleset után), validálja a topológiát, 
+     * majd megpróbál rálépni a cél csomópontra. Ha az foglalt, sávváltással próbálkozik.
+     * @param celCsomopont A csomópont, ahová az autó lépni szeretne
+     * @return true, ha a lépés (vagy kikerülés) sikeres volt, egyébként false
      */
     @Override
     public boolean lep(Csomopont celCsomopont) {

@@ -21,6 +21,11 @@ public class Sofor extends Jatekos<Busz> {
         SkeletonLogger.exit(this);
     }
 
+    /**
+     * Beállítja a sofőr buszát a paraméterként megadottra, amennyiben még nincsen neki.
+     * Ha már van busza a sofőrnek akkor nem szabad tudnia cserélni.
+     * @param busz
+     */
     public void setJarmu(Busz busz) {
         SkeletonLogger.enter(this, "setJarmu", busz);
         if(!jarmuvek.isEmpty()){return;} 

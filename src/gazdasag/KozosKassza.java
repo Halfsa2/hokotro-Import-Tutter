@@ -8,8 +8,15 @@ import vezerles.SkeletonLogger;
  */
 public class KozosKassza implements IStatable {
     
-    private int penzosszeg; // A Zúzmara Tallérok aktuális egyenlege.
+    /**
+     * A játékosok aktuális egyenlege zuzmaratallérban mérve
+     */
+    private int penzosszeg; 
 
+    /**
+     * Konstruktor, mely a kassza kezdeti összegét várja (általában 0).
+     * @param kezdetiOsszeg
+     */
     public KozosKassza(int kezdetiOsszeg) {
         SkeletonLogger.create(this);
         this.penzosszeg = kezdetiOsszeg;       
@@ -18,6 +25,7 @@ public class KozosKassza implements IStatable {
 
     /**
      * Hozzáadja a paraméterként kapott összeget a közös egyenleghez.
+     * @param osszeg
      */
     public void penzHozzaadas(int osszeg) {
         SkeletonLogger.enter(this, "penzHozzaadas", osszeg);       

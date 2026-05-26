@@ -13,6 +13,7 @@ public class Bolt implements IMegvasarolhato, IStatable {
 
     /**
      * Meghatározza a termékek árait a prototípus specifikáció alapján.
+     * @param termek A termék enum értéke, amelynek az árát kívánjuk lekérdezni.
      */
     private int getAr(Arucikk termek) {
         return switch (termek) {
@@ -29,6 +30,13 @@ public class Bolt implements IMegvasarolhato, IStatable {
         };
     }
 
+    /**
+     * A vásárlást lebonyolító metódus.
+     * @param termek A vásárolni kívánt termék
+     * @param vevo Az a takarító, aki a vásárlást kezdeményezte
+     * @param gep A vevő azon hókotrója, melyre az adott terméket vásárolni akarja (ha olyan terméket vásárol, amely nem hókotró fejlesztés, akkor null értéket kap)
+     * @return A vásárlás sikeressége
+     */
     @Override
     public boolean vasarol(Arucikk termek, Takarito vevo, Hokotro gep) {
         SkeletonLogger.enter(this, "vasarol", termek, vevo, gep);
