@@ -12,14 +12,27 @@ import vezerles.SkeletonLogger;
 
 /**
  * A Takarító által vezérelt munkagép, amely a sávok tisztításáért felel.
+ * Különlegessége, hogy képes mély hóban is haladni, nem csúszik meg a jégen, 
+ * és többféle felszereléssel (Kotrofej) is rendelkezhet, amelyeket cserélgetve 
+ * különböző útviszonyokat tud kezelni, ezzel pénzt keresve a tulajdonosának.
  */
 public class Hokotro extends IranyitottJarmu {
 
-    private Takarito tulajdonos;
+    /** A hókotrót irányító és a takarításért pénzt kapó játékos (Takarító). */
+    private final Takarito tulajdonos;
+    /** A jelenleg aktívan használt takarítófej (pl. Sopro, Jegtoro). */
     private Kotrofej aktiv;
+    /** A hókotró által birtokolt takarítófejek gyűjteménye (típusnév alapján keresve). */
     private HashMap<String, Kotrofej> birtokolja;
+    /** A hókotró egyedi azonosítója vagy neve. */
     private String nev = "Névtelen Hókotró";
 
+    /**
+     * Konstruktor a Hokotro osztályhoz.
+     * Alapértelmezésként hozzáad a járműhöz egy Söprőt és egy Jégtörőt, 
+     * és az aktív fejet a Söprőre állítja be.
+     * @param tulajdonos A hókotrót birtokló és irányító Takarító játékos
+     */
     public Hokotro(Takarito tulajdonos) {
         this.tulajdonos = tulajdonos;
         this.birtokolja = new HashMap<>();
@@ -96,6 +109,13 @@ public class Hokotro extends IranyitottJarmu {
         SkeletonLogger.exit("void");
     }
 
+    /**
+     * A hókotró lépésének vezérlése. 
+     * Kezeli a várakozási időt, validálja a lépést, rálép a célcsomópontra, 
+     * és ha sávba ért, megkísérli a takarítást az aktív fejjel.
+     * @param celCsomopont A csomópont, ahová a hókotró lépni szeretne
+     * @return true, ha a lépés (és esetleges takarítás) sikeres, egyébként false
+     */
     @Override
     public boolean lep(Csomopont celCsomopont) {
         SkeletonLogger.enter(this, "lep", celCsomopont);

@@ -6,7 +6,8 @@ import vezerles.SkeletonLogger;
 
 /**
  * A legextrémebb téli útviszonyokat reprezentálja, ahol a normál forgalom
- * teljesen megbénul.
+ * teljesen megbénul. Ebben az állapotban csak a speciális járművek 
+ * (például hókotrók) képesek közlekedni.
  */
 public class MelyHo extends Savallapot {
 
@@ -36,8 +37,10 @@ public class MelyHo extends Savallapot {
     }
 
     /**
-     * Elengedi a járművet a mély hó sávból.
-     * Nincs speciális művelet.
+     * Jármű elengedésének hatásai a mély hó sávból.
+     * Ebben az állapotban az elengedésnek nincs speciális mellékhatása.
+     * @param sav A sáv, aminek az adott objektum a mély hó állapota
+     * @param jarmu A jármű, melyet el akarunk engedni
      */
     @Override
     public void elenged(Sav sav, Jarmu jarmu) {
@@ -47,7 +50,8 @@ public class MelyHo extends Savallapot {
 
     /**
      * Kezeli a hóesés esetét a mély hó sávon.
-     * Marad mély hó állapotban.
+     * Mivel már eleve maximális a hóréteg (mély hó), a sáv állapota nem változik tovább.
+     * @param sav A sáv, aminek az adott objektum a mély hó állapota
      */
     @Override
     public void hoesesEseten(Sav sav) {
@@ -55,9 +59,10 @@ public class MelyHo extends Savallapot {
         SkeletonLogger.exit("void");
     }
 
-    /**
-     * Frissíti a mély hó sáv állapotát (pl. olvadás a kör végén).
-     * Csökkenti a hóréteget és sekély hóra vált.
+   /**
+     * Frissíti a mély hó sáv állapotát az idő múlásával (olvadás).
+     * A mély hó (3. szintű hóréteg) egy kör után megolvad, és SekélyHó állapotba (2. szintű vastagsággal) lép.
+     * @param sav A sáv, aminek az adott objektum a mély hó állapota
      */
     @Override
     public void frissit(Sav sav) {
@@ -74,8 +79,10 @@ public class MelyHo extends Savallapot {
     }
 
     /**
-     * Teszteli, hogy a jármű ráléphet-e a mély hó sávra.
-     * Csak hókotró léphet mély hóra.
+     * Teszteli, hogy az adott járműnek szabad-e a mély hó sávra lépni.
+     * Ehhez a jármű saját képességét (lephetMelyHora) kérdezi le.
+     * @param jarmu A vizsgálandó jármű
+     * @return true, ha a jármű képes mély hóban közlekedni, egyébként false
      */
     @Override
     public boolean lepesTeszt(Jarmu jarmu) {
@@ -91,6 +98,7 @@ public class MelyHo extends Savallapot {
     /**
      * Kezeli, ha a sáv sót kap.
      * Mély hóra a sózásnak nincs azonnali hatása.
+     * @param sav A sáv, aminek az adott objektum a mély hó állapota
      */
     @Override
     public void sotKap(Sav sav) {
@@ -101,6 +109,8 @@ public class MelyHo extends Savallapot {
     /**
      * Megpróbálja megtisztítani a havat a sávból.
      * Sikeresen tiszta állapotba vált.
+     * @param sav A sáv, aminek az adott objektum a mély hó állapota
+     * @return true, mivel a hóeltakarítás mindenképp sikeres
      */
     @Override
     public boolean hoTisztit(Sav sav) {

@@ -8,14 +8,26 @@ import static prototipus.CommandInterpreter.reverseNevTar;
 import vezerles.SkeletonLogger;
 
 /**
- * A Sofőr által irányított jármű, amely fordulók megtételével pénzt keres. [cite: 78]
+ * A Sofőr által irányított jármű, amely fordulók megtételével pénzt keres.
+ * Két végpont (Checkpoint) között ingázik, és minden sikeres út (oda vagy vissza) 
+ * végén bevételt generál a járművet irányító játékosnak.
  */
 public class Busz extends IranyitottJarmu {
-    private final Sofor vezeto; // A busz sofőrje, aki irányítja a járművet és felelős a pénzkeresésért [cite: 84]
-    private final Checkpoint start; // A busz kiindulási pozíciója [cite: 86]
-    private final Checkpoint cel; // A busz célállomása [cite: 87]
-    private boolean oda = true; // Jelzi, hogy a busz éppen a cél felé (oda) vagy vissza (vissza) tart-e [cite: 88]
+    /** A busz sofőrje, aki irányítja a járművet és felelős a pénzkeresésért. */
+    private final Sofor vezeto; 
+    /** A busz kiindulási pozíciója. */
+    private final Checkpoint start; 
+    /** A busz célállomása. */
+    private final Checkpoint cel;
+    /** Jelzi, hogy a busz éppen a cél felé (true) vagy a start felé (false) tart-e. */
+    private boolean oda = true; 
 
+    /**
+     * Konstruktor a Busz osztályhoz.
+     * @param start A busz kiindulási ellenőrzőpontja
+     * @param cel A busz célállomása
+     * @param vezeto A járművet irányító és a jutalmakat gyűjtő sofőr
+     */
     public Busz(Checkpoint start, Checkpoint cel, Sofor vezeto) {
         this.start = start;
         this.cel = cel;
@@ -23,7 +35,11 @@ public class Busz extends IranyitottJarmu {
     }
 
     /**
-     * A jármű mozgatásához szükséges vezérlés, és a bevételek generálása. [cite: 92]
+     * A jármű mozgatásához szükséges vezérlés, és a bevételek generálása.
+     * Ellenőrzi a várakozást, a topológiai érvényességet, majd megpróbál a célcsomópontra lépni.
+     * Ha eléri az aktuális úti célját, a sofőr jutalmat kap, és a busz irányt vált.
+     * @param celCsomopont A csomópont, ahová a busz lépni szeretne
+     * @return true, ha a lépés sikeres volt, egyébként false
      */
     @Override
     public boolean lep(Csomopont celCsomopont) {
@@ -83,18 +99,30 @@ public class Busz extends IranyitottJarmu {
         }
     }
 
+    /**
+     * Lekérdezi a busz indulási (start) állomását.
+     * @return A kiindulási Checkpoint
+     */
     public Checkpoint getStart() {
         return start;
     }
-
+    /**
+     * Lekérdezi a busz célállomását.
+     * @return A cél Checkpoint
+     */
     public Checkpoint getCel() {
         return cel;
     }
-
+    /**
+     * Lekérdezi, hogy a busz éppen a célállomás felé tart-e.
+     * @return true, ha a cél felé tart, false, ha vissza a start felé
+     */
     public boolean celhozTart() {
         return oda;
     }
-
+    /**
+     * Megfordítja a busz haladási irányát (oda/vissza), amikor elér egy végpontot.
+     */
     public void iranytValtoztat() {
         oda = !oda; // Megfordítja a busz haladási irányát [cite: 104]
     }

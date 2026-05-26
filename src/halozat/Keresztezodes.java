@@ -45,11 +45,8 @@ public class Keresztezodes extends Csomopont {
     @Override
     public boolean befogad(Jarmu jarmu) {
         SkeletonLogger.enter(this, "befogad", jarmu);
-        
-        //TODO
         if(this.foglalt()){return false;}
         this.bentLevoJarmuvek.add(jarmu);
-        
         SkeletonLogger.exit(true);
         return true;
     }
@@ -139,7 +136,7 @@ public class Keresztezodes extends Csomopont {
         }
         return sb.toString();
     }
-    // Getter a bent lévő járművek listájához, hogy a MapPanel meg tudja rajzolni
+    /** Getter a bent lévő járművek listájához, hogy a MapPanel meg tudja rajzolni*/
         public List<Jarmu> getJarmuvek() {
         return this.bentLevoJarmuvek;
     }
