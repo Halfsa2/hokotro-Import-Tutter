@@ -6,12 +6,25 @@ import java.util.Map;
 import javax.swing.*;
 import vezerles.IJatekVezerlo;
 
+/**
+ * A játék térképének grafikus megjelenítéséért felelős egyedi Swing panel.
+ * Ez az osztály végzi a csomópontok (utak, kereszteződések), az időjárási viszonyok 
+ * (hó, jég), valamint a járművek (hókotró, busz, autó) tényleges képernyőre rajzolását.
+ */
 public class MapPanel extends JPanel {
+    /** A játék menetét irányító vezérlő. */
     private IJatekVezerlo vezerlo;
+    /** A csomópontok és a hozzájuk tartozó (x, y) képernyő-koordináták leképezése. */
     private Map<Csomopont, Point> nodePositions;
-    private final int TILE_SIZE = 20; // A képeitek mérete
+    /** A pályaelemek alapértelmezett mérete pixelben. */
+    private final int TILE_SIZE = 20;
 
-    // Konstruktor: megkapja a vezérlőt és a koordinátákat a GameWindow-tól
+    /**
+     * Konstruktor a MapPanel osztályhoz. 
+     * Megkapja a vezérlőt és a csomópontok kiszámolt koordinátáit a GameWindow-tól.
+     * @param vezerlo A játék logikáját kezelő vezérlő
+     * @param nodePositions A csomópontok elhelyezkedését tartalmazó Map
+     */    
     public MapPanel(IJatekVezerlo vezerlo, Map<Csomopont, Point> nodePositions) {
         this.vezerlo = vezerlo;
         this.nodePositions = nodePositions;
@@ -20,6 +33,13 @@ public class MapPanel extends JPanel {
         setBackground(Color.DARK_GRAY); 
     }
 
+    /**
+     * Felülírt metódus a komponens egyéni kirajzolásához.
+     * Két fő fázisban dolgozik: 
+     * 1. A pályaelemek (utak, alagutak, hidak) és az állapotok (hóréteg, jég, zúzalék) kirajzolása.
+     * 2. A járművek rárajzolása a pályára, figyelembe véve az extra szabályokat (pl. alagútban nem látszanak).
+     * @param g A rajzoláshoz használt Graphics objektum
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

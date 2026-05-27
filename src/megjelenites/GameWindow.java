@@ -7,16 +7,34 @@ import java.util.Map;
 import javax.swing.*;
 import vezerles.IJatekVezerlo;
 
+/**
+ * A játék fő grafikus ablaka, amely megvalósítja az IJatekNezet interfészt.
+ * Felelős a térkép megjelenítéséért, a felhasználói interakciók (kattintások, billentyűzet)
+ * kezeléséért, az állapotok kiírásáért, valamint a játékosok és felszerelések menedzseléséért (bolt, csere).
+ */
 public class GameWindow extends JFrame implements IJatekNezet {
+    /** A játék logikáját irányító vezérlő. */
     private IJatekVezerlo vezerlo;
+    /** A térkép kirajzolásáért felelős egyedi panel. */
     private MapPanel mapPanel;
+    /** A csomópontok és a képernyőn elfoglalt (x, y) pixel koordinátáik összerendelése. */
     private Map<Csomopont, Point> nodePositions;
+    /** Az aktuális játékos és járművének nevét kiíró címke. */
     private JLabel infoLabel;
+    /** A közös kassza állását mutató címke. */
     private JLabel kasszaLabel;
 
+    /** Egy mező mérete (szélesség, magasság) pixelben a térképen. */
     private int tileSize = 20; 
+
+    /** Az aktuálisan aktív egérkattintás-figyelő, amelyet interaktív lehelyezésekkor használunk. */
     private java.awt.event.MouseAdapter aktivKattintasKezelo = null;
 
+    /**
+     * Konstruktor a GameWindow osztályhoz.
+     * Létrehozza az ablakot, inicializálja a paneleket, a gombokat és a billentyűzetfigyelőket.
+     * @param vezerlo A játékmenetet vezérlő objektum
+     */
     public GameWindow(IJatekVezerlo vezerlo) {
         this.vezerlo = vezerlo;
         this.nodePositions = new HashMap<>();
@@ -72,6 +90,10 @@ public class GameWindow extends JFrame implements IJatekNezet {
         setupKeyBindings();
     }
 
+    /**
+     * Beállítja a billentyűzet-kötéseket (nyílbillentyűk) a járművek mozgatásához.
+     * Kezeli a speciális eseteket is, például amikor a Checkpoint végén U-fordulót kell tenni.
+     */
    private void setupKeyBindings() {
         InputMap im = this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap am = this.getRootPane().getActionMap();
@@ -130,6 +152,10 @@ public class GameWindow extends JFrame implements IJatekNezet {
         });
     }
 
+    /**
+     * Frissíti a grafikus felületet: átrajzolja a térképet, és aktualizálja az információs címkéket
+     * (kassza állapota, aktív játékos).
+     */
     @Override
     public void frissit() {
         gazdasag.Jatekos<?> aktiv = vezerlo.getAktivJatekos();
@@ -153,6 +179,10 @@ public class GameWindow extends JFrame implements IJatekNezet {
         mapPanel.repaint();
     }
 
+    /**
+     * Kiszámolja a pálya középre igazításához szükséges eltolásokat (offset),
+     * és hozzárendeli az egyes csomópontokhoz a pontos képernyő-koordinátájukat.
+     */
     private void setupCoordinates() {
         nodePositions.clear();
         vezerles.VarosModell vModell = (vezerles.VarosModell) vezerlo.getVarosModell();
@@ -173,16 +203,29 @@ public class GameWindow extends JFrame implements IJatekNezet {
         }
     }
     
+    /**
+     * Megjelenít egy felugró információs ablakot a megadott üzenettel.
+     * @param uzenet A megjelenítendő szöveg
+     */
     @Override
     public void uzenetKijelzese(String uzenet) {
         JOptionPane.showMessageDialog(this, uzenet, "Üzenet", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Megjeleníti a játék végét jelző dialógusablakot az eredménnyel.
+     * @param eredmeny A végeredményt vagy az okot tartalmazó szöveg
+     */
     @Override
     public void jatekVege(String eredmeny) {
         JOptionPane.showMessageDialog(this, eredmeny, "Játék Vége!", JOptionPane.WARNING_MESSAGE);
     }
 
+    /**
+     * Megnyitja a játékbeli bolt felületét.
+     * Ellenőrzi, hogy a Takarító próbál-e vásárolni, dinamikusan frissíti az inventory-t,
+     * és kezeli az árucikkek (pl. új felszerelés, új hókotró) megvásárlásának logikáját.
+     */
     private void megnyitBolt() {
         gazdasag.Jatekos<?> aktiv = vezerlo.getAktivJatekos();
         if (!(aktiv instanceof gazdasag.Takarito)) {
@@ -428,6 +471,15 @@ public class GameWindow extends JFrame implements IJatekNezet {
         boltAblak.setVisible(true);
     }
 
+    /**
+     * Segédmetódus a bolt gombjainak generálásához.
+     * @param szoveg A gomb felirata
+     * @param arucikk Az árucikk enum reprezentációja
+     * @param texturanev A betöltendő ikon neve
+     * @param kivalasztott Tömb, amibe a kiválasztott árucikket mentjük (referencia szerint)
+     * @param label A címke, ami jelzi a kiválasztást
+     * @return Az elkészített gomb
+     */
     private JButton createBoltGomb(String szoveg, gazdasag.Arucikk arucikk, String texturanev, gazdasag.Arucikk[] kivalasztott, JLabel label) {
         JButton gomb = new JButton(szoveg);
         Image img = TextureManager.getTexture(texturanev);
@@ -442,6 +494,10 @@ public class GameWindow extends JFrame implements IJatekNezet {
         return gomb;
     }
 
+    /**
+     * Megnyitja a felszereléscserélő dialógust a Takarítónak, ahol a hókotróhoz
+     * tartozó, raktárban lévő fejek közül választhat újat.
+     */
     private void cserelFelszerelest() {
         gazdasag.Jatekos<?> aktiv = vezerlo.getAktivJatekos();
         if (!(aktiv instanceof gazdasag.Takarito)) {
@@ -494,6 +550,10 @@ public class GameWindow extends JFrame implements IJatekNezet {
         }
     }
 
+    /**
+     * Lehetővé teszi új sofőr és busz játékhoz adását menet közben.
+     * Interaktívan bekéri a nevet, majd a start és cél állomásokat (kattintásokkal a térképen).
+     */
     private void ujSoforHozzaadasa() {
         String beirtNev = JOptionPane.showInputDialog(this, "Hogy hívják az új buszsofőrt?", "Új Sofőr Felvétele", JOptionPane.PLAIN_MESSAGE);
         if (beirtNev == null || beirtNev.trim().isEmpty()) return;
@@ -533,6 +593,13 @@ public class GameWindow extends JFrame implements IJatekNezet {
             });
     }
 
+    /**
+     * Eseményvezérelt állapotgép-szerű metódus, amely felfüggeszti a normál működést,
+     * és vár egy olyan egérkattintásra a térképen, ami átmegy a validáción.
+     * @param infoSzoveg A kiírandó útmutató szöveg az információs sávon
+     * @param validalo Predicate, ami eldönti, hogy a kattintott csomópont megfelelő-e
+     * @param akcio Consumer, ami a validált csomóponttal végrehajtja a kívánt logikát
+     */
     private void varjKattintasra(String infoSzoveg, java.util.function.Predicate<halozat.Csomopont> validalo, java.util.function.Consumer<halozat.Csomopont> akcio) {
         infoLabel.setText(">>> " + infoSzoveg + " <<<");
         
@@ -571,7 +638,8 @@ public class GameWindow extends JFrame implements IJatekNezet {
     }
 
     /**
-     * Ezt hívjuk meg legelőször, hogy elinduljon a beállítás!
+     * Ezt hívjuk meg legelőször a játék elején, hogy elinduljon a beállítási folyamat (varázsló).
+     * Bekéri a játékosok számát, és elindítja a rekurzív játékos-létrehozást.
      */
     public void inditJatekBeallitas() {
         String input = JOptionPane.showInputDialog(this, "Üdvözöl Zúzmaraváros!\nMennyi játékos fog játszani?", "Játékosok száma", JOptionPane.QUESTION_MESSAGE);
@@ -589,7 +657,11 @@ public class GameWindow extends JFrame implements IJatekNezet {
     }
 
     /**
-     * Rekurzív metódus, ami sorban megkérdez mindenkit.
+     * Rekurzív metódus, ami sorban megkérdezi az összes inicializálandó játékost (Név, Szerep), 
+     * és végigvezeti őket az első lehelyezés folyamatán (kattintás a térképen).
+     * Amikor mindenki végzett, elindítja a játékot.
+     * @param index A jelenlegi játékos sorszáma (0-tól indexelve)
+     * @param total A megadott összes játékosszám
      */
     private void kerdezJatekos(int index, int total) {
         // Ha mindenki végzett, indul a játék!

@@ -13,24 +13,43 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+/**
+ * A város működéséért és a szimuláció logikájáért felelős központi osztály.
+ * Nyilvántartja a hálózatot gráfként és 2D mátrixként is, kezeli a közös kasszát, 
+ * irányítja az idő múlását (tick), az időjárást (havazás), és biztosítja 
+ * az önvezető járművek számára az útvonalkeresést (BFS).
+ */
 public class VarosModell implements IJatekKezelo {
 
+    /** A város topológiáját alkotó csomópontok lineáris listája. */
     private List<Csomopont> varosGraf;
+    /** A globális közös kassza, amibe a játékosok a pénzt gyűjtik. */
     private KozosKassza kassza;
+    /** A játékban eltelt időegységeket (köröket) mérő számláló. */
     private int tickSzamlalo = 0;
 
     // --- ÚJ: 2D-s Mátrix a térképhez ---
+    /** A várost reprezentáló kétdimenziós rács a grafikus megjelenítéshez és koordináta-alapú eléréshez. */
     private Csomopont[][] varosMatrix;
+    /** A 2D rács szélessége (oszlopok száma). */
     private int szelesseg;
+    /** A 2D rács magassága (sorok száma). */
     private int magassag;
 
+    /**
+     * Alapértelmezett konstruktor.
+     * Inicializálja a várost egy üres gráffal és egy 0 egyenlegű közös kasszával.
+     */
     public VarosModell() {
         SkeletonLogger.create(this);
         this.kassza = new KozosKassza(0);
         this.varosGraf = new ArrayList<>();
         SkeletonLogger.exit(this);
     }
-
+    /**
+     * Paraméteres konstruktor a VarosModell osztályhoz.
+     * @param kassza A város által használandó előre létrehozott közös kassza
+     */
     public VarosModell(KozosKassza kassza) {
         SkeletonLogger.create(this);
         this.varosGraf = new ArrayList<>();
@@ -41,7 +60,10 @@ public class VarosModell implements IJatekKezelo {
     // --- ÚJ METÓDUSOK A 2D RÁCSHOZ ---
     
     /**
-     * Létrehozza az üres 2D-s rácsot a városnak.
+     * Létrehozza az üres 2D-s rácsot a városnak a megadott dimenziókkal.
+     * Ha korábban volt már pálya építve, a gráfot kiüríti.
+     * @param szelesseg A pálya szélessége (X tengely)
+     * @param magassag A pálya magassága (Y tengely)
      */
     public void initRacs(int szelesseg, int magassag) {
         this.szelesseg = szelesseg;
@@ -51,7 +73,11 @@ public class VarosModell implements IJatekKezelo {
     }
 
     /**
-     * Hozzáad egy csomópontot egy konkrét X, Y koordinátára.
+     * Hozzáad egy csomópontot egy konkrét (X, Y) koordinátára a 2D rácsban, 
+     * és beteszi a lineáris gráfba is, ha még nincs benne.
+     * @param x Az X koordináta (oszlop)
+     * @param y Az Y koordináta (sor)
+     * @param csp A lehelyezendő Csomopont objektum
      */
     public void addCsomopont(int x, int y, Csomopont csp) {
         SkeletonLogger.enter(this, "addCsomopont", csp);
@@ -67,7 +93,10 @@ public class VarosModell implements IJatekKezelo {
     }
 
     /**
-     * Visszaadja az adott koordinátán lévő csomópontot.
+     * Visszaadja az adott (X, Y) koordinátán lévő csomópontot.
+     * @param x Keresett X koordináta
+     * @param y Keresett Y koordináta
+     * @return A csomópont objektum, vagy null, ha a koordináta a pályán kívül esik, vagy a cella üres
      */
     public Csomopont getCsomopont(int x, int y) {
         if (x >= 0 && x < szelesseg && y >= 0 && y < magassag) {
@@ -76,22 +105,43 @@ public class VarosModell implements IJatekKezelo {
         return null; // Ha a pályán kívülre mutat
     }
 
+    /**
+     * Lekérdezi a városrács szélességét.
+     * @return A rács szélessége
+     */
     public int getSzelesseg() { return szelesseg; }
+    /**
+     * Lekérdezi a városrács magasságát.
+     * @return A rács magassága
+     */
     public int getMagassag() { return magassag; }
 
 
     // --- RÉGI METÓDUSOK ---
 
+    /**
+     * Lekérdezi a városhoz tartozó közös kasszát.
+     * @return A KozosKassza objektum
+     */
     public KozosKassza getKassza() {
         return kassza;
     }
 
+    /**
+     * Elméleti metódus a város építésének indítására. 
+     * Jelenleg a pályát máshol hozzuk létre, így ez üres.
+     */
     @Override
     public void epit() {
         SkeletonLogger.enter(this, "epit");
         SkeletonLogger.exit("void");
     }
 
+    /**
+     * CSAK TESZTELÉSHEZ HASZNÁLHATÓ
+     * Lépteti a város globális idejét (1 tick).
+     * Frissíti a pályát (olvadás), és minden 3. tickben havazást idéz elő a városban.
+     */
     @Override
     public void tick() {
         SkeletonLogger.enter(this, "tick");
@@ -107,13 +157,20 @@ public class VarosModell implements IJatekKezelo {
         SkeletonLogger.exit("void");
     }
 
-    // Visszafelé kompatibilitás miatt megmaradt
+    /**
+     * Visszafelé kompatibilitás miatt megmaradt metódus.
+     * Csak a lineáris gráfhoz ad hozzá egy csomópontot (koordináta nélkül).
+     * @param csp A hozzáadni kívánt csomópont
+     */
     public void addCsomopont(Csomopont csp) {
         SkeletonLogger.enter(this, "addCsomopont", csp);
         this.varosGraf.add(csp);
         SkeletonLogger.exit("void");
     }
 
+    /**
+     * Meghívja minden csomóponton a frissítést (idő múlásának hatásai, pl. sózás lejárata, jégolvadás).
+     */
     @Override
     public void palyaFrissit() {
         SkeletonLogger.enter(this, "palyaFrissit");
@@ -126,6 +183,10 @@ public class VarosModell implements IJatekKezelo {
         SkeletonLogger.exit("void");
     }
 
+    /**
+     * Keres a hálózatban egy szabad, jármű által nem foglalt Checkpointot.
+     * @return Egy szabad Checkpoint objektum, vagy null, ha nincs ilyen
+     */
     @Override
     public Checkpoint getSzabadCheckpoint() {
         SkeletonLogger.enter(this, "getSzabadCheckpoint");
@@ -139,6 +200,9 @@ public class VarosModell implements IJatekKezelo {
         return null;
     }
 
+    /**
+     * Havazást idéz elő a város összes csomópontján.
+     */
     @Override
     public void havazas() {
         SkeletonLogger.enter(this, "havazas");
@@ -150,6 +214,13 @@ public class VarosModell implements IJatekKezelo {
         SkeletonLogger.exit("void");
     }
 
+    /**
+     * Megkeresi a legrövidebb útvonalat a kezdő és cél csomópont között az önvezető autók számára.
+     * Az alapértelmezett viselkedés, hogy megpróbálja kikerülni a mély havat.
+     * @param start A kiindulási csomópont
+     * @param cel A cél csomópont
+     * @return Az útvonalat alkotó csomópontok listája (a start csomóponttal kezdve)
+     */
 @Override
 public List<Csomopont> legrovidebbUtvonal(Csomopont start, Csomopont cel) {
     SkeletonLogger.enter(this, "legrovidebbUtvonal", start, cel);
@@ -167,6 +238,13 @@ public List<Csomopont> legrovidebbUtvonal(Csomopont start, Csomopont cel) {
     return utvonal;
 }
 
+/**
+     * Szélességi keresés (BFS) algoritmussal megkeresi a legrövidebb utat két pont között.
+     * @param start A kiindulási csomópont
+     * @param cel A cél csomópont
+     * @param keruldAHavat Ha true, az algoritmus élből elutasítja azokat a sávokat, ahol mély hó van
+     * @return A legrövidebb útvonal listája. Ha nincs elérhető út, üres listát ad vissza.
+     */
 private List<Csomopont> bfsKereses(Csomopont start, Csomopont cel, boolean keruldAHavat) {
     List<Csomopont> utvonal = new ArrayList<>();
     if (start == null || cel == null) return utvonal;
@@ -218,6 +296,10 @@ private List<Csomopont> bfsKereses(Csomopont start, Csomopont cel, boolean kerul
     return utvonal;
 }
 
+    /**
+     * Visszaadja a város összes csomópontját tartalmazó lineáris gráfot.
+     * @return A csomópontok listája
+     */
     public List<Csomopont> getVarosGraf() {
         return this.varosGraf;
     }

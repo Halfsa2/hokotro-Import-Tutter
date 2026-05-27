@@ -7,10 +7,20 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
 
+
+/**
+ * Ez az osztály felelős a játékban használt képek (textúrák) betöltéséért és tárolásáért.
+ * A textúrák egy statikus map-ben vannak tárolva, ahol a kulcs egy könnyen megjegyezhető név, és az érték maga a betöltött Image objektum.
+ */
 public class TextureManager {
+    /**
+     * A textúrák tárolására szolgáló map
+     */
     private static final Map<String, Image> textures = new HashMap<>();
 
-    // Egy biztonságos segédmetódus, ami kiírja, ha pontosan melyik fájl hiányzik
+    /**
+     * Egy biztonságos segédmetódus, ami kiírja, ha pontosan melyik fájl hiányzik
+     */
     private static void loadImg(String kulcs, String fajlNev) {
         String path = "resources/" + fajlNev;
         try {
@@ -20,6 +30,9 @@ public class TextureManager {
         }
     }
 
+    /**
+     * Betölti az összes szükséges textúrát.
+     */
     public static void loadTextures() {
         System.out.println("Képek betöltése folyamatban...");
         
@@ -56,6 +69,11 @@ public class TextureManager {
         System.out.println("Képek betöltése befejeződött!");
     }
 
+    /**
+     * Visszaadja a megadott nevű textúrát, vagy null-t, ha nem található.
+     * @param name
+     * @return a textúra, vagy null, ha nincs ilyen nevű textúra
+     */
     public static Image getTexture(String name) {
         return textures.get(name);
     }

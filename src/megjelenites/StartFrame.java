@@ -2,7 +2,14 @@ package megjelenites;
 import java.awt.*;
 import javax.swing.*;
 
+/**
+ * Nem használt osztály
+ * Későbbi bővítésként szolgálhat egy kezdőmenüre, ahol a játékosok kiválaszthatják a játék módját (új játék, játék betöltése), és elindíthatják a játékot.
+ */
 public class StartFrame extends JFrame {
+    /**
+     * Konstruktor, ami beállítja a kezdőmenü alapvető megjelenését és gombjait.
+     */
     public StartFrame() {
         setTitle("Zúzmaraváros - Menü");
         setSize(400, 300);
@@ -23,6 +30,9 @@ public class StartFrame extends JFrame {
         add(loadGameButton);
     }
 
+    /**
+     * Új játék indítása
+     */
     private void startNewGame() {
         // TODO: VarosModell és JatekVezerlo inicializálása
         // IJatekVezerlo vezerlo = new JatekVezerlo(...);
@@ -34,6 +44,9 @@ public class StartFrame extends JFrame {
         // this.dispose();
     }
 
+    /**
+     * Játék betöltése fájlból.
+     */
     private void loadGame() {
         JFileChooser fileChooser = new JFileChooser();
         int result = fileChooser.showOpenDialog(this);
